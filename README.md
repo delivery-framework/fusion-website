@@ -11,6 +11,7 @@ platform/index.html   ← Platform, analytics, custom UI (business audience)
 lifecycle/index.html  ← The built-in development lifecycle, AI-native change flow
 technology/index.html ← Integration, less code, technology (technical audience)
 pricing/index.html    ← Pricing, offers, lock-in ledger
+replace-legacy/index.html ← Legacy replacement: free discovery, TCO baseline, value-based deal
 services/index.html   ← Services firms page
 redesign/             ← Redirect stubs for the old /redesign/ URLs
 archive/              ← Superseded page, kept for reference
