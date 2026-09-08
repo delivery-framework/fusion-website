@@ -72,6 +72,7 @@
 @source "../lifecycle/index.html";
 @source "../technology/index.html";
 @source "../pricing/index.html";
+@source "../replace-legacy/index.html";
 
 /* ============================================================
    Shared base styles — used by every page. Moved here from the
@@ -308,4 +309,30 @@ html { scroll-behavior: smooth; }
 .cots-foot {
   margin-top: 1.5rem; max-width: 46rem;
   font-size: 0.875rem; line-height: 1.7; color: #64748b;
+}
+
+/* Big stat block — used by the technology, pricing and replace-legacy pages. */
+.less-stat {
+  margin-top: 3rem;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 2.5rem;
+  border-radius: 1.75rem; padding: 2rem;
+  background: #0B1220; color: #fff;
+}
+.less-stat-fig { display: flex; flex-direction: column; flex: none; }
+.less-stat-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 3.5rem; font-weight: 700; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-300);
+}
+.less-stat-unit {
+  margin-top: 0.6rem;
+  font-size: 0.75rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--accent-200);
+}
+.less-stat-body { max-width: 44rem; line-height: 1.75; color: #e2e8f0; }
+.less-stat-scope {
+  margin-top: 0.875rem; max-width: 44rem;
+  font-size: 0.875rem; line-height: 1.7; color: #94a3b8;
 }

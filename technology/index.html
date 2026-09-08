@@ -104,31 +104,6 @@
     border-radius: 9999px; background: var(--accent-500);
   }
 
-  .less-stat {
-    margin-top: 3rem;
-    display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 2.5rem;
-    border-radius: 1.75rem; padding: 2rem;
-    background: #0B1220; color: #fff;
-  }
-  .less-stat-fig { display: flex; flex-direction: column; flex: none; }
-  .less-stat-num {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 3.5rem; font-weight: 700; line-height: 1;
-    font-variant-numeric: tabular-nums;
-    color: var(--accent-300);
-  }
-  .less-stat-unit {
-    margin-top: 0.6rem;
-    font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.18em;
-    color: var(--accent-200);
-  }
-  .less-stat-body { max-width: 44rem; line-height: 1.75; color: #e2e8f0; }
-  .less-stat-scope {
-    margin-top: 0.875rem; max-width: 44rem;
-    font-size: 0.875rem; line-height: 1.7; color: #94a3b8;
-  }
-
   .less-points { margin-top: 3.5rem; display: grid; gap: 1.25rem; }
   @media (min-width: 900px) { .less-points { grid-template-columns: repeat(3, 1fr); } }
   .less-point {
@@ -183,19 +158,20 @@
       <span class="wordmark text-xl text-white">Fusion</span>
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
+    <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 lg:flex">
       <a href="/#why" class="hover:text-white ulink">Why Fusion</a>
       <a href="/lifecycle/" class="hover:text-white ulink">Lifecycle</a>
       <a href="/platform/" class="hover:text-white ulink">Platform</a>
       <a href="/technology/" class="hover:text-white ulink">Technology</a>
       <a href="/challenge/" class="hover:text-white ulink">The Challenge</a>
       <a href="/pricing/" class="hover:text-white ulink">Pricing</a>
+      <a href="/replace-legacy/" class="hover:text-white ulink">Replace Legacy</a>
     </nav>
 
     <div class="flex items-center gap-3 md:gap-5">
       <a href="https://calendar.app.google/X5crfjDgDdMgqXPn8" target="_blank" rel="noopener" class="btn h-auto border-0 bg-white px-4 py-2.5 text-sm font-medium text-ink hover:bg-slate-100 md:px-5">Book a demo</a>
       <!-- Mobile menu (DaisyUI dropdown); mirrors the nav above -->
-      <div class="dropdown dropdown-end md:hidden">
+      <div class="dropdown dropdown-end lg:hidden">
         <div tabindex="0" role="button" aria-label="Open menu" class="btn btn-ghost btn-square btn-sm -mr-2 text-slate-300 hover:bg-white/10 hover:text-white">
           <i data-lucide="menu" class="h-6 w-6"></i>
         </div>
@@ -206,6 +182,7 @@
           <li><a href="/technology/">Technology</a></li>
           <li><a href="/challenge/">The Challenge</a></li>
           <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/replace-legacy/">Replace Legacy</a></li>
         </ul>
       </div>
     </div>
@@ -447,6 +424,7 @@ end</code></pre></div>
       <a href="/technology/" class="hover:text-ink ulink">Technology</a>
       <a href="/challenge/" class="hover:text-ink ulink">The Challenge</a>
       <a href="/pricing/#offers" class="hover:text-ink ulink">Engagement</a>
+      <a href="/replace-legacy/" class="hover:text-ink ulink">Replace Legacy</a>
       <a href="/pricing/" class="hover:text-ink ulink">Pricing</a>
       <a href="/services/" class="hover:text-ink ulink">For services firms</a>
     </div>
