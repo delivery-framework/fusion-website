@@ -15,7 +15,7 @@
                     A class whose component is not listed does nothing. */
 @plugin "daisyui" {
   themes: false;
-  include: button, card, badge;
+  include: button, card, badge, dropdown, menu;
 }
 
 /* The fusion theme maps DaisyUI tokens onto the palette the page already used,
@@ -168,6 +168,10 @@ section[id], main[id] { scroll-margin-top: var(--header-h); }
 header nav a[aria-current="page"] {
   color: #fff;
   background-image: linear-gradient(var(--accent-300), var(--accent-300));
+}
+header .menu a[aria-current="page"] {
+  background-color: var(--menu-active-bg);
+  color: var(--menu-active-fg);
 }
 
 /* Card hover lift */
