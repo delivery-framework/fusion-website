@@ -15,7 +15,7 @@
                     A class whose component is not listed does nothing. */
 @plugin "daisyui" {
   themes: false;
-  include: button, card, badge, dropdown, menu;
+  include: button, card, badge, dropdown, menu, checkbox;
 }
 
 /* The fusion theme maps DaisyUI tokens onto the palette the page already used,

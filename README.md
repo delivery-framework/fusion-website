@@ -34,7 +34,7 @@ The shared base styles (palette tokens, hero, reveal, links) live in
 `css/input.css` and compile into `css/output.css`, which every page loads. Each
 page holds only its own section CSS in a `<style>` block; the services page also
 overrides the `:root` palette there. Tailwind supplies the utility classes and
-DaisyUI supplies `btn`, `card` and `badge`. The home page carries a small script
+DaisyUI supplies `btn`, `card`, `badge`, `dropdown`, `menu` and `checkbox`. The home page carries a small script
 that forwards the old single-page anchors (for example `/#pricing`) to the
 sub-pages.
 

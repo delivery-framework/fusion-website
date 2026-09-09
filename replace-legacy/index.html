@@ -224,6 +224,71 @@
         Fusion starts with a discovery. The discovery is a free scoping session. The session finds exactly what your legacy system does, what it costs you to keep, and what a replacement needs. You leave with a written scope, a five-year cost baseline and a proposal priced from the savings. You do not leave with an estimate and an invoice.
       </p>
     </div>
+
+    <!-- Self-qualification checklist. The count and the verdict are set by the script at the end of the page. -->
+    <div class="card card-border mt-12 border-slate-200 bg-white p-6 shadow-sm md:p-8" id="qualify">
+      <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+        <h2 class="font-display text-2xl font-medium tracking-tight md:text-3xl">Does this describe your system?</h2>
+        <p class="text-sm font-medium text-slate-500" id="qualify-count" aria-live="polite">Tick each statement that is true for you.</p>
+      </div>
+      <ul class="mt-6 grid gap-x-10 gap-y-4 md:grid-cols-2">
+        <li>
+          <label class="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" class="checkbox mt-1 shrink-0" />
+            <span class="leading-7 text-slate-600"><strong class="font-semibold text-ink">Slow change.</strong> A small change to a screen or a rule takes months, and a partner must make it.</span>
+          </label>
+        </li>
+        <li>
+          <label class="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" class="checkbox mt-1 shrink-0" />
+            <span class="leading-7 text-slate-600"><strong class="font-semibold text-ink">No flexibility.</strong> Your process bends to fit the product, because the product does not bend to fit your process.</span>
+          </label>
+        </li>
+        <li>
+          <label class="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" class="checkbox mt-1 shrink-0" />
+            <span class="leading-7 text-slate-600"><strong class="font-semibold text-ink">Users avoid it.</strong> Your people keep spreadsheets and inboxes next to the system, because the system is slow or hard to use.</span>
+          </label>
+        </li>
+        <li>
+          <label class="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" class="checkbox mt-1 shrink-0" />
+            <span class="leading-7 text-slate-600"><strong class="font-semibold text-ink">Rent per user.</strong> The licence bill grows with each person who logs in, so you limit who gets access.</span>
+          </label>
+        </li>
+        <li>
+          <label class="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" class="checkbox mt-1 shrink-0" />
+            <span class="leading-7 text-slate-600"><strong class="font-semibold text-ink">Consultant costs.</strong> You pay a partner's day rate for configuration, for upgrades, and for each change after go-live.</span>
+          </label>
+        </li>
+        <li>
+          <label class="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" class="checkbox mt-1 shrink-0" />
+            <span class="leading-7 text-slate-600"><strong class="font-semibold text-ink">Renewals go up.</strong> Each renewal costs more than the last, and you have no option but to accept it.</span>
+          </label>
+        </li>
+        <li>
+          <label class="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" class="checkbox mt-1 shrink-0" />
+            <span class="leading-7 text-slate-600"><strong class="font-semibold text-ink">Captive data.</strong> Your data leaves only as a file export, and your business rules are in a format that runs nowhere else.</span>
+          </label>
+        </li>
+        <li>
+          <label class="flex cursor-pointer items-start gap-3">
+            <input type="checkbox" class="checkbox mt-1 shrink-0" />
+            <span class="leading-7 text-slate-600"><strong class="font-semibold text-ink">Integration tax.</strong> Each connection to another system needs a paid add-on, a middleware product, or more partner days.</span>
+          </label>
+        </li>
+      </ul>
+      <div class="mt-7 flex flex-col gap-4 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <p class="leading-7 text-slate-600" id="qualify-verdict">If three or more statements are true, the discovery is worth one hour of your sponsor's time.</p>
+        <a href="https://calendar.app.google/X5crfjDgDdMgqXPn8" target="_blank" rel="noopener" class="btn h-auto shrink-0 gap-0 border-0 bg-ink px-6 py-3.5 text-base font-medium text-white hover:bg-slate-800">
+          <span>Book the discovery session</span>
+          <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -518,6 +583,33 @@
 </footer>
 
 <script src="/js/site.js"></script>
+<script>
+  /* Self-qualification checklist: count the ticked statements and update the verdict. */
+  (() => {
+    const boxes = Array.from(document.querySelectorAll('#qualify input[type="checkbox"]'));
+    const count = document.getElementById('qualify-count');
+    const verdict = document.getElementById('qualify-verdict');
+    if (!boxes.length || !count || !verdict) return;
+    const update = () => {
+      const n = boxes.filter((b) => b.checked).length;
+      if (n === 0) {
+        count.textContent = 'Tick each statement that is true for you.';
+        verdict.textContent = 'If three or more statements are true, the discovery is worth one hour of your sponsor\'s time.';
+        verdict.classList.remove('text-ink', 'font-medium');
+        return;
+      }
+      count.textContent = n + ' of ' + boxes.length + ' apply';
+      if (n >= 3) {
+        verdict.textContent = n + ' of the ' + boxes.length + ' statements are true for you. The discovery is worth one hour of your sponsor\'s time.';
+        verdict.classList.add('text-ink', 'font-medium');
+      } else {
+        verdict.textContent = 'If three or more statements are true, the discovery is worth one hour of your sponsor\'s time.';
+        verdict.classList.remove('text-ink', 'font-medium');
+      }
+    };
+    boxes.forEach((b) => b.addEventListener('change', update));
+  })();
+</script>
 
 </body>
 </html>
