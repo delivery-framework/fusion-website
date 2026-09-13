@@ -196,7 +196,7 @@
         Nobody hand-built or vibe coded any of the screens below.
       </h1>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        Record pages carry their own facilitators, registrations, sessions and expenses. State machines decide what can happen to a record next. Forms have typeahead lookups and inline create, and one search covers every resource in the application. Users see a table or cards, as they prefer. All of it comes from what your business objects already declare. Every image below is a real screenshot of a live application, not a mockup.
+        Record pages carry their own engagements, history, comments and attachments. State machines decide what can happen to a record next. Forms have typeahead lookups and inline create, and one search covers every resource in the application. Users see a table or cards, as they prefer. All of it comes from what your business objects already declare. Every image below is a real screenshot of a live application, not a mockup.
       </p>
     </div>
 
@@ -212,7 +212,7 @@
         <input type="radio" name="platform-shot" id="shot-theme">
         <input type="radio" name="platform-shot" id="shot-mobile">
           <div class="shot-tabs">
-          <label for="shot-list">Records at scale</label>
+          <label for="shot-list">The dashboard</label>
           <label for="shot-detail">Record pages</label>
           <label for="shot-actions">State machines</label>
           <label for="shot-history">Audit trail</label>
@@ -228,34 +228,34 @@
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/list.avif" type="image/avif">
-                <img src="/site/images/platform/list.webp" alt="A list of 414 delivery programs with search, four filters and status badges" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/list.webp" alt="A pipeline dashboard with four counters, a stacked bar chart of positions by stage and health, and a table of flagged searches" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">The list shows four hundred programmes, with search, four filters, sortable columns and paging. The status badges, the state chips and the links to related records all come from the resource definition. Nobody hand-built this screen.</figcaption>
+            <figcaption class="shot-cap">The dashboard is the first screen a portfolio manager sees. Counters across the top, a chart of the pipeline by stage and health, and the searches that need attention, each one a link to its record. The counters, the chart and the table read the same definitions as every other screen, so the numbers are the numbers in the records.</figcaption>
           </figure>
           <figure class="shot-panel" id="panel-detail">
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/detail.avif" type="image/avif">
-                <img src="/site/images/platform/detail.webp" alt="A delivery program record page with highlight fields and seven tabs, each with a count" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/detail.webp" alt="A position record page with highlight fields and five tabs, each with a count" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">The highlights are across the top. Below them are the record's own tabs: facilitators, registrations, sessions, expenses, history, comments and attachments. Each tab shows its count. Fusion builds every record page in the application the same way, so they all behave the same way.</figcaption>
+            <figcaption class="shot-cap">The highlights are across the top. Below them are the record's own tabs: engagements, history, comments and attachments. Each tab shows its count. Fusion builds every record page in the application the same way, so they all behave the same way.</figcaption>
           </figure>
           <figure class="shot-panel" id="panel-actions">
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/actions.avif" type="image/avif">
-                <img src="/site/images/platform/actions.webp" alt="An actions menu on a scheduled delivery program. The menu offers five of the eight transitions and greys out three" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/actions.webp" alt="An actions menu on a search in progress. The menu offers two of the three transitions and greys out one" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">Declare the states and the transitions once. The menu then offers only the transitions that are legal from the current state of the record. This record is scheduled, so a user can mark it full, start it, cancel it, reschedule it or decline it. The menu greys out the three transitions that are not legal from this state.</figcaption>
+            <figcaption class="shot-cap">Declare the states and the transitions once. The menu then offers only the transitions that are legal from the current state of the record. This search is in progress, so a user can put it on hold or cancel it. The menu greys out the transition that is not legal from this state: a search that is not on hold cannot be resumed.</figcaption>
           </figure>
           <figure class="shot-panel" id="panel-history">
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/history.avif" type="image/avif">
-                <img src="/site/images/platform/history.webp" alt="A history tab that shows state changes with the actor, the time and the before and after values" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/history.webp" alt="A history tab that shows two edits by the search owner, with the time and the before and after values" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
             <figcaption class="shot-cap">The history tab records every change, with the person who made it, the time, and the fields before and after. Nobody writes this history and nobody can forget to write it. This history is what makes an obligation evidenced, not only asserted.</figcaption>
@@ -273,25 +273,25 @@
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/form.avif" type="image/avif">
-                <img src="/site/images/platform/form.webp" alt="A new enrolment form with typeahead lookups, an inline create button and a required status field" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/form.webp" alt="A new engagement form with a typeahead lookup open on the position field, an inline create button and a required fee field" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">The form has typeahead lookups for the records this one links to, and an inline create beside the facilitator field. The form also has a required status, and conditional sections that only apply sometimes. Fusion generates the form from the same definition that generates the list and the record page.</figcaption>
+            <figcaption class="shot-cap">The form has typeahead lookups for the records this one links to, and an inline create beside each lookup. The form also has a required fee, and fields that only apply sometimes. Fusion generates the form from the same definition that generates the list and the record page.</figcaption>
           </figure>
           <figure class="shot-panel" id="panel-search">
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/search.avif" type="image/avif">
-                <img src="/site/images/platform/search.webp" alt="Global search with results grouped by resource type" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/search.webp" alt="Global search for the letters Ma, with results grouped into people, organisations and positions" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">One search box covers every resource in the application. Fusion groups the results by type as you type: people, organisations, work orders, facilitators, programmes. There is no separate index to install and no configuration for each object to maintain.</figcaption>
+            <figcaption class="shot-cap">One search box covers every resource in the application. Fusion groups the results by type as you type: people, organisations, positions. There is no separate index to install and no configuration for each object to maintain.</figcaption>
           </figure>
           <figure class="shot-panel" id="panel-cards">
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/cards.avif" type="image/avif">
-                <img src="/site/images/platform/cards.webp" alt="The same delivery programs shown as cards instead of a table" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/cards.webp" alt="The same positions shown as cards instead of a table" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
             <figcaption class="shot-cap">The user chooses a table or cards for each resource. Both views come with the resource. Nobody has to build either view, or keep one in step with the other.</figcaption>
@@ -300,7 +300,7 @@
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/theme.avif" type="image/avif">
-                <img src="/site/images/platform/theme.webp" alt="The delivery programs list rendered in the dark theme, the same screen as the first tab" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/theme.webp" alt="The positions list rendered in the dark theme" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
             <figcaption class="shot-cap">Light, dark and system themes come from design tokens, not from a hundred hard-coded colours. Restyle the button once, and every button in the application follows it, in every theme.</figcaption>
@@ -309,10 +309,10 @@
             <div class="shot-frame">
               <picture>
                 <source srcset="/site/images/platform/mobile.avif" type="image/avif">
-                <img src="/site/images/platform/mobile.webp" alt="The delivery programs list on a phone, reflowed into stacked cards" width="1440" height="900" loading="lazy" decoding="async">
+                <img src="/site/images/platform/mobile.webp" alt="The positions list on a phone, shown as stacked cards" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">The phone shows the same screen. The table reflows into cards, the filters reflow into a row that scrolls, and the navigation folds behind a menu. Nobody built any of these separately. A screen that Fusion generates once works everywhere the person opens it.</figcaption>
+            <figcaption class="shot-cap">The phone shows the same screen. This user chose cards on a laptop, so the phone shows cards, with no sideways scroll. The filters reflow into a row, and the navigation folds behind a menu. Nobody built any of these separately. A screen that Fusion generates once works everywhere the person opens it.</figcaption>
           </figure>
         </div>
     </div>
