@@ -1,0 +1,5 @@
+# GitHub Pages (legacy Jekyll build) settings. Jekyll copies every file in the
+# repository root to the site, except the files listed here.
+exclude:
+  - CLAUDE.md
+  - node_modules
