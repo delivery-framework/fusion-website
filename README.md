@@ -43,6 +43,23 @@ Two rules for `css/input.css`:
   it emits a component whenever its name appears in the scanned HTML, and words
   such as `card` and `loading` appear in the prose and in `loading="lazy"`.
 
+## Analytics
+
+Plausible counts page views, and also counts clicks on outbound links, file
+downloads and form submissions. Every CTA link also carries CSS classes that
+send a custom event:
+
+```html
+<a href="https://calendar.app.google/…" class="btn … plausible-event-name=Book+Meeting plausible-event-position=hero plausible-event-cta=Book+a+demo">
+```
+
+- `plausible-event-name`: `Book+Meeting` for a booking link, or `CTA+Click` for a link inside the site.
+- `plausible-event-position`: `header`, `hero`, `body`, `offers` or `final`.
+- `plausible-event-cta`: the button text.
+
+A `+` shows as a space in Plausible. If you add a CTA, add these classes. A
+goal for each event name must exist in the Plausible dashboard.
+
 ## Development
 
 Install the dependencies:
