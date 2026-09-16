@@ -101,7 +101,7 @@ class="btn … plausible-event-name=Book+Meeting plausible-event-position=hero p
 
 ## Privacy policy
 
-`privacy/index.html` follows the Singapore PDPA. It names each third party that
-the site loads: Plausible, Google Calendar booking, Google Fonts, unpkg and
-Simple Icons. If you add or remove a third-party service, update the policy and
+`privacy/index.html` follows the New Zealand Privacy Act 2020. It names Fusion
+Framework Limited and each third party that the site loads: Plausible, Google
+Calendar booking, Google Fonts, unpkg and Simple Icons. If you add or remove a third-party service, update the policy and
 its "Last updated" date.

@@ -13,7 +13,7 @@ technology/index.html ← Integration, less code, technology (technical audience
 pricing/index.html    ← Pricing, offers, lock-in ledger
 replace-legacy/index.html ← Legacy replacement: fixed-scope discovery and design, TCO baseline, quoted build, value-based deal on request
 services/index.html   ← Services firms page
-privacy/index.html    ← Privacy policy (Singapore PDPA, Plausible analytics)
+privacy/index.html    ← Privacy policy (NZ Privacy Act 2020, Plausible analytics)
 explainer/            ← Standalone explainer page
 css/
   input.css           ← Tailwind source (edit this; also holds the shared base styles)
