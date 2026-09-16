@@ -268,13 +268,13 @@
         The safest code is the code nobody has to write.
       </h2>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        A business application is mostly the same screens repeated: a list, a record, a form, a permission check. Teams write those screens by hand, and now they let an AI generate them. The result is thousands of near-identical lines, and nobody reads them closely enough to find the one line that is wrong. Fusion does not produce those lines at all. Fusion reads what your business objects already declare, and derives the rest from that.
+        A business application is mostly the same screens repeated: a list, a record, a form, a permission check. Teams write those screens by hand, and now they let an AI generate them. The result is thousands of near-identical lines, and nobody reads them closely enough to find the one line that is wrong. Fusion does not produce those lines at all. Fusion reads what our business objects already declare, and derives the rest from that.
       </p>
     </div>
 
     <div class="less-split">
       <div>
-        <p class="less-label">What you write</p>
+        <p class="less-label">What AI writes</p>
         <div class="less-code"><pre><code>class Person &lt; ApplicationRecord
   has_auto_controller key_attributes: [ :first_name, :last_name, :email ],
     searchable: true,
@@ -308,10 +308,7 @@ end</code></pre></div>
       </div>
       <div>
         <p class="less-stat-body">
-          You write about 90% less code than when you build the same thing yourself. We measure that against a well-factored implementation, not a careless one. Fusion's own source lives in the framework, as React's does. That source does not live in your repository for your team to maintain.
-        </p>
-        <p class="less-stat-scope">
-          That figure covers the lists, records, forms and permissions that form most of a business application. You still write your own custom logic, and that logic is the same size either way.
+          AI writes about 90% less code using Fusion than when it codes the same thing from scratch. The result is a massive increase in reviewability, maintainability and security.
         </p>
       </div>
     </div>
