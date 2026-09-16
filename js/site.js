@@ -15,7 +15,7 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   const R = 3.0, TUBE = 0.8; // torus major/minor radius, world units
   const WINDS = 6;           // poloidal turns per toroidal loop — each line is a closed (1,6) torus knot
-  const LINES = Math.min(window.innerWidth, window.innerHeight) < 768 ? 14 : 26;
+  const LINES = 26;
   const SEGS = 220;          // sample points per line
   const BANDS = 5, WLVL = 4; // depth bands × wave-brightness levels = style LUT buckets
   const bandA = [0.08, 0.12, 0.18, 0.3, 0.5];  // far rim floor stays ≥ old baseline
