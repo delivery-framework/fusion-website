@@ -13,8 +13,6 @@ technology/index.html ← Integration, less code, technology (technical audience
 pricing/index.html    ← Pricing, offers, lock-in ledger
 replace-legacy/index.html ← Legacy replacement: fixed-scope discovery and design, TCO baseline, quoted build, value-based deal on request
 services/index.html   ← Services firms page
-redesign/             ← Redirect stubs for the old /redesign/ URLs
-archive/              ← Superseded page, kept for reference
 explainer/            ← Standalone explainer page
 css/
   input.css           ← Tailwind source (edit this; also holds the shared base styles)
@@ -22,8 +20,6 @@ css/
 js/
   site.js             ← Shared script: hero canvas, footer year, lucide icons
 site/
-  css/                ← Styles for archive/
-  js/                 ← Script for archive/
   images/             ← Screenshots, favicon, Open Graph image
 sitemap.xml
 robots.txt
