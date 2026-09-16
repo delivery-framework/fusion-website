@@ -63,23 +63,28 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const ptd = new Float32Array(SEGS + 1); // normalized depth per point
   const ptbk = new Uint8Array(SEGS + 1);  // style-LUT bucket per point
 
-  // --- flare: every 6-9s a hot comet races one full loop of a random field line ---
+  // --- comets: hot particles that race one full loop of a field line ---
+  // Every 6-9s one flares on a random line; hovering the torus launches more from the pointer.
   const FLARE_DUR = 2.4, TAIL = 0.16;
-  let flareLine = null, flareStart = 0, flareEnv = 0, flareHead = 0, nextFlareAt = 4.2;
+  const HOVER_R = 16, HOVER_GAP = 0.0, MAX_COMETS = 26;
+  const comets = []; // { line, start, offset, env, head, auto }
+  let nextFlareAt = 4.2, lastHoverAt = -1;
+  let px = null, py = 0; // pointer in canvas CSS px; null when away or already consumed
 
-  function updateFlare(time) {
-    if (!flareLine && time >= nextFlareAt) {
-      flareLine = lines[(Math.random() * LINES) | 0];
-      flareStart = nextFlareAt; // anchor to schedule so a late frame lands mid-envelope
+  function updateComets(time) {
+    if (time >= nextFlareAt && !comets.some(c => c.auto)) {
+      // anchor to schedule so a late frame lands mid-envelope
+      comets.push({ line: lines[(Math.random() * LINES) | 0], start: nextFlareAt, offset: 0, env: 0, head: 0, auto: true });
     }
-    if (flareLine) {
-      const u = (time - flareStart) / FLARE_DUR;
+    for (let i = comets.length - 1; i >= 0; i--) {
+      const c = comets[i];
+      const u = (time - c.start) / FLARE_DUR;
       if (u >= 1) {
-        flareLine = null; flareEnv = 0;
-        nextFlareAt = Math.max(flareStart + 6 + Math.random() * 3, time + 4);
+        if (c.auto) nextFlareAt = Math.max(c.start + 6 + Math.random() * 3, time + 4);
+        comets.splice(i, 1);
       } else {
-        flareEnv = u < 0.15 ? Math.sin((u / 0.15) * Math.PI / 2) : Math.pow(1 - (u - 0.15) / 0.85, 1.4);
-        flareHead = u; // the head runs exactly one loop over the flare
+        c.env = u < 0.15 ? Math.sin((u / 0.15) * Math.PI / 2) : Math.pow(1 - (u - 0.15) / 0.85, 1.4);
+        c.head = (c.offset + u) % 1; // the head runs exactly one loop over the comet's life
       }
     }
   }
@@ -99,6 +104,9 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
     const cx = W * 0.74 + 4 * Math.sin(time * 0.21) + 3 * Math.sin(time * 0.087);
     const cy = H * 0.45 + 3.5 * Math.sin(time * 0.16 + 1.3) + 2.5 * Math.sin(time * 0.06);
     const wt1 = time * 0.55, wt2 = time * 0.35;
+    // hover hit test rides the projection loop; depth weighting favours the near side at crossings
+    const hover = px !== null && time >= INTRO + 1.3;
+    let hitScore = Infinity, hitD2 = 0, hitLine = null, hitJ = 0;
     ctx.globalCompositeOperation = 'lighter'; // crossings add up like glow
     for (const ln of lines) {
       // ignition: each line draws itself in once, with a bright ember at the tip
@@ -119,6 +127,11 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
         const d = (y * sinA + z * cosA) - R * Math.sin(th) * cosA; // depth vs tube centreline
         const dn = Math.min(1, Math.max(0, (d + 0.9) / 1.8));
         ptd[j] = dn;
+        if (hover) {
+          const dx = ptx[j] - px, dy = pty[j] - py, d2 = dx * dx + dy * dy;
+          const score = d2 * (1.5 - dn);
+          if (score < hitScore) { hitScore = score; hitD2 = d2; hitLine = ln; hitJ = j; }
+        }
         let band = (dn * BANDS) | 0; if (band >= BANDS) band = BANDS - 1;
         // two waves traveling in opposite directions; integer frequencies keep the wrap seamless
         const w = 0.8 + 0.45 * (0.5 * Math.sin(2 * t - wt1 + ln.p1) + 0.5 * Math.sin(3 * t + wt2 + ln.p2));
@@ -148,15 +161,24 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
         ctx.fillStyle = g;
         ctx.beginPath(); ctx.arc(tipX, tipY, 6, 0, Math.PI * 2); ctx.fill();
       }
-      if (ln === flareLine && flareEnv > 0.01 && frac === 1) drawFlare();
+      if (frac === 1) {
+        for (const c of comets) if (c.line === ln && c.env > 0.01) drawComet(c);
+      }
     }
     ctx.globalCompositeOperation = 'source-over';
+    if (hitLine && hitD2 <= HOVER_R * HOVER_R && comets.length < MAX_COMETS &&
+        time - lastHoverAt >= HOVER_GAP && !comets.some(c => c.line === hitLine)) {
+      comets.push({ line: hitLine, start: time, offset: hitJ / SEGS, env: 0, head: hitJ / SEGS, auto: false });
+      lastHoverAt = time;
+      px = null; // a resting pointer launches one comet; moving again re-arms it
+    }
   }
 
-  // Comet riding the flared line: depth-aware tapered tail + hot gradient head.
+  // Comet riding its line: depth-aware tapered tail + hot gradient head.
   // Uses the line's freshly computed points, so it must run inside that line's turn.
-  function drawFlare() {
-    const headJ = flareHead * SEGS;
+  function drawComet(c) {
+    const col = colors[c.line.c];
+    const headJ = c.head * SEGS;
     const tailN = TAIL * SEGS;
     for (let k = 0; k < tailN; k++) {
       let j = Math.floor(headJ - k);
@@ -164,21 +186,21 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
       const j1 = j + 1 > SEGS ? 0 : j + 1;
       const taper = Math.pow(1 - k / tailN, 2);
       const dg = 0.35 + 0.65 * ptd[j]; // fade when the comet passes behind the torus
-      const aa = flareEnv * taper * dg;
-      ctx.strokeStyle = `rgba(${colors[flareLine.c]},${(aa * 0.22).toFixed(3)})`;
+      const aa = c.env * taper * dg;
+      ctx.strokeStyle = `rgba(${col},${(aa * 0.22).toFixed(3)})`;
       ctx.lineWidth = 7;
       ctx.beginPath(); ctx.moveTo(ptx[j], pty[j]); ctx.lineTo(ptx[j1], pty[j1]); ctx.stroke();
       ctx.strokeStyle = `rgba(220,250,255,${(aa * 0.6).toFixed(3)})`;
       ctx.lineWidth = 1.8;
       ctx.beginPath(); ctx.moveTo(ptx[j], pty[j]); ctx.lineTo(ptx[j1], pty[j1]); ctx.stroke();
     }
-    const hj = Math.min(SEGS, Math.floor(headJ));
+    const hj = Math.floor(headJ) % SEGS;
     const hx = ptx[hj], hy = pty[hj];
     const dg = 0.35 + 0.65 * ptd[hj];
     const g = ctx.createRadialGradient(hx, hy, 0, hx, hy, 9);
-    g.addColorStop(0, `rgba(240,254,255,${(0.95 * flareEnv * dg).toFixed(3)})`);
-    g.addColorStop(0.45, `rgba(${colors[flareLine.c]},${(0.55 * flareEnv * dg).toFixed(3)})`);
-    g.addColorStop(1, `rgba(${colors[flareLine.c]},0)`);
+    g.addColorStop(0, `rgba(240,254,255,${(0.95 * c.env * dg).toFixed(3)})`);
+    g.addColorStop(0.45, `rgba(${col},${(0.55 * c.env * dg).toFixed(3)})`);
+    g.addColorStop(1, `rgba(${col},0)`);
     ctx.fillStyle = g;
     ctx.beginPath(); ctx.arc(hx, hy, 9, 0, Math.PI * 2); ctx.fill();
   }
@@ -188,7 +210,7 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
     const now = performance.now() / 1000;
     if (t0 === null) t0 = now;
     const time = now - t0;
-    updateFlare(time);
+    updateComets(time);
     drawFrame(time);
   }
 
@@ -224,6 +246,17 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
     visible = entries[0].isIntersecting;
     visible ? start() : stop();
   }).observe(canvas.parentElement);
+
+  // Pointer over the hero launches comets. Listen on the section, not the canvas:
+  // the canvas ignores pointer events so the hero text and buttons stay clickable.
+  const track = e => {
+    if (reduced.matches) return;
+    const r = canvas.getBoundingClientRect();
+    px = e.clientX - r.left; py = e.clientY - r.top;
+  };
+  canvas.parentElement.addEventListener('pointermove', track, { passive: true });
+  canvas.parentElement.addEventListener('pointerdown', track, { passive: true }); // tap on touch
+  canvas.parentElement.addEventListener('pointerleave', () => { px = null; }, { passive: true });
 
   if (reduced.addEventListener) reduced.addEventListener('change', () => {
     stop();
