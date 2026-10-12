@@ -13,6 +13,7 @@ technology/index.html ← Integration, less code, technology (technical audience
 pricing/index.html    ← Pricing, offers, lock-in ledger
 replace-legacy/index.html ← Legacy replacement: fixed-scope discovery and design, TCO baseline, quoted build, value-based deal on request
 services/index.html   ← Services firms page
+about/index.html      ← About: why we built Fusion, the trace from problem to code, the team
 privacy/index.html    ← Privacy policy (NZ Privacy Act 2020, Plausible analytics)
 explainer/            ← Standalone explainer page
 css/
