@@ -30,11 +30,6 @@ copied into every page:
 
 - If you change the nav, the footer, the booking link or the analytics snippet,
   change every page. `git grep` the old markup to find each copy.
-- `services/index.html` is for a different audience. Its nav has in-page anchors
-  (`#why`, `#platform`, `#offers`), and its `:root` block overrides the accent
-  and `--torus-*` palette from amber to cyan.
-- `explainer/index.html` is standalone: `noindex`, its own styles and footer, and
-  it does not load `js/site.js` or Plausible.
 - The home page has a small inline script that forwards old single-page anchors
   (for example `/#pricing`) to the sub-pages.
 
@@ -86,7 +81,7 @@ To add a page, copy an existing page. Then do these steps:
 One shared script, loaded at the end of each page:
 
 - **Hero tokamak:** a canvas animation on `#heroCanvas`, which only `index.html`
-  and `services/index.html` have. It draws 26 closed field lines on a spinning
+  has. It draws 26 closed field lines on a spinning
   torus, with a time-based clock capped at about 60 fps. It pauses off screen and
   honours `prefers-reduced-motion`. Comets travel along the lines: one automatic
   flare every 6–9 s, and more when the pointer moves over a line. `MAX_COMETS`,
@@ -108,7 +103,7 @@ in `<picture>` elements with `loading="lazy"`. Pages also use
 
 ## Analytics
 
-Plausible (`plausible.io/js/pa-…js`) runs on every page except `explainer/`. It
+Plausible (`plausible.io/js/pa-…js`) runs on every page. It
 sets no cookies, and it also tracks outbound links, file downloads and form
 submissions. The script ignores `localhost` and automated browsers, unless the
 browser sets `window.__plausible = true`.

@@ -102,10 +102,6 @@
     box-shadow: 0 30px 60px -30px rgba(15, 23, 42, 0.45);
   }
   .viz-frame img { display: block; width: 100%; height: auto; }
-  .viz-cap {
-    margin-top: 1.25rem; max-width: 46rem;
-    font-size: 1rem; line-height: 1.75; color: #475569;
-  }
   .viz-cards { margin-top: 3.5rem; display: grid; gap: 1.25rem; }
   @media (min-width: 900px) { .viz-cards { grid-template-columns: repeat(3, 1fr); } }
   .viz-card {
@@ -231,7 +227,7 @@
                 <img src="/site/images/platform/list.webp" alt="A pipeline dashboard with four counters, a stacked bar chart of positions by stage and health, and a table of flagged searches" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">The dashboard is the first screen a portfolio manager sees. Counters across the top, a chart of the pipeline by stage and health, and the searches that need attention, each one a link to its record. The counters, the chart and the table read the same definitions as every other screen, so the numbers are the numbers in the records.</figcaption>
+            <figcaption class="shot-cap">The dashboard is the first screen a portfolio manager sees. The dashboard shows counters across the top, a chart of the pipeline by stage and health, and a table of searches that need attention. Each search in the table links to its record. The counters, the chart and the table read the same definitions as every other screen, so the numbers are the numbers in the records.</figcaption>
           </figure>
           <figure class="shot-panel" id="panel-detail">
             <div class="shot-frame">
@@ -249,7 +245,7 @@
                 <img src="/site/images/platform/actions.webp" alt="An actions menu on a search in progress. The menu offers two of the three transitions and greys out one" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">Declare the states and the transitions once. The menu then offers only the transitions that are legal from the current state of the record. This search is in progress, so a user can put it on hold or cancel it. The menu greys out the transition that is not legal from this state: a search that is not on hold cannot be resumed.</figcaption>
+            <figcaption class="shot-cap">Declare the states and the transitions once. The menu then enables only the transitions that are legal from the current state of the record. This search is in progress, so a user can put it on hold or cancel it. The menu still shows <strong>Resume search</strong>, but marks it as not available, because a user cannot resume a search that is not on hold.</figcaption>
           </figure>
           <figure class="shot-panel" id="panel-history">
             <div class="shot-frame">
@@ -285,7 +281,7 @@
                 <img src="/site/images/platform/search.webp" alt="Global search for the letters Ma, with results grouped into people, organisations and positions" width="1440" height="900" loading="lazy" decoding="async">
               </picture>
             </div>
-            <figcaption class="shot-cap">One search box covers every resource in the application. Fusion groups the results by type as you type: people, organisations, positions. There is no separate index to install and no configuration for each object to maintain.</figcaption>
+            <figcaption class="shot-cap">One search box covers every resource in the application. As you type, Fusion groups the results by resource: people, organisations, positions. There is no separate index to install and no configuration for each resource to maintain.</figcaption>
           </figure>
           <figure class="shot-panel" id="panel-cards">
             <div class="shot-frame">
@@ -334,7 +330,7 @@
         Get an answer without a fight.
       </h2>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        The application already holds the data that can answer every question anyone asks about your business. To get the answer is the part that takes three weeks. Those weeks go on a request to a data team, an extract, a spreadsheet, and a number that nobody fully trusts. Fusion puts the analysis inside the application, where the data already is and where the permission rules already are.
+        The application already holds the data that can answer every question anyone asks about your business. But the answer takes three weeks to arrive. Those weeks are spent on a request to a data team, an extract, a spreadsheet, and a number that nobody fully trusts. Fusion puts the analysis inside the application, where the data already is and where the permission rules already are. The analysis runs in a live notebook, with a full data science pipeline that is AI-enabled and powered by <a href="https://marimo.io/" target="_blank" rel="noopener" class="ulink hover:text-ink">marimo</a>. The notebook shows charts, an interactive table, and the numbers behind them.
       </p>
     </div>
 
@@ -342,12 +338,9 @@
       <div class="viz-frame">
         <picture>
           <source srcset="/site/images/platform/notebook.avif" type="image/avif">
-          <img src="/site/images/platform/notebook.webp" alt="An analytics notebook that runs inside the application. It shows a roster donut chart, a bar chart of attendance for each person, and a searchable data table with column summaries" width="1280" height="785" loading="lazy" decoding="async">
+          <img src="/site/images/platform/notebook.webp" alt="An analytics notebook that runs inside the application. It shows a roster donut chart, a bar chart of attendance for each person, and a searchable data table with column summaries" width="1234" height="692" loading="lazy" decoding="async">
         </picture>
       </div>
-      <figcaption class="viz-cap">
-        A live notebook runs inside the application. The notebook shows charts, an interactive table, and the numbers behind them. The notebook was built for one programme, and you can run it again against any other.
-      </figcaption>
     </figure>
 
     <div class="viz-cards">
@@ -364,7 +357,7 @@
         <div class="viz-card">
           <div class="viz-card-icon"><i data-lucide="lock" class="h-5 w-5"></i></div>
           <h3 class="viz-card-title">The notebook shows only what that person can already see</h3>
-          <p class="viz-card-text">Every query runs through the same permission rules as every screen in the application. There is no second copy of your access rules that someone keeps in step by hand. A second copy is how somebody sees a number they were never meant to see.</p>
+          <p class="viz-card-text">Every query runs through the same permission rules as every screen in the application. There is no second copy of your permission rules for someone to update by hand. A second copy is how somebody sees a number they were never meant to see.</p>
         </div>
     </div>
 
@@ -433,7 +426,7 @@
         The back office can look like a business app. What your customers touch cannot.
       </h2>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        A handful of people use most screens in a business application, and they want the screens fast, consistent and unobtrusive. Thousands of customers use a few screens, and those screens must be designed, not generated. Fusion does not ask you to choose between the two. Fusion does not make you start again to get from one to the other.
+        A handful of people use most screens in a business application, and they want the screens fast, consistent and unobtrusive. Thousands of customers use a few screens, and those screens must be designed, not generated. Fusion does not ask you to choose between the two. Fusion does not make you start again to move from a generated screen to a designed one.
       </p>
     </div>
 
@@ -452,7 +445,7 @@
             <span class="craft-step-cost">one file</span>
           </div>
           <h3 class="craft-step-title">Replace one piece of it</h3>
-          <p class="craft-step-text">Put your own version in the ordinary place, and it wins. You design one table, one row or one form section, and everything around it stays generated.</p>
+          <p class="craft-step-text">Put your own version in the ordinary place, and Fusion uses your version instead of the generated one. You design one table, one row or one form section, and everything around it stays generated.</p>
         </div>
         <div class="craft-step">
           <div class="craft-step-head">
@@ -583,7 +576,6 @@
         <li><a href="/challenge/" class="hover:text-ink">Idea to Impact Challenge</a></li>
         <li><a href="/pricing/#offers" class="hover:text-ink">Engagement</a></li>
         <li><a href="/replace-legacy/" class="hover:text-ink">Replace Legacy</a></li>
-        <li><a href="/services/" class="hover:text-ink">For services firms</a></li>
       </ul>
     </div>
     <div>

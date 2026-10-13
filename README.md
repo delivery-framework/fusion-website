@@ -12,10 +12,8 @@ lifecycle/index.html  ← The built-in development lifecycle, AI-native change f
 technology/index.html ← Integration, less code, technology (technical audience)
 pricing/index.html    ← Pricing, offers, lock-in ledger
 replace-legacy/index.html ← Legacy replacement: fixed-scope discovery and design, TCO baseline, quoted build, value-based deal on request
-services/index.html   ← Services firms page
 about/index.html      ← About: why we built Fusion, the trace from problem to code, the team
 privacy/index.html    ← Privacy policy (NZ Privacy Act 2020, Plausible analytics)
-explainer/            ← Standalone explainer page
 css/
   input.css           ← Tailwind source (edit this; also holds the shared base styles)
   output.css          ← Compiled Tailwind (generated)
@@ -30,8 +28,7 @@ CNAME
 
 The shared base styles (palette tokens, hero, reveal, links) live in
 `css/input.css` and compile into `css/output.css`, which every page loads. Each
-page holds only its own section CSS in a `<style>` block; the services page also
-overrides the `:root` palette there. Tailwind supplies the utility classes and
+page holds only its own section CSS in a `<style>` block. Tailwind supplies the utility classes and
 DaisyUI supplies `btn`, `card`, `badge`, `dropdown`, `menu` and `checkbox`. The home page carries a small script
 that forwards the old single-page anchors (for example `/#pricing`) to the
 sub-pages.

@@ -72,7 +72,6 @@
 }
 
 @source "../index.html";
-@source "../services/index.html";
 @source "../challenge/index.html";
 @source "../platform/index.html";
 @source "../lifecycle/index.html";
@@ -85,8 +84,6 @@
 /* ============================================================
    Shared base styles — used by every page. Moved here from the
    per-page <style> blocks so each page carries only its own CSS.
-   The services page overrides the :root palette in its own
-   <style> block, which loads after this file and wins.
 
    The look is a precision instrument: hairlines, small radii,
    mono labels, tick marks and a blueprint grid on dark surfaces.
@@ -300,8 +297,7 @@ section[id], main[id] { scroll-margin-top: var(--header-h); }
 /* ---------- Field lines ----------
    The hero torus seen edge-on: each helical field line projects to a sine,
    the near half solid and the far half faint. The tile is a mask, so the
-   colour comes from the accent and --torus palette and follows the services
-   override. .field-seam is a thin divider that sits across a section boundary;
+   colour comes from the accent and --torus palette. .field-seam is a thin divider that sits across a section boundary;
    .field-bg is a large faint braid behind a dark section. Both drift slowly,
    the way the hero lines flow. */
 .field-seam {
