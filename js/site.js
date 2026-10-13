@@ -271,10 +271,10 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#year').textContent = new Date().getFullYear();
   if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 
-  /* Mark the current page in the header nav and in the mobile menu. Hash links
-     are skipped, so same-page section links (home, services) never all light
-     up at once. */
-  $$('header nav a, header .menu a').forEach((a) => {
+  /* Mark the current page in the header nav, the header Challenge button and
+     the mobile menu. Hash links are skipped, so same-page section links
+     (services) never all light up at once. */
+  $$('header nav a, header .nav-cta, header .menu a').forEach((a) => {
     if (!a.hash && a.pathname === location.pathname) a.setAttribute('aria-current', 'page');
   });
 });

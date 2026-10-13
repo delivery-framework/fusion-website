@@ -23,7 +23,7 @@
 
 
 <link rel="stylesheet" href="/css/output.css">
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -38,40 +38,52 @@
 </script>
 
 <style>
-  /* The trace: four links from the problem to the code */
-  .trace { margin: 3rem 0 0; padding: 0; list-style: none; display: grid; gap: 1.25rem; counter-reset: trace; }
-  @media (min-width: 900px) { .trace { grid-template-columns: repeat(4, 1fr); } }
-  .trace-step {
-    position: relative; counter-increment: trace;
-    border-radius: 1.5rem; padding: 1.5rem;
-    background: #fff; border: 1px solid #e2e8f0;
+  /* The trace: four links from the problem to the code, joined by one line.
+     The line runs down on a phone and across on a wide screen. */
+  .trace { position: relative; margin: 3.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 2rem; }
+  .trace::before {
+    content: ""; position: absolute; left: 15px; top: 16px; bottom: 16px; width: 2px;
+    background: linear-gradient(to bottom, var(--accent-300), var(--accent-600));
   }
-  /* the arrow between links: down on a phone, right on a wide screen */
-  .trace-step:not(:last-child)::after {
-    content: ""; position: absolute;
-    left: 50%; bottom: -0.95rem;
-    width: 0.75rem; height: 0.75rem;
-    border-right: 2px solid var(--accent-500); border-bottom: 2px solid var(--accent-500);
-    transform: translateX(-50%) rotate(45deg);
+  .trace-step { position: relative; padding-left: 3.25rem; }
+  .trace-dot {
+    position: absolute; left: 0; top: 0;
+    display: flex; align-items: center; justify-content: center;
+    width: 2rem; height: 2rem; border-radius: 9999px;
+    background: #f8fafc; border: 2px solid var(--accent-500);
+  }
+  .trace-dot::after { content: ""; width: 0.625rem; height: 0.625rem; border-radius: 9999px; background: var(--accent-500); }
+  /* the code is where the trace arrives */
+  .trace-step:last-child .trace-dot {
+    background: #0B1220; border-color: #0B1220;
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-500) 22%, transparent);
+  }
+  .trace-step:last-child .trace-dot::after { background: var(--accent-300); }
+  .trace-num {
+    padding-top: 0.4rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; color: var(--accent-700);
+  }
+  .trace-title {
+    margin-top: 0.5rem;
+    font-family: 'Fraunces', serif; font-feature-settings: 'ss01' on;
+    font-size: 1.375rem; font-weight: 500; line-height: 1.25; letter-spacing: -0.01em; color: #0B1220;
+  }
+  .trace-text { margin-top: 0.5rem; font-size: 0.9375rem; line-height: 1.7; color: #475569; }
+  .trace-art {
+    display: inline-flex; margin-top: 1rem; padding: 0.3rem 0.7rem; border-radius: 9999px;
+    background: var(--accent-50); border: 1px solid var(--accent-200);
+    font-size: 0.75rem; font-weight: 500; color: var(--accent-900);
   }
   @media (min-width: 900px) {
-    .trace-step:not(:last-child)::after {
-      left: auto; right: -0.95rem; bottom: auto; top: 50%;
-      transform: translateY(-50%) rotate(-45deg);
+    .trace { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    /* from the first dot to the last: four columns with a 2rem gap */
+    .trace::before {
+      left: 1rem; right: calc(25% - 2.5rem); top: 15px; bottom: auto; width: auto; height: 2px;
+      background: linear-gradient(to right, var(--accent-300), var(--accent-600));
     }
+    .trace-step { padding-left: 0; padding-top: 3.5rem; }
+    .trace-num { padding-top: 0; }
   }
-  .trace-head { display: flex; align-items: center; justify-content: space-between; }
-  .trace-icon {
-    display: flex; align-items: center; justify-content: center;
-    width: 2.5rem; height: 2.5rem;
-    border-radius: 0.875rem; background: #0B1220; color: #fff;
-  }
-  .trace-head::after {
-    content: counter(trace, decimal-leading-zero);
-    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; color: #94a3b8;
-  }
-  .trace-title { margin-top: 1.25rem; font-size: 1.0625rem; font-weight: 600; line-height: 1.3; color: #0B1220; }
-  .trace-text { margin-top: 0.5rem; font-size: 0.9375rem; line-height: 1.7; color: #475569; }
 
   /* The Fusion SDLC and the Fusion Platform */
   .parts { margin-top: 1.25rem; display: grid; gap: 1.25rem; }
@@ -100,28 +112,24 @@
   /* Team */
   .team { margin-top: 3rem; display: grid; gap: 1.25rem; }
   @media (min-width: 900px) { .team { grid-template-columns: repeat(2, 1fr); } }
-  .person {
-    border-radius: 1.5rem; padding: 1.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    background: rgba(255, 255, 255, 0.04);
-  }
+  .person { border-radius: 1.5rem; padding: 1.75rem; border: 1px solid #e2e8f0; background: #fff; }
   .person-head { display: flex; align-items: center; gap: 1rem; }
   .person-mark {
     display: flex; align-items: center; justify-content: center; flex: none;
     width: 3.5rem; height: 3.5rem; border-radius: 9999px;
-    background: var(--accent-500); color: #0B1220;
+    background: var(--accent-100); border: 2px solid var(--accent-500); color: var(--accent-900);
     font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 600;
   }
   .person-name {
     font-family: 'Fraunces', serif; font-feature-settings: 'ss01' on;
-    font-size: 1.375rem; font-weight: 500; line-height: 1.25; color: #fff;
+    font-size: 1.375rem; font-weight: 500; line-height: 1.25; color: #0B1220;
   }
-  .person-role { margin-top: 0.25rem; font-size: 0.875rem; line-height: 1.5; color: #94a3b8; }
-  .person-text { margin-top: 1.25rem; line-height: 1.75; color: #cbd5e1; }
+  .person-role { margin-top: 0.25rem; font-size: 0.875rem; line-height: 1.5; color: #64748b; }
+  .person-text { margin-top: 1.25rem; line-height: 1.75; color: #475569; }
   .team-foot {
     margin-top: 2.5rem; padding-top: 2rem; max-width: 52rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.10);
-    font-size: 0.9375rem; line-height: 1.75; color: #94a3b8;
+    border-top: 1px solid #e2e8f0;
+    font-size: 0.9375rem; line-height: 1.75; color: #64748b;
   }
 </style>
 </head>
@@ -129,11 +137,11 @@
 <body class="bg-slate-50 text-slate-950">
 
 <!-- ====================== HEADER ====================== -->
-<header class="sticky top-0 z-50 border-b border-white/10 bg-ink/85 backdrop-blur-xl">
-  <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-    <a href="/" class="flex items-center gap-2.5">
+<header class="sticky top-0 z-50 border-b border-white/10 bg-ink">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
+    <a href="/" class="flex items-center gap-2.5" aria-label="Fusion home">
       <!-- Logo mark: confinement arcs around a fusion core (follows the audience accent) -->
-      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)" aria-hidden="true">
         <g transform="rotate(-18 16 16)">
           <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
           <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
@@ -143,31 +151,31 @@
       <span class="wordmark text-xl text-white">Fusion</span>
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 lg:flex">
-      <a href="/" class="hover:text-white ulink">Why Fusion</a>
-      <a href="/lifecycle/" class="hover:text-white ulink">Lifecycle</a>
-      <a href="/platform/" class="hover:text-white ulink">Platform</a>
-      <a href="/technology/" class="hover:text-white ulink">Technology</a>
-      <a href="/challenge/" class="hover:text-white ulink">Idea to Impact</a>
-      <a href="/replace-legacy/" class="hover:text-white ulink">Replace Legacy</a>
-      <a href="/pricing/" class="hover:text-white ulink">Pricing</a>
+    <nav aria-label="Main" class="site-nav hidden items-center gap-7 text-sm font-medium text-slate-300 lg:flex">
+      <a href="/lifecycle/">Lifecycle</a>
+      <a href="/platform/">Platform</a>
+      <a href="/technology/">Technology</a>
+      <a href="/replace-legacy/">Replace Legacy</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
     </nav>
 
-    <div class="flex items-center gap-3 md:gap-5">
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="/challenge/" class="nav-cta btn hidden h-auto border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white hover:border-white/30 hover:bg-white/15 lg:inline-flex plausible-event-name=CTA+Click plausible-event-position=header plausible-event-cta=Idea+to+Impact+Challenge"><span class="xl:hidden">Idea to Impact</span><span class="hidden xl:inline">Idea to Impact Challenge</span></a>
       <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto border-0 bg-white px-4 py-2.5 text-sm font-medium text-ink hover:bg-slate-100 md:px-5 plausible-event-name=Book+Meeting plausible-event-position=header plausible-event-cta=Book+a+demo">Book a demo</a>
       <!-- Mobile menu (DaisyUI dropdown); mirrors the nav above -->
       <div class="dropdown dropdown-end lg:hidden">
         <div tabindex="0" role="button" aria-label="Open menu" class="btn btn-ghost btn-square btn-sm -mr-2 text-slate-300 hover:bg-white/10 hover:text-white">
           <i data-lucide="menu" class="h-6 w-6"></i>
         </div>
-        <ul tabindex="0" class="dropdown-content menu mt-3 w-56 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
-          <li><a href="/">Why Fusion</a></li>
+        <ul tabindex="0" class="dropdown-content menu mt-3 w-60 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
+          <li><a href="/challenge/">Idea to Impact Challenge</a></li>
           <li><a href="/lifecycle/">Lifecycle</a></li>
           <li><a href="/platform/">Platform</a></li>
           <li><a href="/technology/">Technology</a></li>
-          <li><a href="/challenge/">Idea to Impact</a></li>
           <li><a href="/replace-legacy/">Replace Legacy</a></li>
           <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/about/">About</a></li>
         </ul>
       </div>
     </div>
@@ -204,7 +212,7 @@
         Twenty years of “Big Agile” pulled delivery away from the business. Teams turned the work into tickets, but lost the connection to the business process and the domain design. Poor design needed more and more architectural complexity. Now AI adds code faster on top of that complexity.
       </p>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        We saw this from the inside. We grew a Salesforce consultancy to 130 people and sold it, and we led some of the largest Salesforce projects in Australia. We kept our delivery connected to the business, but before AI that discipline was difficult to scale. Fusion makes it the default on every change.
+        We took a different route. With the introduction of AI, we went back to first principles and transformed how working enterprise software is delivered and maintained. The result is a significant improvement in quality and maintainability, in agility and cost, in stakeholder engagement and user feedback loops, and in security, governance and compliance.
       </p>
     </div>
   </div>
@@ -225,24 +233,32 @@
 
     <ol class="trace">
       <li class="trace-step">
-        <div class="trace-head"><div class="trace-icon"><i data-lucide="target" class="h-5 w-5"></i></div></div>
+        <span class="trace-dot" aria-hidden="true"></span>
+        <p class="trace-num">01</p>
         <h3 class="trace-title">The problem and the benefits</h3>
         <p class="trace-text">What the business must change, and how you will know that the change worked.</p>
+        <span class="trace-art">Problem &amp; Opportunity Statement</span>
       </li>
       <li class="trace-step">
-        <div class="trace-head"><div class="trace-icon"><i data-lucide="users" class="h-5 w-5"></i></div></div>
+        <span class="trace-dot" aria-hidden="true"></span>
+        <p class="trace-num">02</p>
         <h3 class="trace-title">The business process and its participants</h3>
         <p class="trace-text">How the work runs today, how it must run, and the people who do it.</p>
+        <span class="trace-art">Current State Workflows</span>
       </li>
       <li class="trace-step">
-        <div class="trace-head"><div class="trace-icon"><i data-lucide="network" class="h-5 w-5"></i></div></div>
+        <span class="trace-dot" aria-hidden="true"></span>
+        <p class="trace-num">03</p>
         <h3 class="trace-title">The domain model</h3>
         <p class="trace-text">The business objects, their rules and their relationships. The Fusion Platform makes the application from this model.</p>
+        <span class="trace-art">Domain Model</span>
       </li>
       <li class="trace-step">
-        <div class="trace-head"><div class="trace-icon"><i data-lucide="code" class="h-5 w-5"></i></div></div>
+        <span class="trace-dot" aria-hidden="true"></span>
+        <p class="trace-num">04</p>
         <h3 class="trace-title">The code</h3>
         <p class="trace-text">The business rules that the AI writes, and the tests that check them. The rest comes from the platform.</p>
+        <span class="trace-art">System tests</span>
       </li>
     </ol>
 
@@ -264,15 +280,14 @@
 </section>
 
 <!-- ====================== TEAM ====================== -->
-<section id="team" class="bg-ink py-20 text-white relative overflow-hidden grain">
-  <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full blur-3xl opacity-15" style="background: var(--accent-500);"></div>
-  <div class="mx-auto max-w-7xl px-5 relative">
+<section id="team" class="bg-white py-20 border-t border-slate-200">
+  <div class="mx-auto max-w-7xl px-5">
     <div class="max-w-3xl">
-      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-200);">Who we are</p>
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-700);">Who we are</p>
       <h2 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">
         A small, senior team.
       </h2>
-      <p class="mt-5 text-lg leading-8 text-slate-300">
+      <p class="mt-5 text-lg leading-8 text-slate-600">
         The team is small because the Fusion Platform provides much of what a larger team builds by hand: the screens, the permissions, the audit and the API. The Fusion SDLC uses AI for work that needed specialist roles before: business analysis, development, testing and deployment. A named person reviews every artefact.
       </p>
     </div>
@@ -305,7 +320,7 @@
 </section>
 
 <!-- ====================== FINAL ====================== -->
-<section class="bg-ink py-20 text-white relative overflow-hidden grain border-t border-white/10">
+<section class="bg-ink py-20 text-white relative overflow-hidden grain">
   <div class="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full blur-3xl opacity-30" style="background: var(--accent-500);"></div>
   <div class="mx-auto max-w-7xl px-5 text-center relative">
     <i data-lucide="workflow" class="mx-auto h-10 w-10" style="color: var(--accent-200);"></i>
@@ -330,28 +345,52 @@
 </main>
 
 <!-- ====================== FOOTER ====================== -->
-<footer class="border-t border-slate-200 bg-white py-10">
-  <div class="mx-auto flex max-w-7xl flex-col justify-between gap-5 px-5 md:flex-row md:items-center">
-    <div>
-      <div class="wordmark text-lg">Fusion</div>
-      <p class="mt-1 text-sm text-slate-500">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
+<footer class="border-t border-slate-200 bg-white pt-14 pb-8">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-5 sm:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+      <a href="/" class="inline-flex items-center gap-2.5" aria-label="Fusion home">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-600)" aria-hidden="true">
+          <g transform="rotate(-18 16 16)">
+            <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </g>
+          <circle cx="16.4" cy="16" r="4.6" fill="#0B1220"/>
+        </svg>
+        <span class="wordmark text-lg text-ink">Fusion</span>
+      </a>
+      <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
     </div>
-    <div class="flex flex-wrap gap-6 text-sm text-slate-500">
-      <a href="/" class="hover:text-ink ulink">Why Fusion</a>
-      <a href="/lifecycle/" class="hover:text-ink ulink">Lifecycle</a>
-      <a href="/platform/" class="hover:text-ink ulink">Platform</a>
-      <a href="/technology/" class="hover:text-ink ulink">Technology</a>
-      <a href="/challenge/" class="hover:text-ink ulink">Idea to Impact</a>
-      <a href="/pricing/#offers" class="hover:text-ink ulink">Engagement</a>
-      <a href="/replace-legacy/" class="hover:text-ink ulink">Replace Legacy</a>
-      <a href="/pricing/" class="hover:text-ink ulink">Pricing</a>
-      <a href="/services/" class="hover:text-ink ulink">For services firms</a>
-      <a href="/about/" class="hover:text-ink ulink">About</a>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Product</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/lifecycle/" class="hover:text-ink">Lifecycle</a></li>
+        <li><a href="/platform/" class="hover:text-ink">Platform</a></li>
+        <li><a href="/technology/" class="hover:text-ink">Technology</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Offers</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/challenge/" class="hover:text-ink">Idea to Impact Challenge</a></li>
+        <li><a href="/pricing/#offers" class="hover:text-ink">Engagement</a></li>
+        <li><a href="/replace-legacy/" class="hover:text-ink">Replace Legacy</a></li>
+        <li><a href="/services/" class="hover:text-ink">For services firms</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Company</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/pricing/" class="hover:text-ink">Pricing</a></li>
+        <li><a href="/about/" class="hover:text-ink">About</a></li>
+        <li><a href="/privacy/" class="hover:text-ink">Privacy policy</a></li>
+      </ul>
     </div>
   </div>
-  <div class="mx-auto mt-6 flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5">
-    <p class="text-xs text-slate-400">&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
-    <a href="/privacy/" class="text-xs text-slate-400 hover:text-ink ulink">Privacy policy</a>
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500">
+      <p>&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
+      <p>Fusion Framework Limited, New Zealand</p>
+    </div>
   </div>
 </footer>
 

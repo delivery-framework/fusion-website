@@ -23,7 +23,7 @@
 
 
 <link rel="stylesheet" href="/css/output.css">
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -106,6 +106,23 @@
     font-variant-numeric: tabular-nums;
     color: var(--accent-300);
   }
+  /* Timetable: on a wide screen the clock at the end of each step gets its own
+     column, so the times read from top to bottom. On a phone the clock stays
+     in the step head. */
+  .run-clock { display: none; }
+  @media (min-width: 641px) {
+    .run-step { grid-template-columns: 4.5rem 3rem 1fr; }
+    .run-step::before { left: calc(7.25rem - 1px); }
+    .run-clock {
+      display: block; padding-top: 0.75rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 1rem; font-weight: 600; font-variant-numeric: tabular-nums;
+      color: #0B1220;
+    }
+    .run-clock--live { color: var(--accent-700); }
+    .run-split { display: none; }
+    .run-legend, .run-mark { padding-left: 5.75rem; }
+  }
   @media (max-width: 640px) {
     .run-step { grid-template-columns: 2.25rem 1fr; column-gap: 0.875rem; }
     .run-step::before { left: 1.0625rem; top: 2.5rem; }
@@ -157,6 +174,61 @@
     border-radius: 1.5rem; padding: 1.5rem 1.75rem;
     background: #fff; border: 1px solid var(--accent-200);
   }
+  /* Hero clock: sixteen hours as a ring. 1 hour = 22.5deg, and a 1.2deg gap
+     separates the steps. The four accent segments are the steps that need
+     your people: 01, 03, 10 and 12. */
+  .ring-wrap { position: relative; width: 100%; max-width: 26rem; aspect-ratio: 1 / 1; margin: 0 auto; }
+  .ring {
+    position: absolute; inset: 0; border-radius: 9999px;
+    --you: var(--accent-500); --run: rgba(255, 255, 255, 0.17);
+    background: conic-gradient(
+      transparent 0deg 0.6deg, var(--you) 0.6deg 21.9deg,
+      transparent 21.9deg 23.1deg, var(--run) 23.1deg 44.4deg,
+      transparent 44.4deg 45.6deg, var(--you) 45.6deg 66.9deg,
+      transparent 66.9deg 68.1deg, var(--run) 68.1deg 111.9deg,
+      transparent 111.9deg 113.1deg, var(--run) 113.1deg 201.9deg,
+      transparent 201.9deg 203.1deg, var(--run) 203.1deg 224.4deg,
+      transparent 224.4deg 225.6deg, var(--run) 225.6deg 246.9deg,
+      transparent 246.9deg 248.1deg, var(--run) 248.1deg 269.4deg,
+      transparent 269.4deg 270.6deg, var(--run) 270.6deg 280.65deg,
+      transparent 280.65deg 281.85deg, var(--you) 281.85deg 303.15deg,
+      transparent 303.15deg 304.35deg, var(--run) 304.35deg 325.65deg,
+      transparent 325.65deg 326.85deg, var(--you) 326.85deg 348.15deg,
+      transparent 348.15deg 349.35deg, var(--run) 349.35deg 359.4deg,
+      transparent 359.4deg 360deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.875rem), #000 calc(100% - 1.8125rem));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 1.875rem), #000 calc(100% - 1.8125rem));
+  }
+  .ring-ticks {
+    position: absolute; inset: 2.875rem; border-radius: 9999px;
+    background: repeating-conic-gradient(from -0.4deg, rgba(255, 255, 255, 0.45) 0deg 0.8deg, transparent 0.8deg 22.5deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 0.5625rem), #000 calc(100% - 0.5rem));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 0.5625rem), #000 calc(100% - 0.5rem));
+  }
+  .ring-hour {
+    position: absolute;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; color: #94a3b8;
+  }
+  .ring-hour--0  { top: 3.875rem; left: 50%; transform: translateX(-50%); }
+  .ring-hour--4  { right: 3.875rem; top: 50%; transform: translateY(-50%); }
+  .ring-hour--8  { bottom: 3.875rem; left: 50%; transform: translateX(-50%); }
+  .ring-hour--12 { left: 3.875rem; top: 50%; transform: translateY(-50%); }
+  .ring-centre {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  }
+  .ring-total {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums;
+    font-size: 2.75rem; font-weight: 700; line-height: 1; color: var(--accent-300);
+  }
+  /* narrow enough to clear the 4h and 12h labels on a phone */
+  .ring-sub { margin-top: 0.75rem; max-width: 10rem; font-size: 0.875rem; line-height: 1.4; color: #94a3b8; }
+  .ring-legend { display: flex; flex-direction: column; gap: 0.375rem; margin-top: 1.25rem; font-size: 0.8125rem; color: #e2e8f0; text-align: left; }
+  .ring-legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .ring-swatch { width: 0.625rem; height: 0.625rem; border-radius: 0.1875rem; background: rgba(255, 255, 255, 0.3); }
+  .ring-swatch--you { background: var(--accent-500); }
+  @media (min-width: 768px) { .ring-total { font-size: 3.75rem; } }
+
   .run-stat-clock {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 2.25rem; font-weight: 700; line-height: 1;
@@ -170,11 +242,11 @@
 <body class="bg-slate-50 text-slate-950">
 
 <!-- ====================== HEADER ====================== -->
-<header class="sticky top-0 z-50 border-b border-white/10 bg-ink/85 backdrop-blur-xl">
-  <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-    <a href="/" class="flex items-center gap-2.5">
+<header class="sticky top-0 z-50 border-b border-white/10 bg-ink">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
+    <a href="/" class="flex items-center gap-2.5" aria-label="Fusion home">
       <!-- Logo mark: confinement arcs around a fusion core (follows the audience accent) -->
-      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)" aria-hidden="true">
         <g transform="rotate(-18 16 16)">
           <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
           <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
@@ -184,31 +256,31 @@
       <span class="wordmark text-xl text-white">Fusion</span>
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 lg:flex">
-      <a href="/" class="hover:text-white ulink">Why Fusion</a>
-      <a href="/lifecycle/" class="hover:text-white ulink">Lifecycle</a>
-      <a href="/platform/" class="hover:text-white ulink">Platform</a>
-      <a href="/technology/" class="hover:text-white ulink">Technology</a>
-      <a href="/challenge/" class="hover:text-white ulink">Idea to Impact</a>
-      <a href="/replace-legacy/" class="hover:text-white ulink">Replace Legacy</a>
-      <a href="/pricing/" class="hover:text-white ulink">Pricing</a>
+    <nav aria-label="Main" class="site-nav hidden items-center gap-7 text-sm font-medium text-slate-300 lg:flex">
+      <a href="/lifecycle/">Lifecycle</a>
+      <a href="/platform/">Platform</a>
+      <a href="/technology/">Technology</a>
+      <a href="/replace-legacy/">Replace Legacy</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
     </nav>
 
-    <div class="flex items-center gap-3 md:gap-5">
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="/challenge/" class="nav-cta btn hidden h-auto border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white hover:border-white/30 hover:bg-white/15 lg:inline-flex plausible-event-name=CTA+Click plausible-event-position=header plausible-event-cta=Idea+to+Impact+Challenge"><span class="xl:hidden">Idea to Impact</span><span class="hidden xl:inline">Idea to Impact Challenge</span></a>
       <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto border-0 bg-white px-4 py-2.5 text-sm font-medium text-ink hover:bg-slate-100 md:px-5 plausible-event-name=Book+Meeting plausible-event-position=header plausible-event-cta=Book+a+demo">Book a demo</a>
       <!-- Mobile menu (DaisyUI dropdown); mirrors the nav above -->
       <div class="dropdown dropdown-end lg:hidden">
         <div tabindex="0" role="button" aria-label="Open menu" class="btn btn-ghost btn-square btn-sm -mr-2 text-slate-300 hover:bg-white/10 hover:text-white">
           <i data-lucide="menu" class="h-6 w-6"></i>
         </div>
-        <ul tabindex="0" class="dropdown-content menu mt-3 w-56 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
-          <li><a href="/">Why Fusion</a></li>
+        <ul tabindex="0" class="dropdown-content menu mt-3 w-60 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
+          <li><a href="/challenge/">Idea to Impact Challenge</a></li>
           <li><a href="/lifecycle/">Lifecycle</a></li>
           <li><a href="/platform/">Platform</a></li>
           <li><a href="/technology/">Technology</a></li>
-          <li><a href="/challenge/">Idea to Impact</a></li>
           <li><a href="/replace-legacy/">Replace Legacy</a></li>
           <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/about/">About</a></li>
         </ul>
       </div>
     </div>
@@ -218,16 +290,57 @@
 <main id="top">
 
 <!-- ====================== IDEA TO IMPACT CHALLENGE ====================== -->
-<section id="challenge" class="bg-white py-20 border-t border-slate-200">
+<section id="challenge" class="hero-bg grain relative overflow-hidden text-white">
+  <div class="relative mx-auto grid max-w-7xl items-center gap-14 px-5 py-20 lg:grid-cols-[7fr_5fr] lg:py-24">
+    <div class="reveal reveal-1">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-300);">The Idea to Impact Challenge</p>
+      <h1 class="font-display mt-5 text-4xl font-medium leading-[1.06] tracking-tight md:text-6xl">
+        <span class="block">Bring us a problem or opportunity.</span>
+        <span class="mt-2 block text-accent-200">Sixteen hours later, one workflow from it is production ready.</span>
+      </h1>
+      <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
+        Bring a problem or an opportunity that your organisation wants solved. Behind it sits a value stream of workflows. We map that value stream and take one workflow from it to production. Four of the sixteen hours are your people's time.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto gap-0 border-0 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=Book+Meeting plausible-event-position=hero plausible-event-cta=Book+the+sponsor+session">
+          <span>Book the sponsor session</span>
+          <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+        </a>
+        <a href="#steps" class="btn h-auto gap-0 border-white/20 bg-white/10 px-7 py-4 text-base font-medium text-white hover:bg-white/20 plausible-event-name=CTA+Click plausible-event-position=hero plausible-event-cta=See+the+fourteen+steps">
+          <span>See the fourteen steps</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="ring-wrap reveal reveal-3" role="img" aria-label="A sixteen-hour clock. Four accent segments mark the four hours that need your people: the sponsor session, the observation session, the user review and the user confirmation.">
+      <div class="ring"></div>
+      <div class="ring-ticks"></div>
+      <span class="ring-hour ring-hour--0">0h</span>
+      <span class="ring-hour ring-hour--4">4h</span>
+      <span class="ring-hour ring-hour--8">8h</span>
+      <span class="ring-hour ring-hour--12">12h</span>
+      <div class="ring-centre">
+        <p class="ring-total">16:00h</p>
+        <p class="ring-sub">sponsor session to production</p>
+        <div class="ring-legend">
+          <span><span class="ring-swatch ring-swatch--you"></span>4h with your people</span>
+          <span><span class="ring-swatch"></span>12h without them</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== THE STEPS ====================== -->
+<section id="steps" class="bg-white py-20">
   <div class="mx-auto max-w-7xl px-5">
     <div class="max-w-3xl">
-      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-700);">The Idea to Impact Challenge</p>
-      <h1 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">
-        <span class="inline-block">Bring us a problem or opportunity.</span>
-        <span class="inline-block">Sixteen hours later, one workflow from it is production ready.</span>
-      </h1>
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-700);">The clock runs for each step</p>
+      <h2 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">
+        Each step gives the next step a finished artefact.
+      </h2>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        Bring a problem or an opportunity that your organisation wants solved. Behind it sits a value stream of workflows. We map that value stream and take one workflow from it to production. This page shows the sequence of steps. The clock runs for each step. Each step gives the next step a finished artefact. Because of this, the trace from the sponsor's problem to software in production is complete, and nobody has to assemble the trace afterwards. Four of the sixteen hours are your people's time.
+        Because of this, the trace from the sponsor's problem to software in production is complete, and nobody has to assemble the trace afterwards.
       </p>
     </div>
 
@@ -239,6 +352,7 @@
         </p>
       <ol>
       <li class="run-step run-step--biz">
+        <div class="run-clock">1:00h</div>
         <div class="run-node">01</div>
         <div>
           <div class="run-head">
@@ -254,6 +368,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">2:00h</div>
         <div class="run-node">02</div>
         <div>
           <div class="run-head">
@@ -269,6 +384,7 @@
         </div>
       </li>
       <li class="run-step run-step--biz">
+        <div class="run-clock">3:00h</div>
         <div class="run-node">03</div>
         <div>
           <div class="run-head">
@@ -281,6 +397,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">5:00h</div>
         <div class="run-node">04</div>
         <div>
           <div class="run-head">
@@ -296,6 +413,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">9:00h</div>
         <div class="run-node">05</div>
         <div>
           <div class="run-head">
@@ -311,6 +429,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">10:00h</div>
         <div class="run-node">06</div>
         <div>
           <div class="run-head">
@@ -326,6 +445,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">11:00h</div>
         <div class="run-node">07</div>
         <div>
           <div class="run-head">
@@ -341,6 +461,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">12:00h</div>
         <div class="run-node">08</div>
         <div>
           <div class="run-head">
@@ -356,6 +477,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">12:30h</div>
         <div class="run-node">09</div>
         <div>
           <div class="run-head">
@@ -371,6 +493,7 @@
         </div>
       </li>
       <li class="run-step run-step--biz">
+        <div class="run-clock">13:30h</div>
         <div class="run-node">10</div>
         <div>
           <div class="run-head">
@@ -386,6 +509,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">14:30h</div>
         <div class="run-node">11</div>
         <div>
           <div class="run-head">
@@ -401,6 +525,7 @@
         </div>
       </li>
       <li class="run-step run-step--biz">
+        <div class="run-clock">15:30h</div>
         <div class="run-node">12</div>
         <div>
           <div class="run-head">
@@ -416,6 +541,7 @@
         </div>
       </li>
       <li class="run-step">
+        <div class="run-clock">16:00h</div>
         <div class="run-node">13</div>
         <div>
           <div class="run-head">
@@ -436,6 +562,7 @@
         <span class="run-mark-clock">16:00h</span>
       </li>
       <li class="run-step run-step--cont">
+        <div class="run-clock run-clock--live">Live</div>
         <div class="run-node">14</div>
         <div>
           <div class="run-head">
@@ -471,18 +598,6 @@
       </div>
     </div>
 
-    <div class="card card-border mt-14 gap-5 border-slate-200 bg-slate-50 p-8 md:flex-row! md:items-center md:justify-between md:p-10">
-      <div>
-        <p class="font-display text-2xl font-medium tracking-tight md:text-3xl">Start the Challenge on one workflow.</p>
-        <p class="mt-3 max-w-xl leading-7 text-slate-600">
-          Step one is a one-hour session with your sponsor. Every later step runs from what you agree in that session.
-        </p>
-      </div>
-      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto shrink-0 gap-0 border-0 bg-ink px-7 py-4 text-base font-medium text-white hover:bg-slate-800 plausible-event-name=Book+Meeting plausible-event-position=body plausible-event-cta=Book+the+sponsor+session">
-        <span>Book the sponsor session</span>
-        <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
-      </a>
-    </div>
   </div>
 </section>
 
@@ -492,14 +607,14 @@
   <div class="mx-auto max-w-7xl px-5 text-center relative">
     <i data-lucide="workflow" class="mx-auto h-10 w-10" style="color: var(--accent-200);"></i>
     <h2 class="font-display mx-auto mt-6 max-w-4xl text-4xl font-medium tracking-tight md:text-5xl">
-      Bring us a challenge. We&rsquo;ll prove that we can solve it.
+      Start the Challenge on one workflow.
     </h2>
     <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-      The Challenge starts with one sponsor hour and reaches production after sixteen working hours. Bring the problem or the opportunity. We map the value stream behind it, then build one workflow from it as the proof.
+      Step one is a one-hour session with your sponsor. Every later step runs from what you agree in that session.
     </p>
     <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto gap-0 border-0 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=Book+Meeting plausible-event-position=final plausible-event-cta=Book+your+Challenge+session">
-        <span>Book your Challenge session</span>
+      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto gap-0 border-0 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=Book+Meeting plausible-event-position=final plausible-event-cta=Book+the+sponsor+session">
+        <span>Book the sponsor session</span>
         <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
       </a>
       <a href="/pricing/" class="btn h-auto gap-0 border-white/20 bg-white/10 px-7 py-4 text-base font-medium text-white hover:bg-white/20 plausible-event-name=CTA+Click plausible-event-position=final plausible-event-cta=See+pricing">
@@ -512,28 +627,52 @@
 </main>
 
 <!-- ====================== FOOTER ====================== -->
-<footer class="border-t border-slate-200 bg-white py-10">
-  <div class="mx-auto flex max-w-7xl flex-col justify-between gap-5 px-5 md:flex-row md:items-center">
-    <div>
-      <div class="wordmark text-lg">Fusion</div>
-      <p class="mt-1 text-sm text-slate-500">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
+<footer class="border-t border-slate-200 bg-white pt-14 pb-8">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-5 sm:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+      <a href="/" class="inline-flex items-center gap-2.5" aria-label="Fusion home">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-600)" aria-hidden="true">
+          <g transform="rotate(-18 16 16)">
+            <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </g>
+          <circle cx="16.4" cy="16" r="4.6" fill="#0B1220"/>
+        </svg>
+        <span class="wordmark text-lg text-ink">Fusion</span>
+      </a>
+      <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
     </div>
-    <div class="flex flex-wrap gap-6 text-sm text-slate-500">
-      <a href="/" class="hover:text-ink ulink">Why Fusion</a>
-      <a href="/lifecycle/" class="hover:text-ink ulink">Lifecycle</a>
-      <a href="/platform/" class="hover:text-ink ulink">Platform</a>
-      <a href="/technology/" class="hover:text-ink ulink">Technology</a>
-      <a href="/challenge/" class="hover:text-ink ulink">Idea to Impact</a>
-      <a href="/pricing/#offers" class="hover:text-ink ulink">Engagement</a>
-      <a href="/replace-legacy/" class="hover:text-ink ulink">Replace Legacy</a>
-      <a href="/pricing/" class="hover:text-ink ulink">Pricing</a>
-      <a href="/services/" class="hover:text-ink ulink">For services firms</a>
-      <a href="/about/" class="hover:text-ink ulink">About</a>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Product</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/lifecycle/" class="hover:text-ink">Lifecycle</a></li>
+        <li><a href="/platform/" class="hover:text-ink">Platform</a></li>
+        <li><a href="/technology/" class="hover:text-ink">Technology</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Offers</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/challenge/" class="hover:text-ink">Idea to Impact Challenge</a></li>
+        <li><a href="/pricing/#offers" class="hover:text-ink">Engagement</a></li>
+        <li><a href="/replace-legacy/" class="hover:text-ink">Replace Legacy</a></li>
+        <li><a href="/services/" class="hover:text-ink">For services firms</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Company</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/pricing/" class="hover:text-ink">Pricing</a></li>
+        <li><a href="/about/" class="hover:text-ink">About</a></li>
+        <li><a href="/privacy/" class="hover:text-ink">Privacy policy</a></li>
+      </ul>
     </div>
   </div>
-  <div class="mx-auto mt-6 flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5">
-    <p class="text-xs text-slate-400">&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
-    <a href="/privacy/" class="text-xs text-slate-400 hover:text-ink ulink">Privacy policy</a>
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500">
+      <p>&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
+      <p>Fusion Framework Limited, New Zealand</p>
+    </div>
   </div>
 </footer>
 

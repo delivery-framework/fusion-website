@@ -71,8 +71,11 @@ One shared script, loaded at the end of each page:
   `pointer-events: none`, so the pointer listeners are on the hero `<section>`.
   The colours come from the `--torus-*` CSS variables.
 - **Footer year** and **Lucide icons** (`data-lucide` attributes, loaded from unpkg).
-- **Current page:** the script sets `aria-current="page"` on header nav links
-  that match the current path. It skips links with a hash.
+  Every page pins the same Lucide version (`lucide@1.48.0`). If you change the
+  version, change it on every page.
+- **Current page:** the script sets `aria-current="page"` on header nav links,
+  on the header Challenge button (`.nav-cta`) and on mobile menu links that
+  match the current path. It skips links with a hash.
 
 ### Images
 

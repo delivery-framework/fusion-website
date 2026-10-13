@@ -54,7 +54,7 @@
 </script>
 
 <link rel="stylesheet" href="/css/output.css">
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -69,53 +69,237 @@
 </script>
 
 <style>
-  /* Build or buy comparison */
-  .cots-wrap { margin-top: 3rem; overflow-x: auto; }
-  .cots-table { min-width: 68rem; display: grid; gap: 0; }
-  .cots-row {
-    display: grid;
-    grid-template-columns: 11rem repeat(4, 1fr);
-    border-top: 1px solid #e2e8f0;
+  /* Hero — a pill that names the Challenge, and a proof strip at the foot.
+     The fade keeps the proof labels readable over the bottom of the torus. */
+  .hero-fade {
+    position: absolute; inset: auto 0 0 0; height: 16rem; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(11, 18, 32, 0), rgba(11, 18, 32, 0.85));
   }
-  .cots-row:last-child .cots-cell--us { border-radius: 0 0 1.25rem 1.25rem; }
-  .cots-row--head { border-top: 0; }
-  .cots-row--head .cots-cell {
-    font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.14em;
-    color: #64748b; padding-bottom: 1rem;
+  .hero-pill {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.375rem 1rem 0.375rem 0.4375rem; border-radius: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.16); background: rgba(255, 255, 255, 0.06);
+    font-size: 0.875rem; line-height: 1.4; color: #e2e8f0;
+    transition: background-color 180ms ease;
   }
-  .cots-row--head .cots-cell--us {
-    color: var(--accent-200);
-    border-radius: 1.25rem 1.25rem 0 0;
-    padding-top: 1.25rem;
+  .hero-pill:hover { background: rgba(255, 255, 255, 0.12); }
+  .hero-pill-tag {
+    flex: none; padding: 0.125rem 0.5rem; border-radius: 9999px;
+    background: var(--accent-300); color: #0B1220;
+    font-size: 0.75rem; font-weight: 600;
   }
-  .cots-label {
-    padding: 1.25rem 1.25rem 1.25rem 0;
-    font-size: 0.8125rem; font-weight: 600;
-    color: #0B1220; line-height: 1.4;
-  }
-  .cots-cell {
-    padding: 1.25rem;
-    font-size: 0.9375rem; line-height: 1.65; color: #475569;
-  }
-  /* the Fusion column runs as one continuous panel */
-  .cots-cell--us {
-    background: #0B1220; color: #e2e8f0;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-  .cots-row--head .cots-cell--us { box-shadow: none; }
+  @media (min-width: 640px) { .hero-pill { border-radius: 9999px; } }
 
+  .proof { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid rgba(255, 255, 255, 0.12); }
+  .proof-item { padding: 1.25rem 1rem 1.25rem 0; }
+  .proof-item:nth-child(even) { padding-left: 1rem; border-left: 1px solid rgba(255, 255, 255, 0.1); }
+  .proof-item:nth-child(n+3) { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+  .proof-num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums;
+    font-size: 2rem; font-weight: 700; line-height: 1; color: var(--accent-300);
+  }
+  .proof-label { margin-top: 0.75rem; max-width: 15rem; font-size: 0.875rem; line-height: 1.5; color: #94a3b8; }
+  @media (min-width: 768px) {
+    .proof { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .proof-item, .proof-item:nth-child(even), .proof-item:nth-child(n+3) {
+      padding: 1.75rem 1.75rem 0.5rem 0; border-top: 0; border-left: 0;
+    }
+    .proof-item + .proof-item { padding-left: 1.75rem; border-left: 1px solid rgba(255, 255, 255, 0.1); }
+    .proof-num { font-size: 2.75rem; }
+    .proof-label { font-size: 0.9375rem; }
+  }
+
+  /* What Fusion is — CSS-only tabs, the same radio pattern as the screenshot galleries */
+  .wf { position: relative; display: grid; gap: 2rem; margin-top: 3rem; }
+  .wf > input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; pointer-events: none; }
+  .wf-tabs { display: flex; gap: 0.5rem; }
+  .wf-tab {
+    flex: 1 1 0; display: flex; flex-direction: column; gap: 0.125rem;
+    padding: 0.75rem 0.875rem; border-radius: 1rem; cursor: pointer;
+    border: 1px solid transparent; background: #f1f5f9;
+    transition: background-color 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+  .wf-num { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8125rem; color: #64748b; }
+  .wf-title { font-family: 'Fraunces', serif; font-size: 1.125rem; font-weight: 500; line-height: 1.2; color: #0B1220; }
+  .wf-desc { display: none; }
+  .wf-foot { display: none; }
+  #wf-lc:checked ~ .wf-tabs label[for="wf-lc"],
+  #wf-ai:checked ~ .wf-tabs label[for="wf-ai"],
+  #wf-pf:checked ~ .wf-tabs label[for="wf-pf"] {
+    background: #fff; border-color: #e2e8f0; box-shadow: 0 22px 44px -28px rgba(15, 23, 42, 0.4);
+  }
+  #wf-lc:checked ~ .wf-tabs label[for="wf-lc"] .wf-num,
+  #wf-ai:checked ~ .wf-tabs label[for="wf-ai"] .wf-num,
+  #wf-pf:checked ~ .wf-tabs label[for="wf-pf"] .wf-num { color: var(--accent-700); }
+  #wf-lc:focus-visible ~ .wf-tabs label[for="wf-lc"],
+  #wf-ai:focus-visible ~ .wf-tabs label[for="wf-ai"],
+  #wf-pf:focus-visible ~ .wf-tabs label[for="wf-pf"] { outline: 2px solid var(--accent-500); outline-offset: 2px; }
+  .wf-panel { display: none; }
+  #wf-lc:checked ~ .wf-panels #wf-panel-lc,
+  #wf-ai:checked ~ .wf-panels #wf-panel-ai,
+  #wf-pf:checked ~ .wf-panels #wf-panel-pf { display: block; }
+  .wf-cap { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.25rem; }
+  .wf-cap p { max-width: 32rem; font-size: 0.9375rem; line-height: 1.65; color: #475569; }
+  .wf-more { display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.9375rem; font-weight: 600; white-space: nowrap; }
+  @media (min-width: 640px) { .wf-cap { flex-direction: row; justify-content: space-between; align-items: flex-start; gap: 1.5rem; } }
+  @media (min-width: 1024px) {
+    .wf { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 3.5rem; align-items: start; }
+    .wf-tabs { flex-direction: column; }
+    .wf-tab { flex: none; flex-direction: row; gap: 1.125rem; padding: 1.375rem 1.5rem; border-radius: 1.375rem; background: transparent; }
+    .wf-tab:hover { background: #f8fafc; }
+    .wf-num { padding-top: 0.4375rem; }
+    .wf-title { font-size: 1.625rem; }
+    .wf-desc { display: block; margin-top: 0.375rem; font-size: 0.9375rem; line-height: 1.6; color: #475569; }
+    .wf-foot { display: block; margin-top: 1.75rem; padding-left: 1.5rem; font-size: 0.9375rem; line-height: 1.6; color: #475569; }
+  }
+
+  /* The AI panel: one request, and everything that moves with it */
+  .ai-card { border-radius: 1.25rem; padding: 1.5rem; background: #0B1220; color: #fff; box-shadow: 0 30px 60px -30px rgba(15, 23, 42, 0.45); }
+  .ai-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.22em; color: var(--accent-300); }
+  .ai-quote { margin-top: 0.875rem; font-family: 'Fraunces', serif; font-size: 1.375rem; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; }
+  .ai-note { margin-top: 0.75rem; font-size: 0.875rem; color: #94a3b8; }
+  .ai-moves { display: grid; gap: 1rem 1.75rem; margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+  .ai-moves li { display: flex; gap: 0.75rem; }
+  .ai-moves .n { flex: none; padding-top: 0.15rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; color: var(--accent-300); }
+  .ai-moves b { display: block; font-size: 0.9375rem; font-weight: 600; }
+  .ai-moves .d { display: block; margin-top: 0.125rem; font-size: 0.875rem; line-height: 1.55; color: #94a3b8; }
+  @media (min-width: 640px) {
+    .ai-card { padding: 2.25rem; }
+    .ai-quote { font-size: 1.75rem; }
+    .ai-moves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  /* Why Fusion — one column for each promise in the heading */
+  .why-grid { display: grid; margin-top: 3.5rem; border-top: 1px solid #cbd5e1; }
+  .why-col { display: flex; flex-direction: column; padding: 2rem 0; }
+  .why-col + .why-col { border-top: 1px solid #e2e8f0; }
+  .why-key { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8125rem; letter-spacing: 0.06em; color: #64748b; }
+  .why-fact { display: flex; align-items: baseline; gap: 0.875rem; margin-top: auto; padding-top: 1.75rem; }
+  .why-fact .n {
+    flex: none; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums;
+    font-size: 1.875rem; font-weight: 700; color: var(--accent-700);
+  }
+  .why-fact .l { font-size: 0.875rem; line-height: 1.45; color: #475569; }
+  @media (min-width: 1024px) {
+    .why-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .why-col { padding: 2rem 2.25rem 0.5rem 0; }
+    .why-col + .why-col { padding-left: 2.25rem; border-top: 0; border-left: 1px solid #e2e8f0; }
+  }
+
+  /* Risk and compliance — obligation to evidence */
+  .comp { display: grid; gap: 2rem; margin-top: 4.5rem; padding: 1.75rem; border-radius: 1.75rem; background: #0B1220; color: #fff; }
+  .flow { display: grid; }
+  .flow-step { padding: 1.125rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.03); }
+  .flow-step--ok {
+    border-color: color-mix(in srgb, var(--accent-300) 55%, transparent);
+    background: color-mix(in srgb, var(--accent-300) 6%, transparent);
+  }
+  .flow-step .n { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.6875rem; color: #94a3b8; }
+  .flow-step b { display: block; margin-top: 0.5rem; font-size: 1rem; font-weight: 600; }
+  .flow-step .d { display: block; margin-top: 0.375rem; font-size: 0.8125rem; line-height: 1.5; color: #94a3b8; }
+  .flow-arrow { display: flex; align-items: center; justify-content: center; padding: 0.25rem 0; color: #64748b; transform: rotate(90deg); }
+  @media (min-width: 768px) {
+    .flow { grid-template-columns: minmax(0, 1fr) 1.25rem minmax(0, 1fr) 1.25rem minmax(0, 1fr) 1.25rem minmax(0, 1fr); gap: 0.375rem; }
+    .flow-arrow { padding: 0; transform: none; }
+  }
+  @media (min-width: 1024px) {
+    .comp { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 3rem; align-items: center; padding: 3rem; }
+  }
+
+  /* Build or buy — a table on a wide screen. On a narrow screen each row is a
+     stack: Fusion first, then the one option that the reader picks. */
+  .cmp-wrap { position: relative; margin-top: 3rem; }
+  .cmp-wrap > input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; pointer-events: none; }
+  .cmp-pick { display: flex; flex-direction: column; gap: 0.625rem; margin-bottom: 0.5rem; }
+  .cmp-pick-label { font-size: 0.875rem; color: #475569; }
+  .cmp-seg { display: flex; gap: 0.25rem; padding: 0.25rem; border-radius: 9999px; background: #f1f5f9; }
+  .cmp-seg label {
+    flex: 1 1 0; display: flex; align-items: center; justify-content: center;
+    min-height: 2.75rem; border-radius: 9999px; cursor: pointer; text-align: center;
+    font-size: 0.875rem; font-weight: 500; color: #475569;
+  }
+  #cmp-build:checked ~ .cmp-pick label[for="cmp-build"],
+  #cmp-buy:checked ~ .cmp-pick label[for="cmp-buy"],
+  #cmp-lc:checked ~ .cmp-pick label[for="cmp-lc"] { background: #0B1220; color: #fff; }
+  #cmp-build:focus-visible ~ .cmp-pick label[for="cmp-build"],
+  #cmp-buy:focus-visible ~ .cmp-pick label[for="cmp-buy"],
+  #cmp-lc:focus-visible ~ .cmp-pick label[for="cmp-lc"] { outline: 2px solid var(--accent-500); outline-offset: 2px; }
+  .cmp .cmp-head { display: none; }
+  .cmp-row { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.375rem 0; border-top: 1px solid #e2e8f0; }
+  .cmp-label {
+    order: -2; padding-bottom: 0.25rem;
+    font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #64748b;
+  }
+  .cmp-cell { padding: 1rem 1.125rem; border-radius: 1rem; background: #f8fafc; font-size: 0.9375rem; line-height: 1.6; color: #475569; }
+  .cmp-cell b { font-weight: 600; color: #0B1220; }
+  .cmp-cell::before {
+    content: attr(data-col); display: block; margin-bottom: 0.375rem;
+    font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #64748b;
+  }
+  .cmp-cell--us { order: -1; background: #0B1220; color: #cbd5e1; }
+  .cmp-cell--us b { color: #fff; }
+  .cmp-cell--us::before { color: var(--accent-200); }
+  .cmp-row .alt { display: none; }
+  #cmp-build:checked ~ .cmp .alt-build,
+  #cmp-buy:checked ~ .cmp .alt-buy,
+  #cmp-lc:checked ~ .cmp .alt-lc { display: block; }
+  @media (min-width: 1024px) {
+    .cmp-pick { display: none; }
+    .cmp-row { display: grid; grid-template-columns: 11rem repeat(4, minmax(0, 1fr)); gap: 0; padding: 0; }
+    .cmp .cmp-head { display: grid; border-top: 0; }
+    .cmp-label {
+      order: 0; padding: 1.375rem 1.25rem 1.375rem 0;
+      font-size: 0.875rem; font-weight: 600; line-height: 1.4; text-transform: none; letter-spacing: 0; color: #0B1220;
+    }
+    .cmp-cell { order: 0; padding: 1.375rem 1.25rem; border-radius: 0; background: transparent; }
+    .cmp-cell::before { display: none; }
+    .cmp .cmp-row .alt { display: block; }
+    .cmp-head .cmp-cell {
+      padding-bottom: 1rem;
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #64748b;
+    }
+    /* the Fusion column runs as one continuous panel */
+    .cmp-cell--us { background: #0B1220; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+    .cmp-head .cmp-cell--us { padding-top: 1.375rem; border-radius: 1.25rem 1.25rem 0 0; background: #0B1220; color: var(--accent-200); box-shadow: none; }
+    .cmp-row:last-child .cmp-cell--us { border-radius: 0 0 1.25rem 1.25rem; }
+  }
+
+  /* Final — the sixteen-hour Challenge clock */
+  .clock { padding: 1.5rem; border-radius: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); }
+  .clock-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .clock-total { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 2.125rem; font-weight: 700; color: var(--accent-300); }
+  .clock-bar { display: flex; gap: 2px; height: 2.75rem; margin-top: 1.375rem; }
+  .clock-seg {
+    flex: 1 1 0; min-width: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 0.375rem;
+    border-radius: 0.375rem; background: rgba(255, 255, 255, 0.13);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.625rem; color: #cbd5e1;
+  }
+  .clock-seg span { display: none; }
+  .clock-seg--you { background: var(--accent-500); color: #0B1220; font-weight: 700; }
+  .clock-ticks { display: flex; justify-content: space-between; margin-top: 0.625rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.75rem; color: #94a3b8; }
+  .clock-legend { display: flex; flex-wrap: wrap; gap: 0.625rem 1.5rem; margin-top: 1.375rem; font-size: 0.875rem; color: #cbd5e1; }
+  .clock-legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .clock-swatch { width: 0.75rem; height: 0.75rem; border-radius: 0.1875rem; background: rgba(255, 255, 255, 0.25); }
+  .clock-swatch--you { background: var(--accent-500); }
+  .clock-you { display: grid; gap: 0.625rem 1.5rem; margin-top: 1.375rem; padding-top: 1.375rem; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.875rem; color: #e2e8f0; }
+  .clock-you .n { margin-right: 0.5rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--accent-300); }
+  @media (min-width: 640px) {
+    .clock { padding: 2rem; }
+    .clock-bar { gap: 3px; height: 3.75rem; }
+    .clock-seg span { display: inline; }
+    .clock-you { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 </style>
 </head>
 
 <body class="bg-slate-50 text-slate-950">
 
 <!-- ====================== HEADER ====================== -->
-<header class="sticky top-0 z-50 border-b border-white/10 bg-ink/85 backdrop-blur-xl">
-  <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-    <a href="/" class="flex items-center gap-2.5">
+<header class="sticky top-0 z-50 border-b border-white/10 bg-ink">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
+    <a href="/" class="flex items-center gap-2.5" aria-label="Fusion home">
       <!-- Logo mark: confinement arcs around a fusion core (follows the audience accent) -->
-      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)" aria-hidden="true">
         <g transform="rotate(-18 16 16)">
           <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
           <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
@@ -125,31 +309,31 @@
       <span class="wordmark text-xl text-white">Fusion</span>
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 lg:flex">
-      <a href="/" class="hover:text-white ulink">Why Fusion</a>
-      <a href="/lifecycle/" class="hover:text-white ulink">Lifecycle</a>
-      <a href="/platform/" class="hover:text-white ulink">Platform</a>
-      <a href="/technology/" class="hover:text-white ulink">Technology</a>
-      <a href="/challenge/" class="hover:text-white ulink">Idea to Impact</a>
-      <a href="/replace-legacy/" class="hover:text-white ulink">Replace Legacy</a>
-      <a href="/pricing/" class="hover:text-white ulink">Pricing</a>
+    <nav aria-label="Main" class="site-nav hidden items-center gap-7 text-sm font-medium text-slate-300 lg:flex">
+      <a href="/lifecycle/">Lifecycle</a>
+      <a href="/platform/">Platform</a>
+      <a href="/technology/">Technology</a>
+      <a href="/replace-legacy/">Replace Legacy</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
     </nav>
 
-    <div class="flex items-center gap-3 md:gap-5">
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="/challenge/" class="nav-cta btn hidden h-auto border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white hover:border-white/30 hover:bg-white/15 lg:inline-flex plausible-event-name=CTA+Click plausible-event-position=header plausible-event-cta=Idea+to+Impact+Challenge"><span class="xl:hidden">Idea to Impact</span><span class="hidden xl:inline">Idea to Impact Challenge</span></a>
       <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto border-0 bg-white px-4 py-2.5 text-sm font-medium text-ink hover:bg-slate-100 md:px-5 plausible-event-name=Book+Meeting plausible-event-position=header plausible-event-cta=Book+a+demo">Book a demo</a>
       <!-- Mobile menu (DaisyUI dropdown); mirrors the nav above -->
       <div class="dropdown dropdown-end lg:hidden">
         <div tabindex="0" role="button" aria-label="Open menu" class="btn btn-ghost btn-square btn-sm -mr-2 text-slate-300 hover:bg-white/10 hover:text-white">
           <i data-lucide="menu" class="h-6 w-6"></i>
         </div>
-        <ul tabindex="0" class="dropdown-content menu mt-3 w-56 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
-          <li><a href="/">Why Fusion</a></li>
+        <ul tabindex="0" class="dropdown-content menu mt-3 w-60 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
+          <li><a href="/challenge/">Idea to Impact Challenge</a></li>
           <li><a href="/lifecycle/">Lifecycle</a></li>
           <li><a href="/platform/">Platform</a></li>
           <li><a href="/technology/">Technology</a></li>
-          <li><a href="/challenge/">Idea to Impact</a></li>
           <li><a href="/replace-legacy/">Replace Legacy</a></li>
           <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/about/">About</a></li>
         </ul>
       </div>
     </div>
@@ -159,22 +343,26 @@
 <main id="top">
 
 <!-- ====================== HERO ====================== -->
-<section class="hero-bg hero-fill grain relative flex items-center overflow-hidden">
+<section class="hero-bg hero-fill grain relative flex flex-col overflow-hidden">
   <div class="absolute right-0 top-10 h-80 w-80 rounded-full blur-3xl" style="background: color-mix(in srgb, var(--accent-500) 22%, transparent);"></div>
   <div class="absolute bottom-0 left-1/2 h-72 w-72 rounded-full blur-3xl" style="background: color-mix(in srgb, var(--accent-500) 14%, transparent);"></div>
   <canvas id="heroCanvas" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; -webkit-mask-image:linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0.8) 45%, #000 65%); mask-image:linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0.8) 45%, #000 65%);"></canvas>
+  <div class="hero-fade" aria-hidden="true"></div>
 
-  <div class="mx-auto w-full max-w-7xl px-5 py-12">
-    <div class="relative z-10 reveal reveal-2">
-      <div class="badge mb-6 h-auto gap-2 border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-slate-200">
-        <i data-lucide="sparkles" class="h-4 w-4" style="color: var(--accent-300)"></i>
-        <span>Lifecycle + AI + platform</span>
+  <div class="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-5 pt-14 pb-6 md:pt-16">
+    <div class="flex flex-1 flex-col justify-center reveal reveal-2">
+      <div>
+        <a href="/challenge/" class="hero-pill plausible-event-name=CTA+Click plausible-event-position=hero plausible-event-cta=One+workflow+in+production+in+sixteen+working+hours">
+          <span class="hero-pill-tag">Challenge</span>
+          <span>One workflow in production in sixteen working hours</span>
+          <i data-lucide="arrow-right" class="h-4 w-4 flex-none"></i>
+        </a>
       </div>
-      <h1 class="font-display max-w-4xl text-balance text-5xl font-medium text-white md:text-7xl leading-[0.98]">
+      <h1 class="font-display mt-7 max-w-4xl text-balance text-5xl font-medium text-white md:text-7xl leading-[0.98]">
         Business software done right.
       </h1>
       <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-        Fusion gives you a disciplined delivery pipeline, AI across the full lifecycle, quality design and agile execution. No per-seat licensing. No hosting lock-in. Regain control of your business systems and start sustainable innovation.
+        Fusion gives you a disciplined delivery pipeline, AI across the full lifecycle, quality design and agile execution. No per-seat licensing. No hosting lock-in.
       </p>
       <div class="mt-9 flex flex-col gap-3 sm:flex-row">
         <a href="/challenge/" class="btn h-auto gap-0 border-0 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=CTA+Click plausible-event-position=hero plausible-event-cta=Take+the+Idea+to+Impact+Challenge">
@@ -186,43 +374,112 @@
         </a>
       </div>
     </div>
+
+    <dl class="proof mt-14 md:mt-16 reveal reveal-3">
+      <div class="proof-item">
+        <dt class="sr-only">Sponsor session to production</dt>
+        <dd class="proof-num">16h</dd>
+        <dd class="proof-label">From the sponsor session to one workflow in production</dd>
+      </div>
+      <div class="proof-item">
+        <dt class="sr-only">Your people's time</dt>
+        <dd class="proof-num">4h</dd>
+        <dd class="proof-label">Of your people's time. The other twelve hours run without them.</dd>
+      </div>
+      <div class="proof-item">
+        <dt class="sr-only">Change request to production</dt>
+        <dd class="proof-num">4–8h</dd>
+        <dd class="proof-label">From a change request to the change in production</dd>
+      </div>
+      <div class="proof-item">
+        <dt class="sr-only">Licence cost per application user</dt>
+        <dd class="proof-num">$0</dd>
+        <dd class="proof-label">Per application user, at any number of users</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
-<!-- ====================== OVERVIEW ====================== -->
+<!-- ====================== WHAT FUSION IS ====================== -->
 <section id="overview" class="bg-white py-20">
   <div class="mx-auto max-w-7xl px-5">
     <div class="max-w-3xl">
       <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-700);">What Fusion is</p>
       <h2 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">Lifecycle + AI + Platform.</h2>
     </div>
-    <div class="mt-12 grid gap-5 md:grid-cols-3">
-      <a href="/lifecycle/" class="card card-border border-slate-200 bg-white p-6 shadow-sm lift">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
-          <i data-lucide="workflow" class="h-6 w-6"></i>
+
+    <div class="wf">
+      <input type="radio" name="wf" id="wf-lc" checked>
+      <input type="radio" name="wf" id="wf-ai">
+      <input type="radio" name="wf" id="wf-pf">
+
+      <div>
+        <div class="wf-tabs">
+          <label for="wf-lc" class="wf-tab">
+            <span class="wf-num">01</span>
+            <span><span class="wf-title block">Lifecycle</span><span class="wf-desc">The roadmap, the workflow gates, the user guides and the tests are pages in the app, where you do the work.</span></span>
+          </label>
+          <label for="wf-ai" class="wf-tab">
+            <span class="wf-num">02</span>
+            <span><span class="wf-title block">AI</span><span class="wf-desc">AI works across the whole lifecycle, not only the code. When you ask for a change, the AI also updates everything that the change touches.</span></span>
+          </label>
+          <label for="wf-pf" class="wf-tab">
+            <span class="wf-num">03</span>
+            <span><span class="wf-title block">Platform</span><span class="wf-desc">Fusion makes working screens from what your business objects declare: records, workflows, search and analytics.</span></span>
+          </label>
         </div>
-        <h3 class="font-display mt-5 text-xl font-medium">Lifecycle</h3>
-        <p class="mt-3 leading-7 text-slate-600">Fusion builds the development lifecycle into the app. The roadmap, the workflow gates, the user guides, system testing and user testing are all in the app, where you do the work.</p>
-        <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-medium text-accent-700">Learn more <i data-lucide="arrow-right" class="h-4 w-4"></i></span>
-      </a>
-      <a href="/lifecycle/#ai-native" class="card card-border border-slate-200 bg-white p-6 shadow-sm lift">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
-          <i data-lucide="sparkles" class="h-6 w-6"></i>
-        </div>
-        <h3 class="font-display mt-5 text-xl font-medium">AI</h3>
-        <p class="mt-3 leading-7 text-slate-600">AI works across the whole lifecycle, not only the code. When you ask for a change, the AI also updates everything that the change touches.</p>
-        <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-medium text-accent-700">Learn more <i data-lucide="arrow-right" class="h-4 w-4"></i></span>
-      </a>
-      <a href="/platform/" class="card card-border border-slate-200 bg-white p-6 shadow-sm lift">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
-          <i data-lucide="layout-grid" class="h-6 w-6"></i>
-        </div>
-        <h3 class="font-display mt-5 text-xl font-medium">Platform</h3>
-        <p class="mt-3 leading-7 text-slate-600">Fusion makes working screens from what your business objects declare: records, workflows, search and analytics. You add custom interfaces where they matter.</p>
-        <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-medium text-accent-700">Learn more <i data-lucide="arrow-right" class="h-4 w-4"></i></span>
-      </a>
+        <p class="wf-foot">Fusion builds all of this on <a href="/technology/" class="ulink hover:text-ink">proven open-source technology</a>.</p>
+      </div>
+
+      <div class="wf-panels">
+        <figure id="wf-panel-lc" class="wf-panel m-0">
+          <div class="shot-frame">
+            <picture>
+              <source srcset="/site/images/platform/valuechain.avif" type="image/avif">
+              <img src="/site/images/platform/valuechain.webp" alt="The roadmap value chain tab shows nine workflows. Fusion tracks each workflow across five gates: spec, build, system testing, user guide and user testing" width="1440" height="900" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption class="wf-cap">
+            <p>The roadmap is a page in the app, not a slide. Fusion tracks each workflow across five gates, and the work itself keeps the page current.</p>
+            <a href="/lifecycle/" class="wf-more text-accent-700 plausible-event-name=CTA+Click plausible-event-position=body plausible-event-cta=See+the+lifecycle">See the lifecycle <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
+          </figcaption>
+        </figure>
+
+        <figure id="wf-panel-ai" class="wf-panel m-0">
+          <div class="ai-card">
+            <p class="ai-label">Somebody asks for</p>
+            <p class="ai-quote">“Add a risk rating to the intake workflow. Anything rated high must route to the compliance queue for sign-off.”</p>
+            <p class="ai-note">One sentence, from somebody who does the job. This is what moves with it:</p>
+            <ol class="ai-moves">
+              <li><span class="n">01</span><span><b>The specs</b><span class="d">The workflow spec, the resource specs and the domain model.</span></span></li>
+              <li><span class="n">02</span><span><b>The code</b><span class="d">The fields, the logic, the screens and the database migration.</span></span></li>
+              <li><span class="n">03</span><span><b>The tests</b><span class="d">Unit and system tests for the new behaviour, then a run.</span></span></li>
+              <li><span class="n">04</span><span><b>The user guide</b><span class="d">Rewritten against the screens as they now are.</span></span></li>
+              <li><span class="n">05</span><span><b>User acceptance</b><span class="d">The task script, and the triage of the sessions.</span></span></li>
+              <li><span class="n">06</span><span><b>The plan</b><span class="d">The roadmap, the changelog and the tech-debt ledger.</span></span></li>
+              <li><span class="n">07</span><span><b>The release</b><span class="d">Deployed, then verified in production.</span></span></li>
+            </ol>
+          </div>
+          <figcaption class="wf-cap">
+            <p>We did not add AI to Fusion afterwards. The framework knows which spec, code, tests and guide belong to each workflow.</p>
+            <a href="/lifecycle/#ai-native" class="wf-more text-accent-700 plausible-event-name=CTA+Click plausible-event-position=body plausible-event-cta=See+how+a+change+moves">See how a change moves <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
+          </figcaption>
+        </figure>
+
+        <figure id="wf-panel-pf" class="wf-panel m-0">
+          <div class="shot-frame">
+            <picture>
+              <source srcset="/site/images/platform/list.avif" type="image/avif">
+              <img src="/site/images/platform/list.webp" alt="A pipeline dashboard with four counters, a stacked bar chart of positions by stage and health, and a table of flagged searches" width="1440" height="900" loading="lazy" decoding="async">
+            </picture>
+          </div>
+          <figcaption class="wf-cap">
+            <p>Every screen comes from one definition. This dashboard is a real screenshot of a live application, not a mockup. You add custom interfaces where they matter.</p>
+            <a href="/platform/" class="wf-more text-accent-700 plausible-event-name=CTA+Click plausible-event-position=body plausible-event-cta=Explore+the+platform">Explore the platform <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
+          </figcaption>
+        </figure>
+      </div>
     </div>
-    <p class="mt-10 max-w-3xl text-lg leading-8 text-slate-600">Fusion builds all of this on <a href="/technology/" class="ulink hover:text-ink">proven open-source technology</a>.</p>
   </div>
 </section>
 
@@ -237,44 +494,45 @@
         <span class="inline-block">Still true in year three.</span>
       </h2>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        Fusion delivers working software in days. The work takes hours of your people's time, not weeks of workshops. Your auditors get evidence, not a last-minute rush. Change stays fast and affordable as the system grows.
+        The work takes hours of your people's time, not weeks of workshops. Your auditors get evidence, not a last-minute rush. Change stays fast and affordable as the system grows.
       </p>
     </div>
-    <div class="mt-12 grid gap-5 md:grid-cols-2">
-      <div class="card card-border border-slate-200 bg-white p-6 shadow-sm lift">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
-          <i data-lucide="users" class="h-6 w-6"></i>
-        </div>
-        <h3 class="font-display mt-5 text-xl font-medium">Hours, not months of workshops</h3>
-        <p class="mt-3 leading-7 text-slate-600">Fusion asks less of your business stakeholders. We record the sessions they attend, and we write the documents from what they said. There is no second round of workshops to confirm the first. Nobody has to stop their day job to explain the same thing to a new person.</p>
+
+    <div class="why-grid">
+      <div class="why-col">
+        <p class="why-key">01 · DAYS</p>
+        <h3 class="font-display mt-3.5 text-2xl font-medium leading-tight md:text-[1.75rem]">Idea to impact in days or weeks</h3>
+        <p class="mt-3.5 leading-7 text-slate-600">One connected pipeline removes the handoffs, the rework and the delays that make enterprise delivery slow. We record the sessions that your stakeholders attend, and we write the documents from what they said. Nobody has to explain the same thing twice.</p>
+        <p class="why-fact"><span class="n">16h</span><span class="l">to put one workflow into production</span></p>
       </div>
-      <div class="card card-border border-slate-200 bg-white p-6 shadow-sm lift">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
-          <i data-lucide="badge-check" class="h-6 w-6"></i>
-        </div>
-        <h3 class="font-display mt-5 text-xl font-medium">Risk and compliance is built in</h3>
-        <p class="mt-3 leading-7 text-slate-600">Bring the obligations from any source: a contract, a regulator, a standard, your own policy. Each obligation becomes a control, and Fusion checks each control against the real code: the file, the dependency, the version. You meet an obligation only when the evidence shows it. If the evidence does not show it, Fusion shows the gap and the fix next to it. The audit trail is a by-product of the work, not a last-minute rush before each release.</p>
+      <div class="why-col">
+        <p class="why-key">02 · HOURS</p>
+        <h3 class="font-display mt-3.5 text-2xl font-medium leading-tight md:text-[1.75rem]">User feedback live in hours</h3>
+        <p class="mt-3.5 leading-7 text-slate-600">Fusion collects feedback continuously, not at the end of a phase. A change can be in production the same day, with the requirements, tests and release evidence already up to date.</p>
+        <p class="why-fact"><span class="n">4–8h</span><span class="l">from a change request to production</span></p>
       </div>
-      <div class="card card-border border-slate-200 bg-white p-6 shadow-sm lift">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
-          <i data-lucide="zap" class="h-6 w-6"></i>
-        </div>
-        <h3 class="font-display mt-5 text-xl font-medium">Idea to impact in days or weeks</h3>
-        <p class="mt-3 leading-7 text-slate-600">Not months or years. One connected pipeline removes the handoffs, the rework and the delays that make enterprise delivery slow.</p>
+      <div class="why-col">
+        <p class="why-key">03 · YEAR THREE</p>
+        <h3 class="font-display mt-3.5 text-2xl font-medium leading-tight md:text-[1.75rem]">Agility that lasts, because the engineering does</h3>
+        <p class="mt-3.5 leading-7 text-slate-600">The domain model, the workflow specs and the system tests are pipeline steps. They are not the first things a team drops when a deadline is near. Every team knows the usual decay: fast in year one, slow by year three.</p>
+        <p class="why-fact"><span class="n">100th</span><span class="l">change costs about the same as the first one</span></p>
       </div>
-      <div class="card card-border border-slate-200 bg-white p-6 shadow-sm lift">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
-          <i data-lucide="refresh-cw" class="h-6 w-6"></i>
-        </div>
-        <h3 class="font-display mt-5 text-xl font-medium">User feedback live in hours</h3>
-        <p class="mt-3 leading-7 text-slate-600">Fusion collects feedback continuously, not at the end of a phase. A change can be in production the same day, with the requirements, tests and release evidence already up to date.</p>
+    </div>
+
+    <div class="comp">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-300);">Risk and compliance</p>
+        <h3 class="font-display mt-3.5 text-[1.75rem] font-medium leading-tight md:text-[2rem]">Your auditors get evidence, not a last-minute rush.</h3>
+        <p class="mt-3.5 leading-7 text-slate-400">Bring the obligations from any source. Fusion checks each control against the real code, and the audit trail is a by-product of the work.</p>
       </div>
-      <div class="card card-border border-slate-200 bg-white p-6 shadow-sm lift md:col-span-2">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-ink text-white">
-          <i data-lucide="infinity" class="h-6 w-6"></i>
-        </div>
-        <h3 class="font-display mt-5 text-xl font-medium">Agility that lasts, because the engineering does</h3>
-        <p class="mt-3 leading-7 text-slate-600">Agile promised sustained agility and mostly delivered ceremony: the standups outlived the design reviews and the tests. Fusion puts the engineering back at the centre. The domain model, the workflow specs and the system tests are pipeline steps, not the first things a team drops when a deadline is near. This discipline is why the hundredth change costs about the same as the first one. Every team knows the usual decay: fast in year one, slow by year three.</p>
+      <div class="flow">
+        <div class="flow-step"><span class="n">01</span><b>Obligation</b><span class="d">A contract, a regulator, a standard or your own policy</span></div>
+        <span class="flow-arrow" aria-hidden="true"><i data-lucide="chevron-right" class="h-4 w-4"></i></span>
+        <div class="flow-step"><span class="n">02</span><b>Control</b><span class="d">Each obligation becomes a control</span></div>
+        <span class="flow-arrow" aria-hidden="true"><i data-lucide="chevron-right" class="h-4 w-4"></i></span>
+        <div class="flow-step"><span class="n">03</span><b>Evidence</b><span class="d">Checked against the file, the dependency and the version</span></div>
+        <span class="flow-arrow" aria-hidden="true"><i data-lucide="chevron-right" class="h-4 w-4"></i></span>
+        <div class="flow-step flow-step--ok"><span class="n">04</span><b>Met, or the fix</b><span class="d">If the evidence does not show it, Fusion shows the gap and the fix next to it</span></div>
       </div>
     </div>
   </div>
@@ -290,96 +548,144 @@
         <span class="inline-block">Now there is a better way.</span>
       </h2>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        If you build it, you wait a year for something that fits. If you buy a package, you have something next month that does not fit. If you build on a low-code platform, you get closer, until you meet its ceiling, on the vendor's licence, with your logic in their format. For twenty years vendors presented this trade as a fixed rule, but it is only a result of how they sold the tools. Fusion takes the finished plumbing and the fast start from the products. Fusion takes the fit, the ownership and the freedom from the self-build option.
+        If you build it, you wait a year for something that fits. If you buy a package, you have something next month that does not fit. If you build on a low-code platform, you get closer, until you meet its ceiling, on the vendor's licence, with your logic in their format.
+      </p>
+      <p class="mt-4 text-lg leading-8 text-slate-600">
+        Fusion takes the finished plumbing and the fast start from the products. Fusion takes the fit, the ownership and the freedom from the self-build option.
       </p>
     </div>
 
-    <div class="cots-wrap">
-      <div class="cots-table">
-        <div class="cots-row cots-row--head">
-          <div class="cots-label"></div>
-          <div class="cots-cell">Build it yourself</div>
-          <div class="cots-cell">Buy a package</div>
-          <div class="cots-cell">Build on a low-code platform</div>
-          <div class="cots-cell cots-cell--us">Fusion</div>
+    <div class="cmp-wrap">
+      <input type="radio" name="cmp" id="cmp-build" checked>
+      <input type="radio" name="cmp" id="cmp-buy">
+      <input type="radio" name="cmp" id="cmp-lc">
+      <div class="cmp-pick">
+        <p class="cmp-pick-label">Compare Fusion with:</p>
+        <div class="cmp-seg">
+          <label for="cmp-build">Build</label>
+          <label for="cmp-buy">Buy</label>
+          <label for="cmp-lc">Low-code</label>
         </div>
-          <div class="cots-row">
-            <div class="cots-label">Time to something working</div>
-            <div class="cots-cell">Months to years. You write authentication, permissions, audit and forms before you write any of your business logic.</div>
-            <div class="cots-cell">Days to install it, then months of configuration to make it fit.</div>
-            <div class="cots-cell">Months. You still build the application, only in another vendor's tool.</div>
-            <div class="cots-cell cots-cell--us">Weeks. The plumbing is already built, and the work starts in your own repository.</div>
-          </div>
-          <div class="cots-row">
-            <div class="cots-label">How well it fits</div>
-            <div class="cots-cell">Exactly. You built it.</div>
-            <div class="cots-cell">As well as the vendor's idea of your business fits. You change your process to fit the product.</div>
-            <div class="cots-cell">Closer, because you build it, until you need something the platform does not model.</div>
-            <div class="cots-cell cots-cell--us">Exactly. The screens follow your model, and you can replace any screen by hand.</div>
-          </div>
-          <div class="cots-row">
-            <div class="cots-label">Who maintains the plumbing</div>
-            <div class="cots-cell">You do. Every year, forever.</div>
-            <div class="cots-cell">The vendor does, on the vendor's release schedule. You must fix your customisations at every upgrade.</div>
-            <div class="cots-cell">The vendor does. The maintenance is what you pay for.</div>
-            <div class="cots-cell cots-cell--us">We do. The plumbing arrives as a dependency that you update on your own schedule. The version you hold continues to work, with or without a subscription.</div>
-          </div>
-          <div class="cots-row">
-            <div class="cots-label">What it costs</div>
-            <div class="cots-cell">Salaries, which grow with everything you decide to build.</div>
-            <div class="cots-cell">A licence per user, plus the implementation partner who configures it.</div>
-            <div class="cots-cell">A fee for every seat, forever, plus the builders certified to work in it.</div>
-            <div class="cots-cell cots-cell--us">Machines and a subscription. The cost scales with what you run, not with who logs in.</div>
-          </div>
-          <div class="cots-row">
-            <div class="cots-label">The ceiling</div>
-            <div class="cots-cell">None. The code is yours.</div>
-            <div class="cots-cell">Whatever the product already does. Past that, you file a feature request.</div>
-            <div class="cots-cell">Real, and you usually meet it late, after you commit to the platform.</div>
-            <div class="cots-cell cots-cell--us">None. Your system is a Rails application.</div>
-          </div>
-          <div class="cots-row">
-            <div class="cots-label">If you leave</div>
-            <div class="cots-cell">There is nothing to leave.</div>
-            <div class="cots-cell">Your data in an export. The business process stays with the product.</div>
-            <div class="cots-cell">A file export. The logic is useless without the platform it was written for.</div>
-            <div class="cots-cell cots-cell--us">Your data, your schema and your business logic. You rebuild the screens.</div>
-          </div>
-          <div class="cots-row">
-            <div class="cots-label">Integration with your other systems</div>
-            <div class="cots-cell">You build each connection by hand: a queue, a scheduler, retries and a place to see what failed. Four more things to run.</div>
-            <div class="cots-cell">The connectors that the product includes. If your system is not on the list, the product does not connect to it.</div>
-            <div class="cots-cell">An integration tier, a second product that you license and run with the first.</div>
-            <div class="cots-cell cots-cell--us">In the application, on the database it already uses. Schedules, retries, idempotency and observability are included.</div>
-          </div>
+      </div>
+
+      <div class="cmp" role="table" aria-label="Build it yourself, buy a package, build on a low-code platform, or Fusion">
+        <div class="cmp-row cmp-head" role="row">
+          <div class="cmp-label" role="columnheader"><span class="sr-only">Question</span></div>
+          <div class="cmp-cell" role="columnheader">Build it yourself</div>
+          <div class="cmp-cell" role="columnheader">Buy a package</div>
+          <div class="cmp-cell" role="columnheader">Build on a low-code platform</div>
+          <div class="cmp-cell cmp-cell--us" role="columnheader">Fusion</div>
+        </div>
+        <div class="cmp-row" role="row">
+          <div class="cmp-label" role="rowheader">Time to something working</div>
+          <div class="cmp-cell alt alt-build" role="cell" data-col="Build it yourself"><b>Months to years.</b> You write authentication, permissions, audit and forms before you write any of your business logic.</div>
+          <div class="cmp-cell alt alt-buy" role="cell" data-col="Buy a package"><b>Days to install it,</b> then months of configuration to make it fit.</div>
+          <div class="cmp-cell alt alt-lc" role="cell" data-col="Low-code platform"><b>Months.</b> You still build the application, only in another vendor's tool.</div>
+          <div class="cmp-cell cmp-cell--us" role="cell" data-col="Fusion"><b>Weeks.</b> The plumbing is already built, and the work starts in your own repository.</div>
+        </div>
+        <div class="cmp-row" role="row">
+          <div class="cmp-label" role="rowheader">How well it fits</div>
+          <div class="cmp-cell alt alt-build" role="cell" data-col="Build it yourself"><b>Exactly.</b> You built it.</div>
+          <div class="cmp-cell alt alt-buy" role="cell" data-col="Buy a package"><b>As well as the vendor's idea of your business fits.</b> You change your process to fit the product.</div>
+          <div class="cmp-cell alt alt-lc" role="cell" data-col="Low-code platform"><b>Closer, because you build it,</b> until you need something the platform does not model.</div>
+          <div class="cmp-cell cmp-cell--us" role="cell" data-col="Fusion"><b>Exactly.</b> The screens follow your model, and you can replace any screen by hand.</div>
+        </div>
+        <div class="cmp-row" role="row">
+          <div class="cmp-label" role="rowheader">Who maintains the plumbing</div>
+          <div class="cmp-cell alt alt-build" role="cell" data-col="Build it yourself"><b>You do.</b> Every year, forever.</div>
+          <div class="cmp-cell alt alt-buy" role="cell" data-col="Buy a package"><b>The vendor does,</b> on the vendor's release schedule. You must fix your customisations at every upgrade.</div>
+          <div class="cmp-cell alt alt-lc" role="cell" data-col="Low-code platform"><b>The vendor does.</b> The maintenance is what you pay for.</div>
+          <div class="cmp-cell cmp-cell--us" role="cell" data-col="Fusion"><b>We do.</b> The plumbing arrives as a dependency that you update on your own schedule. The version you hold continues to work, with or without a subscription.</div>
+        </div>
+        <div class="cmp-row" role="row">
+          <div class="cmp-label" role="rowheader">What it costs</div>
+          <div class="cmp-cell alt alt-build" role="cell" data-col="Build it yourself"><b>Salaries,</b> which grow with everything you decide to build.</div>
+          <div class="cmp-cell alt alt-buy" role="cell" data-col="Buy a package"><b>A licence per user,</b> plus the implementation partner who configures it.</div>
+          <div class="cmp-cell alt alt-lc" role="cell" data-col="Low-code platform"><b>A fee for every seat, forever,</b> plus the builders certified to work in it.</div>
+          <div class="cmp-cell cmp-cell--us" role="cell" data-col="Fusion"><b>Machines and a subscription.</b> The cost scales with what you run, not with who logs in.</div>
+        </div>
+        <div class="cmp-row" role="row">
+          <div class="cmp-label" role="rowheader">The ceiling</div>
+          <div class="cmp-cell alt alt-build" role="cell" data-col="Build it yourself"><b>None.</b> The code is yours.</div>
+          <div class="cmp-cell alt alt-buy" role="cell" data-col="Buy a package"><b>Whatever the product already does.</b> Past that, you file a feature request.</div>
+          <div class="cmp-cell alt alt-lc" role="cell" data-col="Low-code platform"><b>Real,</b> and you usually meet it late, after you commit to the platform.</div>
+          <div class="cmp-cell cmp-cell--us" role="cell" data-col="Fusion"><b>None.</b> Your system is a Rails application.</div>
+        </div>
+        <div class="cmp-row" role="row">
+          <div class="cmp-label" role="rowheader">If you leave</div>
+          <div class="cmp-cell alt alt-build" role="cell" data-col="Build it yourself"><b>There is nothing to leave.</b></div>
+          <div class="cmp-cell alt alt-buy" role="cell" data-col="Buy a package"><b>Your data in an export.</b> The business process stays with the product.</div>
+          <div class="cmp-cell alt alt-lc" role="cell" data-col="Low-code platform"><b>A file export.</b> The logic is useless without the platform it was written for.</div>
+          <div class="cmp-cell cmp-cell--us" role="cell" data-col="Fusion"><b>Your data, your schema and your business logic.</b> You rebuild the screens.</div>
+        </div>
+        <div class="cmp-row" role="row">
+          <div class="cmp-label" role="rowheader">Integration with your other systems</div>
+          <div class="cmp-cell alt alt-build" role="cell" data-col="Build it yourself"><b>You build each connection by hand:</b> a queue, a scheduler, retries and a place to see what failed. Four more things to run.</div>
+          <div class="cmp-cell alt alt-buy" role="cell" data-col="Buy a package"><b>The connectors that the product includes.</b> If your system is not on the list, the product does not connect to it.</div>
+          <div class="cmp-cell alt alt-lc" role="cell" data-col="Low-code platform"><b>An integration tier,</b> a second product that you license and run with the first.</div>
+          <div class="cmp-cell cmp-cell--us" role="cell" data-col="Fusion"><b>In the application,</b> on the database it already uses. Schedules, retries, idempotency and observability are included.</div>
+        </div>
       </div>
     </div>
 
     <p class="cots-foot">
-      Read the last column from top to bottom. Each entry comes from one of the other three columns, and no entry is a compromise.
+      Read the Fusion column from top to bottom. Each entry comes from one of the other three columns, and no entry is a compromise.
     </p>
   </div>
 </section>
 
 <!-- ====================== FINAL ====================== -->
 <section class="bg-ink py-20 text-white relative overflow-hidden grain">
-  <div class="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full blur-3xl opacity-30" style="background: var(--accent-500);"></div>
-  <div class="mx-auto max-w-7xl px-5 text-center relative">
-    <i data-lucide="workflow" class="mx-auto h-10 w-10" style="color: var(--accent-200);"></i>
-    <h2 class="font-display mx-auto mt-6 max-w-4xl text-4xl font-medium tracking-tight md:text-5xl">
-      How good is Fusion?
-    </h2>
-    <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-      Take the Idea to Impact Challenge and find out. Bring one real workflow. In sixteen working hours, we build it, test it and deploy it with user guides.
-    </p>
-    <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-      <a href="/challenge/" class="btn h-auto gap-0 border-0 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=CTA+Click plausible-event-position=final plausible-event-cta=Take+the+Idea+to+Impact+Challenge">
-        <span>Take the Idea to Impact Challenge</span>
-        <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
-      </a>
-      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto gap-0 border-white/20 bg-white/10 px-7 py-4 text-base font-medium text-white hover:bg-white/20 plausible-event-name=Book+Meeting plausible-event-position=final plausible-event-cta=Book+a+session">
-        <span>Book a session</span>
-      </a>
+  <div class="absolute left-[10%] -top-40 h-[32rem] w-[32rem] rounded-full blur-3xl opacity-20" style="background: var(--accent-500);"></div>
+  <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-[5fr_7fr] lg:gap-16">
+    <div>
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-300);">The Idea to Impact Challenge</p>
+      <h2 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">How good is Fusion?</h2>
+      <p class="mt-5 max-w-xl text-lg leading-8 text-slate-300">
+        Take the Idea to Impact Challenge and find out. Bring one real workflow. In sixteen working hours, we build it, test it and deploy it with user guides.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href="/challenge/" class="btn h-auto gap-0 border-0 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=CTA+Click plausible-event-position=final plausible-event-cta=Take+the+Idea+to+Impact+Challenge">
+          <span>Take the Idea to Impact Challenge</span>
+          <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+        </a>
+        <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto gap-0 border-white/20 bg-white/10 px-7 py-4 text-base font-medium text-white hover:bg-white/20 plausible-event-name=Book+Meeting plausible-event-position=final plausible-event-cta=Book+a+session">
+          <span>Book a session</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="clock" role="img" aria-label="The sixteen-hour Challenge clock. Thirteen steps run from the sponsor session to production. Four of them, four hours in total, need your people: the sponsor session, the observation session, the user review and the user confirmation.">
+      <div class="clock-top">
+        <span class="text-xs font-semibold uppercase tracking-[0.22em]" style="color: var(--accent-300);">The Challenge clock</span>
+        <span class="clock-total">16:00h</span>
+      </div>
+      <div class="clock-bar">
+        <div class="clock-seg clock-seg--you" style="flex-grow: 2"><span>01</span></div>
+        <div class="clock-seg" style="flex-grow: 2"><span>02</span></div>
+        <div class="clock-seg clock-seg--you" style="flex-grow: 2"><span>03</span></div>
+        <div class="clock-seg" style="flex-grow: 4"><span>04</span></div>
+        <div class="clock-seg" style="flex-grow: 8"><span>05</span></div>
+        <div class="clock-seg" style="flex-grow: 2"><span>06</span></div>
+        <div class="clock-seg" style="flex-grow: 2"><span>07</span></div>
+        <div class="clock-seg" style="flex-grow: 2"><span>08</span></div>
+        <div class="clock-seg" style="flex-grow: 1"><span>09</span></div>
+        <div class="clock-seg clock-seg--you" style="flex-grow: 2"><span>10</span></div>
+        <div class="clock-seg" style="flex-grow: 2"><span>11</span></div>
+        <div class="clock-seg clock-seg--you" style="flex-grow: 2"><span>12</span></div>
+        <div class="clock-seg" style="flex-grow: 1"><span>13</span></div>
+      </div>
+      <div class="clock-ticks"><span>0h</span><span>4h</span><span>8h</span><span>12h</span><span>16h</span></div>
+      <div class="clock-legend">
+        <span><span class="clock-swatch clock-swatch--you"></span>Your people · 4h</span>
+        <span><span class="clock-swatch"></span>Runs without your people · 12h</span>
+      </div>
+      <ol class="clock-you">
+        <li><span class="n">01</span>Sponsor session</li>
+        <li><span class="n">03</span>Observation sessions</li>
+        <li><span class="n">10</span>Users review and test</li>
+        <li><span class="n">12</span>Users confirm the fixes</li>
+      </ol>
     </div>
   </div>
 </section>
@@ -387,28 +693,52 @@
 </main>
 
 <!-- ====================== FOOTER ====================== -->
-<footer class="border-t border-slate-200 bg-white py-10">
-  <div class="mx-auto flex max-w-7xl flex-col justify-between gap-5 px-5 md:flex-row md:items-center">
-    <div>
-      <div class="wordmark text-lg">Fusion</div>
-      <p class="mt-1 text-sm text-slate-500">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
+<footer class="border-t border-slate-200 bg-white pt-14 pb-8">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-5 sm:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+      <a href="/" class="inline-flex items-center gap-2.5" aria-label="Fusion home">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-600)" aria-hidden="true">
+          <g transform="rotate(-18 16 16)">
+            <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </g>
+          <circle cx="16.4" cy="16" r="4.6" fill="#0B1220"/>
+        </svg>
+        <span class="wordmark text-lg text-ink">Fusion</span>
+      </a>
+      <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
     </div>
-    <div class="flex flex-wrap gap-6 text-sm text-slate-500">
-      <a href="/" class="hover:text-ink ulink">Why Fusion</a>
-      <a href="/lifecycle/" class="hover:text-ink ulink">Lifecycle</a>
-      <a href="/platform/" class="hover:text-ink ulink">Platform</a>
-      <a href="/technology/" class="hover:text-ink ulink">Technology</a>
-      <a href="/challenge/" class="hover:text-ink ulink">Idea to Impact</a>
-      <a href="/pricing/#offers" class="hover:text-ink ulink">Engagement</a>
-      <a href="/replace-legacy/" class="hover:text-ink ulink">Replace Legacy</a>
-      <a href="/pricing/" class="hover:text-ink ulink">Pricing</a>
-      <a href="/services/" class="hover:text-ink ulink">For services firms</a>
-      <a href="/about/" class="hover:text-ink ulink">About</a>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Product</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/lifecycle/" class="hover:text-ink">Lifecycle</a></li>
+        <li><a href="/platform/" class="hover:text-ink">Platform</a></li>
+        <li><a href="/technology/" class="hover:text-ink">Technology</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Offers</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/challenge/" class="hover:text-ink">Idea to Impact Challenge</a></li>
+        <li><a href="/pricing/#offers" class="hover:text-ink">Engagement</a></li>
+        <li><a href="/replace-legacy/" class="hover:text-ink">Replace Legacy</a></li>
+        <li><a href="/services/" class="hover:text-ink">For services firms</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Company</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/pricing/" class="hover:text-ink">Pricing</a></li>
+        <li><a href="/about/" class="hover:text-ink">About</a></li>
+        <li><a href="/privacy/" class="hover:text-ink">Privacy policy</a></li>
+      </ul>
     </div>
   </div>
-  <div class="mx-auto mt-6 flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5">
-    <p class="text-xs text-slate-400">&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
-    <a href="/privacy/" class="text-xs text-slate-400 hover:text-ink ulink">Privacy policy</a>
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500">
+      <p>&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
+      <p>Fusion Framework Limited, New Zealand</p>
+    </div>
   </div>
 </footer>
 

@@ -23,7 +23,7 @@
 
 
 <link rel="stylesheet" href="/css/output.css">
-<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -73,11 +73,11 @@
 <body class="bg-slate-50 text-slate-950">
 
 <!-- ====================== HEADER ====================== -->
-<header class="sticky top-0 z-50 border-b border-white/10 bg-ink/85 backdrop-blur-xl">
-  <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-    <a href="/" class="flex items-center gap-2.5">
+<header class="sticky top-0 z-50 border-b border-white/10 bg-ink">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
+    <a href="/" class="flex items-center gap-2.5" aria-label="Fusion home">
       <!-- Logo mark: confinement arcs around a fusion core (follows the audience accent) -->
-      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)" aria-hidden="true">
         <g transform="rotate(-18 16 16)">
           <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
           <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
@@ -87,31 +87,31 @@
       <span class="wordmark text-xl text-white">Fusion</span>
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm font-medium text-slate-300 lg:flex">
-      <a href="/" class="hover:text-white ulink">Why Fusion</a>
-      <a href="/lifecycle/" class="hover:text-white ulink">Lifecycle</a>
-      <a href="/platform/" class="hover:text-white ulink">Platform</a>
-      <a href="/technology/" class="hover:text-white ulink">Technology</a>
-      <a href="/challenge/" class="hover:text-white ulink">Idea to Impact</a>
-      <a href="/replace-legacy/" class="hover:text-white ulink">Replace Legacy</a>
-      <a href="/pricing/" class="hover:text-white ulink">Pricing</a>
+    <nav aria-label="Main" class="site-nav hidden items-center gap-7 text-sm font-medium text-slate-300 lg:flex">
+      <a href="/lifecycle/">Lifecycle</a>
+      <a href="/platform/">Platform</a>
+      <a href="/technology/">Technology</a>
+      <a href="/replace-legacy/">Replace Legacy</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
     </nav>
 
-    <div class="flex items-center gap-3 md:gap-5">
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="/challenge/" class="nav-cta btn hidden h-auto border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white hover:border-white/30 hover:bg-white/15 lg:inline-flex plausible-event-name=CTA+Click plausible-event-position=header plausible-event-cta=Idea+to+Impact+Challenge"><span class="xl:hidden">Idea to Impact</span><span class="hidden xl:inline">Idea to Impact Challenge</span></a>
       <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto border-0 bg-white px-4 py-2.5 text-sm font-medium text-ink hover:bg-slate-100 md:px-5 plausible-event-name=Book+Meeting plausible-event-position=header plausible-event-cta=Book+a+demo">Book a demo</a>
       <!-- Mobile menu (DaisyUI dropdown); mirrors the nav above -->
       <div class="dropdown dropdown-end lg:hidden">
         <div tabindex="0" role="button" aria-label="Open menu" class="btn btn-ghost btn-square btn-sm -mr-2 text-slate-300 hover:bg-white/10 hover:text-white">
           <i data-lucide="menu" class="h-6 w-6"></i>
         </div>
-        <ul tabindex="0" class="dropdown-content menu mt-3 w-56 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
-          <li><a href="/">Why Fusion</a></li>
+        <ul tabindex="0" class="dropdown-content menu mt-3 w-60 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
+          <li><a href="/challenge/">Idea to Impact Challenge</a></li>
           <li><a href="/lifecycle/">Lifecycle</a></li>
           <li><a href="/platform/">Platform</a></li>
           <li><a href="/technology/">Technology</a></li>
-          <li><a href="/challenge/">Idea to Impact</a></li>
           <li><a href="/replace-legacy/">Replace Legacy</a></li>
           <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/about/">About</a></li>
         </ul>
       </div>
     </div>
@@ -242,28 +242,52 @@
 
 </main>
 
-<footer class="border-t border-slate-200 bg-white py-10">
-  <div class="mx-auto flex max-w-7xl flex-col justify-between gap-5 px-5 md:flex-row md:items-center">
-    <div>
-      <div class="wordmark text-lg">Fusion</div>
-      <p class="mt-1 text-sm text-slate-500">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
+<footer class="border-t border-slate-200 bg-white pt-14 pb-8">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-5 sm:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+      <a href="/" class="inline-flex items-center gap-2.5" aria-label="Fusion home">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-600)" aria-hidden="true">
+          <g transform="rotate(-18 16 16)">
+            <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </g>
+          <circle cx="16.4" cy="16" r="4.6" fill="#0B1220"/>
+        </svg>
+        <span class="wordmark text-lg text-ink">Fusion</span>
+      </a>
+      <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
     </div>
-    <div class="flex flex-wrap gap-6 text-sm text-slate-500">
-      <a href="/" class="hover:text-ink ulink">Why Fusion</a>
-      <a href="/lifecycle/" class="hover:text-ink ulink">Lifecycle</a>
-      <a href="/platform/" class="hover:text-ink ulink">Platform</a>
-      <a href="/technology/" class="hover:text-ink ulink">Technology</a>
-      <a href="/challenge/" class="hover:text-ink ulink">Idea to Impact</a>
-      <a href="/pricing/#offers" class="hover:text-ink ulink">Engagement</a>
-      <a href="/replace-legacy/" class="hover:text-ink ulink">Replace Legacy</a>
-      <a href="/pricing/" class="hover:text-ink ulink">Pricing</a>
-      <a href="/services/" class="hover:text-ink ulink">For services firms</a>
-      <a href="/about/" class="hover:text-ink ulink">About</a>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Product</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/lifecycle/" class="hover:text-ink">Lifecycle</a></li>
+        <li><a href="/platform/" class="hover:text-ink">Platform</a></li>
+        <li><a href="/technology/" class="hover:text-ink">Technology</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Offers</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/challenge/" class="hover:text-ink">Idea to Impact Challenge</a></li>
+        <li><a href="/pricing/#offers" class="hover:text-ink">Engagement</a></li>
+        <li><a href="/replace-legacy/" class="hover:text-ink">Replace Legacy</a></li>
+        <li><a href="/services/" class="hover:text-ink">For services firms</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Company</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/pricing/" class="hover:text-ink">Pricing</a></li>
+        <li><a href="/about/" class="hover:text-ink">About</a></li>
+        <li><a href="/privacy/" class="hover:text-ink">Privacy policy</a></li>
+      </ul>
     </div>
   </div>
-  <div class="mx-auto mt-6 flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5">
-    <p class="text-xs text-slate-400">&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
-    <a href="/privacy/" class="text-xs text-slate-400 hover:text-ink ulink">Privacy policy</a>
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500">
+      <p>&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
+      <p>Fusion Framework Limited, New Zealand</p>
+    </div>
   </div>
 </footer>
 
