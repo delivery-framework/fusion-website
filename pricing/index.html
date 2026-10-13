@@ -26,7 +26,7 @@
 <script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- Wordmark face only — subset to the six logotype glyphs, block display so the brand name never flashes unstyled -->
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&text=Fusion&display=block" rel="stylesheet">
 
@@ -42,15 +42,15 @@
   .exit-ledger { margin-top: 3rem; display: grid; gap: 1.25rem; align-items: start; }
   @media (min-width: 900px) { .exit-ledger { grid-template-columns: 1fr 1fr; gap: 1.5rem; } }
   .exit-col {
-    border-radius: 1.75rem; padding: 1.75rem;
+    border-radius: var(--r-lg); padding: 1.75rem;
     border: 1px solid rgba(255, 255, 255, 0.10);
     background: rgba(255, 255, 255, 0.04);
   }
   .exit-col--keep { border-color: color-mix(in srgb, var(--accent-500) 45%, transparent); }
   .exit-col-head {
     display: flex; align-items: center; gap: 0.5rem;
-    font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.18em;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.16em;
     padding-bottom: 1.25rem; margin-bottom: 1.25rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.10);
     color: #94a3b8;
@@ -71,8 +71,8 @@
     border-top: 1px solid rgba(255, 255, 255, 0.10);
   }
   .exit-compare-title {
-    font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.2em;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.16em;
     color: var(--accent-200);
   }
   .exit-compare-text {
@@ -88,11 +88,11 @@
   }
   .cur-tabs {
     display: inline-flex; gap: 0.25rem; margin-top: 2rem;
-    padding: 0.25rem; border-radius: 9999px;
+    padding: 3px; border-radius: var(--r-sm);
     background: #fff; border: 1px solid #e2e8f0;
   }
   .cur-tabs label {
-    cursor: pointer; border-radius: 9999px;
+    cursor: pointer; border-radius: var(--r-xs); font-family: var(--mono);
     padding: 0.4rem 1rem;
     font-size: 0.8125rem; font-weight: 600; color: #475569;
     transition: background-color 180ms ease, color 180ms ease;
@@ -102,7 +102,7 @@
   #cur-usd:checked ~ .cur-tabs label[for="cur-usd"] { background: #0B1220; color: #fff; }
   #cur-aud:focus-visible ~ .cur-tabs label[for="cur-aud"],
   #cur-usd:focus-visible ~ .cur-tabs label[for="cur-usd"] {
-    outline: 2px solid var(--accent-500); outline-offset: 2px;
+    outline: 2px solid var(--focus-ring); outline-offset: 3px;
   }
   /* AUD is the set price; the USD figures are rounded equivalents */
   .cur-usd { display: none; }
@@ -120,7 +120,7 @@
     font-size: 0.8125rem; font-weight: 400; line-height: 1.5; color: #64748b;
   }
   .price-fig {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--mono);
     font-variant-numeric: tabular-nums;
     font-size: 1.25rem; font-weight: 700; color: #0B1220; white-space: nowrap;
   }

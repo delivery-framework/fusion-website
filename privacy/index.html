@@ -26,7 +26,7 @@
 <script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- Wordmark face only — subset to the six logotype glyphs, block display so the brand name never flashes unstyled -->
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&text=Fusion&display=block" rel="stylesheet">
 
@@ -61,7 +61,7 @@
   @media (min-width: 640px) { .policy .policy-facts { grid-template-columns: repeat(2, 1fr); } }
   .policy .policy-facts li {
     margin: 0; display: flex; gap: 0.75rem; align-items: center;
-    border-radius: 1rem; padding: 1rem 1.25rem;
+    border-radius: var(--r-md); padding: 1rem 1.25rem;
     background: #fff; border: 1px solid #e2e8f0;
     font-weight: 500; color: #0B1220; line-height: 1.5;
   }

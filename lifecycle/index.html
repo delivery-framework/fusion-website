@@ -26,7 +26,7 @@
 <script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <!-- Wordmark face only — subset to the six logotype glyphs, block display so the brand name never flashes unstyled -->
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&text=Fusion&display=block" rel="stylesheet">
 
@@ -43,13 +43,13 @@
   @media (min-width: 1000px) { .aware-split { grid-template-columns: 0.85fr 1.15fr; gap: 3rem; } }
 
   .aware-ask {
-    border-radius: 1.75rem; padding: 1.75rem;
+    border-radius: var(--r-lg); padding: 1.75rem;
     border: 1px solid color-mix(in srgb, var(--accent-500) 45%, transparent);
     background: rgba(255, 255, 255, 0.04);
   }
   .aware-ask-label, .aware-list-label {
-    font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.18em;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.16em;
     color: var(--accent-200);
   }
   .aware-ask-quote {
@@ -83,7 +83,7 @@
     border-radius: 9999px;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--mono);
     font-size: 0.75rem; font-weight: 700;
     font-variant-numeric: tabular-nums; color: var(--accent-200);
   }
@@ -95,12 +95,12 @@
   }
   @media (min-width: 900px) { .aware-stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; } }
   .aware-stat {
-    border-radius: 1.75rem; padding: 1.75rem;
+    border-radius: var(--r-lg); padding: 1.75rem;
     border: 1px solid color-mix(in srgb, var(--accent-500) 40%, transparent);
     background: rgba(255, 255, 255, 0.04);
   }
   .aware-stat-fig {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: var(--mono);
     font-size: 3.25rem; font-weight: 700; line-height: 1;
     font-variant-numeric: tabular-nums; color: var(--accent-300);
   }
@@ -115,8 +115,8 @@
   .aware-bar-you { width: 20%; background: #64748b; }
   .aware-stat-label {
     margin-top: 1.125rem;
-    font-size: 0.75rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.18em;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.16em;
     color: var(--accent-200);
   }
   .aware-stat-sep { color: #64748b; }
@@ -125,14 +125,14 @@
   .aware-cards { margin-top: 3.5rem; display: grid; gap: 1.25rem; }
   @media (min-width: 900px) { .aware-cards { grid-template-columns: repeat(3, 1fr); } }
   .aware-card {
-    border-radius: 1.5rem; padding: 1.5rem;
+    border-radius: var(--r-lg); padding: 1.5rem;
     border: 1px solid rgba(255, 255, 255, 0.10);
     background: rgba(255, 255, 255, 0.04);
   }
   .aware-card-icon {
     display: flex; align-items: center; justify-content: center;
     width: 2.5rem; height: 2.5rem;
-    border-radius: 0.875rem; background: var(--accent-500); color: #0B1220;
+    border-radius: var(--r-md); background: var(--accent-500); color: #0B1220;
   }
   .aware-card-title { margin-top: 1.125rem; font-size: 1.0625rem; font-weight: 600; color: #fff; }
   .aware-card-text { margin-top: 0.5rem; font-size: 0.9375rem; line-height: 1.7; color: #cbd5e1; }
