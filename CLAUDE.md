@@ -50,8 +50,31 @@ To add a page, copy an existing page. Then do these steps:
   `--torus-*`, `--hero-glow`) and the base styles that every page shares (hero,
   grain, reveal, links, and the current-page nav style).
 - Each page keeps only its own section CSS in a `<style>` block in its `<head>`.
-- Fonts: Fraunces for headings (`font-display`), Inter Tight for body text, and
-  Space Grotesk for the `.wordmark` only.
+- Fonts: Fraunces for headings (`font-display`), Inter Tight for body text,
+  IBM Plex Mono (`--mono`) for section labels and figures, and Space Grotesk
+  for the `.wordmark` only.
+- The look is a "precision instrument". The tokens in `:root` are `--mono`, the
+  radius scale `--r-xs/sm/md/lg` (3, 6, 8 and 12px), the hairlines `--hair*`,
+  `--tick`, `--signal` (the amber status dot), `--focus-ring` and the blueprint
+  grid colours. The `@theme` block redefines `rounded-xl`, `rounded-2xl` and
+  `rounded-3xl` as 8, 10 and 12px, so those classes are smaller than Tailwind's.
+- Amber is a signal colour: status dots, the current tab, the primary hero
+  button and the Fusion column. Large figures are white on dark surfaces and
+  ink on light ones, in `--mono`.
+- Dark surfaces: one rule in `css/input.css` switches the focus ring, the tick
+  colour and the label colour (`--eyebrow`) to light values on `.bg-ink`,
+  `.hero-bg`, `.grain`, `.blueprint`, `header`, `.run-total` and `.less-stat`.
+  If you add a dark panel that has none of these classes, add it to that rule.
+  If you do not, its section labels turn dark on dark and its focus ring fails
+  contrast.
+- Section labels: use `.eyebrow` (a status dot, a mono label and a tick ruler).
+  A second selector, `p.uppercase[class*="tracking-[0.25em]"]`, gives the old
+  label markup on the inner pages the same look.
+- Field lines: the torus seen edge-on, as SVG mask tiles (`--field-tile` and
+  `--field-tile-lg`). They appear in `.field-seam` (a divider between two
+  sections), in `.field-bg` (a large braid behind a dark section) and in
+  `footer::before` (a divider at the top of the footer on every page). All three
+  drift slowly and stop under `prefers-reduced-motion`.
 - DaisyUI is limited by the `include:` list in `css/input.css` (now `button, card,
   badge, dropdown, menu, checkbox`). DaisyUI emits a component when its name
   appears anywhere in the HTML, and words such as `card` and `loading` appear in
