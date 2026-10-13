@@ -6,7 +6,8 @@ Marketing site for fusionframe.work. GitHub Pages serves the repository root.
 
 ```
 index.html            ← Home page (enterprise audience)
-challenge/index.html  ← The Idea to Impact Challenge
+idea-to-impact/index.html ← Idea to Impact: one workflow from the sponsor session to user sign-off in sixteen working hours
+challenge/index.html  ← Redirect from the old address to /idea-to-impact/
 platform/index.html   ← Platform, analytics, custom UI (business audience)
 lifecycle/index.html  ← The built-in development lifecycle, AI-native change flow
 technology/index.html ← Integration, less code, technology (technical audience)

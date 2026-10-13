@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* DaisyUI supplies the components. The page keeps its own CSS for everything
-   that DaisyUI has no component for: the hero canvas, the Challenge timeline,
+   that DaisyUI has no component for: the hero canvas, the Idea to Impact timeline,
    the code split, the screenshot gallery, the lock-in ledger.
 
    themes: false  — the built-in light and dark themes set colours on :root and
@@ -72,7 +72,7 @@
 }
 
 @source "../index.html";
-@source "../challenge/index.html";
+@source "../idea-to-impact/index.html";
 @source "../platform/index.html";
 @source "../lifecycle/index.html";
 @source "../technology/index.html";
@@ -373,7 +373,7 @@ footer p.uppercase {
   background: var(--accent-300);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-300) 22%, transparent);
 }
-/* The Challenge button in the header, on the Challenge page itself */
+/* The Idea to Impact button in the header, on the Idea to Impact page itself */
 .nav-cta[aria-current="page"] {
   background-color: rgb(255 255 255 / 0.16);
   border-color: var(--accent-300);

@@ -30,6 +30,8 @@ copied into every page:
 
 - If you change the nav, the footer, the booking link or the analytics snippet,
   change every page. `git grep` the old markup to find each copy.
+- `challenge/index.html` only forwards the old address to `/idea-to-impact/`. It has
+  no header, footer or analytics.
 - The home page has a small inline script that forwards old single-page anchors
   (for example `/#pricing`) to the sub-pages.
 
@@ -92,7 +94,7 @@ One shared script, loaded at the end of each page:
   Every page pins the same Lucide version (`lucide@1.48.0`). If you change the
   version, change it on every page.
 - **Current page:** the script sets `aria-current="page"` on header nav links,
-  on the header Challenge button (`.nav-cta`) and on mobile menu links that
+  on the header Idea to Impact button (`.nav-cta`) and on mobile menu links that
   match the current path. It skips links with a hash.
 
 ### Images

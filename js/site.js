@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#year').textContent = new Date().getFullYear();
   if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 
-  /* Mark the current page in the header nav, the header Challenge button and
+  /* Mark the current page in the header nav, the header Idea to Impact button and
      the mobile menu. Hash links are skipped, so a link to a section of the
      current page is never marked. */
   $$('header nav a, header .nav-cta, header .menu a').forEach((a) => {
