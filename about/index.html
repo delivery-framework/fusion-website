@@ -109,6 +109,32 @@
     font-size: 0.9375rem; font-weight: 600; color: var(--accent-200);
   }
 
+  /* Our mission, and what we believe */
+  .beliefs { margin-top: 1.25rem; display: grid; gap: 1.25rem; }
+  @media (min-width: 900px) { .beliefs { grid-template-columns: repeat(2, 1fr); } }
+  .beliefs-label {
+    margin-top: 3.5rem;
+    font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.2em;
+    color: var(--accent-200);
+  }
+  .belief {
+    border-radius: 1.5rem; padding: 1.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .belief-num {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.75rem; color: var(--accent-300);
+  }
+  .belief-title {
+    margin-top: 0.875rem;
+    font-family: 'Fraunces', serif; font-feature-settings: 'ss01' on;
+    font-size: 1.5rem; font-weight: 500; letter-spacing: -0.01em;
+    line-height: 1.25; color: #fff;
+  }
+  .belief-text { margin-top: 0.875rem; line-height: 1.75; color: #cbd5e1; }
+
   /* Team */
   .team { margin-top: 3rem; display: grid; gap: 1.25rem; }
   @media (min-width: 900px) { .team { grid-template-columns: repeat(2, 1fr); } }
@@ -218,8 +244,38 @@
   </div>
 </section>
 
+<!-- ====================== MISSION AND BELIEFS ====================== -->
+<section id="mission" class="bg-ink py-20 text-white relative overflow-hidden grain">
+  <div class="absolute -right-32 -top-32 h-96 w-96 rounded-full blur-3xl opacity-15" style="background: var(--accent-500);"></div>
+  <div class="mx-auto max-w-7xl px-5 relative">
+    <div class="max-w-4xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-200);">Our mission</p>
+      <h2 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">
+        Radically improve how enterprise software is delivered and maintained, and return system sovereignty to our customers.
+      </h2>
+      <p class="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
+        System sovereignty means that your data, your schema and your business logic are yours, on the hosting that you choose.
+      </p>
+    </div>
+
+    <p class="beliefs-label">What we believe</p>
+    <div class="beliefs">
+      <div class="belief">
+        <p class="belief-num">01</p>
+        <h3 class="belief-title">The big SaaS platforms are now legacy.</h3>
+        <p class="belief-text">Salesforce, ServiceNow and Microsoft Dynamics were built before AI, to solve a different set of problems. Their proprietary, multi-tenant architectures were built for “clicks, not code”, and they are now 20 to 30 years old.</p>
+      </div>
+      <div class="belief">
+        <p class="belief-num">02</p>
+        <h3 class="belief-title">No tollgate on your own data.</h3>
+        <p class="belief-text">You already pay for your LLMs. You should not have to pay a tollgate fee each time you use them to access your own data and your own business logic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ====================== HOW FUSION RECONNECTS THE WORK ====================== -->
-<section id="trace" class="bg-slate-50 py-20 border-t border-slate-200">
+<section id="trace" class="bg-slate-50 py-20">
   <div class="mx-auto max-w-7xl px-5">
     <div class="max-w-3xl">
       <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-700);">How Fusion reconnects the work</p>
