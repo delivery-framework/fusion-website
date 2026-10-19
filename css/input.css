@@ -84,6 +84,7 @@
 @source "../escape/dynamics-365/index.html";
 @source "../privacy/index.html";
 @source "../about/index.html";
+@source "../saas-wars/index.html";
 
 /* ============================================================
    Shared base styles — used by every page. Moved here from the
@@ -135,7 +136,7 @@
    the surface it sits on, not its own. The white mobile menu in the header
    switches back to the light-surface values. A dark panel that has none of
    these classes must be added here, or its labels turn dark on dark. */
-:is(.bg-ink, .hero-bg, .grain, .blueprint, header, .run-total, .less-stat):not(.btn) {
+:is(.bg-ink, .hero-bg, .grain, .blueprint, header, .run-total, .less-stat, .sw):not(.btn) {
   --focus-ring: var(--accent-300);
   --tick: rgba(255, 255, 255, 0.2);
   --eyebrow: #cbd5e1;

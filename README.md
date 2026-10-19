@@ -19,6 +19,7 @@ escape/index.html     ← Escape Salesforce, ServiceNow & Dynamics: metadata rea
   dynamics-365/index.html ← Escape Dynamics 365: what we read from the environment (Dataverse Web API) and where each part goes on Fusion
 about/index.html      ← About: why we built Fusion, the trace from problem to code, the team
 privacy/index.html    ← Privacy policy (NZ Privacy Act 2020, Plausible analytics)
+saas-wars/index.html  ← SaaS Wars: a parody opening crawl about the Data Paywall, with pause, replay and skip controls and a static version for reduced motion
 css/
   input.css           ← Tailwind source (edit this; also holds the shared base styles)
   output.css          ← Compiled Tailwind (generated)

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SaaS Wars — Fusion</title>
+<meta name="description" content="SaaS Wars, Episode IX: A New Open Source Hope. A short parody crawl about the Data Paywall and the rebels who free your data from it." />
+<link rel="canonical" href="https://fusionframe.work/saas-wars/" />
+<link rel="icon" type="image/svg+xml" href="/site/images/favicon.svg" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fusion" />
+<meta property="og:title" content="SaaS Wars — Fusion" />
+<meta property="og:description" content="SaaS Wars, Episode IX: A New Open Source Hope. A short parody crawl about the Data Paywall and the rebels who free your data from it." />
+<meta property="og:url" content="https://fusionframe.work/saas-wars/" />
+<meta property="og:image" content="https://fusionframe.work/site/images/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="SaaS Wars — Fusion" />
+<meta name="twitter:description" content="SaaS Wars, Episode IX: A New Open Source Hope. A short parody crawl about the Data Paywall and the rebels who free your data from it." />
+<meta name="twitter:image" content="https://fusionframe.work/site/images/og-image.png" />
+
+
+<link rel="stylesheet" href="/css/output.css">
+<script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Wordmark face only — subset to the six logotype glyphs, block display so the brand name never flashes unstyled -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&text=Fusion&display=block" rel="stylesheet">
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-ktZLDqdblhaDYlH3Rd1PY.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+
+<style>
+  /* SaaS Wars — a parody opening crawl.
+
+     The stage is one dark screen under the sticky header. In the film, CSS
+     keyframes run every motion: the blue intro line, the cut to the stars
+     and the logo, the crawl on a tilted plane, the camera tilt down to the
+     planet, and the call to action. Each animation has a name that starts
+     with "sw-". The inline script holds them all on one clock through the
+     Web Animations API (play, pause, seek).
+
+     The base rules are the static version: the same DOM as a readable page.
+     That is what a reader gets with prefers-reduced-motion: reduce, without
+     script, or in a browser that does not know the "scripting" media
+     feature. The film rules apply only under the film media query, and the
+     script uses the same query. */
+
+  .sw {
+    --sw-blue: #4bd5ee;
+    --sw-gold: #fcd34d;
+    /* "overflow: clip", so that focus can never scroll the stage from the inside */
+    position: relative; overflow: hidden; overflow: clip; isolation: isolate;
+    background: #000; color: #fff;
+  }
+  .sw-stars { display: block; pointer-events: none; }
+
+  /* ---- Intro line ---- */
+  .sw-intro p {
+    margin: 0; color: var(--sw-blue);
+    font-weight: 400; line-height: 1.5; letter-spacing: 0.01em; text-align: left;
+  }
+
+  /* ---- Logo: two lines of heavy Inter Tight, a gold outline over a black fill ---- */
+  .sw-logo-h { margin: 0; line-height: 0; }
+  .sw-logo-h svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .sw-logo-h text {
+    font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 700; font-size: 300px;
+    letter-spacing: 0.1em;
+    fill: #000; stroke: var(--sw-gold); stroke-width: 15; stroke-linejoin: round;
+    paint-order: stroke fill;
+  }
+
+  /* ---- Crawl text ---- */
+  .sw-text { color: var(--sw-gold); font-weight: 600; letter-spacing: 0.01em; }
+  .sw-text p { margin: 0 0 1.32em; text-align: justify; -webkit-hyphens: auto; hyphens: auto; }
+  .sw-text p:last-child { margin-bottom: 0; }
+  .sw-text .sw-episode {
+    margin: 0 0 0.35em; text-align: center; text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .sw-text .sw-title {
+    margin: 0 0 0.9em; font-family: inherit; font-weight: 700; font-size: 1.42em; line-height: 1.15;
+    letter-spacing: 0.04em; text-align: center; text-wrap: balance;
+  }
+
+  /* ---- Planet: a dark limb with a sunrise behind it ---- */
+  .sw-planet {
+    position: absolute; top: var(--glow); left: 50%;
+    width: calc(var(--R) * 2); height: calc(var(--R) * 2); margin-left: calc(var(--R) * -1);
+    border-radius: 50%;
+    background:
+      radial-gradient(calc(var(--R) * 0.32) 5rem at calc(var(--R) + 14%) 0, rgba(255, 236, 190, 0.42), rgba(255, 236, 190, 0) 70%),
+      linear-gradient(to bottom, #111a2e 0, #080c16 3rem, #020306 12rem);
+    box-shadow:
+      inset 0 2px 1px -1px rgba(255, 244, 214, 0.95),
+      inset 0 14px 30px -12px rgba(252, 211, 77, 0.45),
+      0 0 18px 2px rgba(252, 211, 77, 0.35),
+      0 0 90px 22px rgba(217, 119, 6, 0.22),
+      0 0 260px 70px rgba(75, 213, 238, 0.07);
+  }
+  /* the strip fades in from its top edge, so the glow above the rim is never cut */
+  .sw-horizon {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 calc(var(--glow) * 0.85));
+    mask-image: linear-gradient(to bottom, transparent, #000 calc(var(--glow) * 0.85));
+  }
+  .sw-sun {
+    position: absolute; top: var(--glow); left: 64%;
+    width: min(110%, 80rem); height: calc(var(--glow) * 1.5);
+    transform: translate(-50%, -50%);
+    background: radial-gradient(closest-side, rgba(255, 249, 230, 0.95), rgba(253, 230, 138, 0.55) 10%, rgba(245, 158, 11, 0.2) 42%, rgba(245, 158, 11, 0) 100%);
+  }
+
+  /* ---- Call to action ---- */
+  .sw-cta { text-align: center; }
+  .sw-cta-in { width: 100%; max-width: 44rem; margin: 0 auto; }
+  .sw-cta .eyebrow { justify-content: center; }
+  .sw-cta .eyebrow::after { display: none; }
+  .sw-cta h2 {
+    margin: 1.125rem 0 0; font-family: 'Inter Tight', system-ui, sans-serif; font-weight: 700;
+    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem); line-height: 1.08; letter-spacing: 0.03em;
+    text-transform: uppercase; text-wrap: balance; color: var(--sw-gold);
+  }
+  .sw-cta p.sw-lede {
+    margin: 1.125rem auto 0; max-width: 36rem;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); line-height: 1.65; color: #cbd5e1;
+  }
+  .sw-cta .sw-actions { justify-content: center; }
+
+  /* ---- Controls and the clock line ---- */
+  .sw-controls { position: absolute; z-index: 4; display: flex; align-items: center; gap: 0.5rem; }
+  .sw-btn.btn {
+    height: 2.25rem; min-height: 2.25rem; gap: 0.4375rem; padding: 0 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.22); border-radius: var(--r-sm);
+    background: rgba(11, 18, 32, 0.72); color: #f1f5f9;
+    font-size: 0.8125rem; font-weight: 500; box-shadow: none;
+  }
+  .sw-btn.btn:hover { border-color: rgba(255, 255, 255, 0.4); background: rgba(30, 41, 59, 0.9); color: #fff; }
+  .sw-btn svg { width: 0.9375rem; height: 0.9375rem; flex: none; }
+  .sw[data-state="playing"] .sw-ic-play,
+  .sw:not([data-state="playing"]) .sw-ic-pause { display: none; }
+  .sw-ic { display: inline-flex; }
+  /* "Read the text" shows the static version in the stage; then the same button plays the film again */
+  .sw:not([data-static]) :is(.sw-ic-film, .sw-lbl-film),
+  .sw[data-static] :is(.sw-ic-text, .sw-lbl-text) { display: none; }
+  .sw-time {
+    margin-right: 0.375rem; font-family: var(--mono); font-size: 0.75rem; font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em; color: #94a3b8;
+  }
+  .sw-progress { position: absolute; z-index: 4; left: 0; right: 0; top: 0; height: 2px; background: rgba(255, 255, 255, 0.08); pointer-events: none; }
+  .sw-progress .sw-fill { display: block; height: 100%; background: var(--signal); transform-origin: 0 50%; transform: scaleX(0); }
+  /* a tick at the start of each scene, like the scale on an instrument */
+  .sw-progress .sw-mark { position: absolute; top: 0; width: 1px; height: 6px; background: rgba(255, 255, 255, 0.4); }
+
+  .sw-note { padding: 1.75rem 0; border-top: 1px solid rgba(255, 255, 255, 0.08); background: #000; }
+  .sw-note p { max-width: 46rem; font-size: 0.8125rem; line-height: 1.6; color: #94a3b8; }
+
+  /* This page keeps the torus out of the picture: the field-line seam that
+     opens the footer on the other pages (the torus seen edge-on) stays off. */
+  footer::before { display: none; }
+
+  /* =================== Static version (the base) =================== */
+  .sw { display: flex; flex-direction: column; align-items: center; padding: 4rem 1rem 0; }
+  .sw-world { display: contents; }
+  .sw-stars { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sw-intro, .sw-logo, .sw-crawl, .sw-cta { position: relative; order: 1; width: 100%; }
+  .sw-intro { max-width: 40rem; }
+  .sw-intro p { font-size: clamp(1.0625rem, 0.9rem + 0.8vw, 1.5rem); }
+  .sw-logo { max-width: 26rem; margin: 3.5rem 0 3rem; }
+  .sw-crawl { max-width: 40rem; }
+  .sw-text { font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.3125rem); line-height: 1.7; }
+  .sw-cta { margin-top: 4.5rem; }
+  .sw-horizon {
+    position: relative; order: 2; align-self: stretch; height: 13rem; margin: 1.5rem -1rem 0; overflow: hidden;
+    --glow: 7rem; --R: max(150vw, 60rem);
+  }
+  .sw-controls, .sw-progress { display: none; }
+  /* without script the star canvas stays empty, so a few CSS stars stand in for it */
+  @media (scripting: none) {
+    .sw {
+      background-image:
+        radial-gradient(circle at 23px 41px, rgba(255, 255, 255, 0.9) 0 0.8px, transparent 1.4px),
+        radial-gradient(circle at 141px 17px, rgba(255, 255, 255, 0.7) 0 0.6px, transparent 1.2px),
+        radial-gradient(circle at 212px 128px, rgba(207, 232, 255, 0.95) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 77px 193px, rgba(255, 255, 255, 0.6) 0 0.6px, transparent 1.2px),
+        radial-gradient(circle at 168px 231px, rgba(255, 255, 255, 0.8) 0 0.7px, transparent 1.3px),
+        radial-gradient(circle at 36px 307px, rgba(255, 244, 214, 0.85) 0 0.9px, transparent 1.5px),
+        radial-gradient(circle at 251px 286px, rgba(255, 255, 255, 0.55) 0 0.6px, transparent 1.2px),
+        radial-gradient(circle at 297px 63px, rgba(255, 255, 255, 0.75) 0 0.7px, transparent 1.3px);
+      background-size: 320px 340px;
+    }
+  }
+
+  /* =================== The film (motion allowed, script on) =================== */
+  /* Each film rule starts with .sw:not([data-static]). The "Read the text"
+     button sets data-static on the stage, and the stage then shows the
+     static version above. Only the controls apply in both. */
+  @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+    .sw:not([data-static]) {
+      --tilt: 62cqh;     /* how far the camera tilts down */
+      --horizon: 72cqh;  /* the screen height of the horizon after the tilt */
+      display: block; padding: 0;
+      /* the script sets --header-h on the stage to the real height of the header */
+      height: calc(100vh - var(--header-h));
+      height: calc(100svh - var(--header-h));
+      min-height: 17rem;
+      container-type: size;
+    }
+    /* Everything that the camera tilt moves: stars, intro, logo, crawl, planet */
+    .sw:not([data-static]) .sw-world {
+      display: block; position: absolute; left: 0; top: 0; width: 100%; height: calc(100cqh + var(--tilt));
+      animation: sw-tilt 5.5s cubic-bezier(0.5, 0, 0.3, 1) 62s both;
+    }
+    /* the stars and the logo cut in together; before that the screen is black */
+    .sw:not([data-static]) .sw-stars { opacity: 0; animation: sw-stars 0.01s linear 6.6s forwards; }
+    .sw:not([data-static]) :is(.sw-intro, .sw-logo, .sw-crawl) { position: absolute; left: 0; right: 0; top: 0; height: 100cqh; max-width: none; margin: 0; }
+
+    .sw:not([data-static]) .sw-intro { display: grid; place-items: center; padding: 0 1rem; }
+    .sw:not([data-static]) .sw-intro p {
+      font-size: clamp(0.9375rem, calc((100cqw - 2rem) / 21), 2.5rem);
+      animation: sw-intro 5.6s linear 0.4s both;
+    }
+
+    .sw:not([data-static]) .sw-logo { display: grid; place-items: center; perspective: 1000px; pointer-events: none; }
+    .sw:not([data-static]) .sw-logo-h { width: min(58cqw, 92cqh); opacity: 0; animation: sw-logo 8.4s linear 6.6s forwards; }
+
+    /* The crawl: a plane tilted back by 32deg, seen from the foot of the
+       screen. --yv is the height of its vanishing point. The plane clips the
+       text, so no line is drawn behind the camera. */
+    .sw:not([data-static]) .sw-crawl {
+      --yv: 0cqh;
+      --cw: min(100cqw - 2rem, max(60cqw, 34rem), 72rem);
+      perspective: calc((100cqh - var(--yv)) * 0.6249); /* tan(32deg) */
+      perspective-origin: 50% 100%;
+      overflow: hidden; pointer-events: none;
+      -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--yv) + (100cqh - var(--yv)) * 0.12), #000 calc(var(--yv) + (100cqh - var(--yv)) * 0.44));
+      mask-image: linear-gradient(to bottom, transparent calc(var(--yv) + (100cqh - var(--yv)) * 0.12), #000 calc(var(--yv) + (100cqh - var(--yv)) * 0.44));
+      /* the crawl fades while the camera tilts, so it never passes behind the controls */
+      animation: sw-fade 2s cubic-bezier(0.4, 0, 1, 1) 62.5s both;
+    }
+    .sw:not([data-static]) .sw-plane {
+      position: absolute; bottom: 0; left: 50%;
+      width: var(--cw); margin-left: calc(var(--cw) / -2); height: calc((100cqh - var(--yv)) * 8);
+      transform-origin: 50% 100%; transform: rotateX(32deg);
+      /* clip along the plane only, so a justified line keeps the ink of its last letter */
+      overflow: hidden; overflow: visible clip;
+    }
+    .sw:not([data-static]) .sw-text {
+      /* where the last line is when the camera starts to tilt: scale 0.46,
+         (1 / 0.46 - 1) / cos(32deg) = 1.3843. The line is still legible
+         there, so the tilt follows the reading without a pause. */
+      --d-tilt: calc((100cqh - var(--yv)) * 1.3843);
+      position: absolute; left: 0; top: 100%; width: 100%;
+      font-size: clamp(1.25rem, var(--cw) / 16.5, 4rem); line-height: 1.32;
+      animation: sw-crawl 59.8s linear 9.2s both;
+    }
+
+    .sw:not([data-static]) .sw-horizon {
+      --glow: 30cqh; --R: max(150cqw, 90cqh);
+      position: absolute; left: 0; right: 0; top: calc(var(--horizon) + var(--tilt) - var(--glow)); bottom: 0;
+      height: auto; margin: 0; pointer-events: none;
+    }
+    .sw:not([data-static]) .sw-sun { animation: sw-sun 4.5s cubic-bezier(0, 0, 0.58, 1) 64.5s both; /* ease out */ }
+
+    .sw:not([data-static]) .sw-cta {
+      position: absolute; z-index: 2; inset: 0; margin: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: safe center;
+      padding: 4.25rem 1rem calc(100cqh - var(--horizon) + 2.5rem);
+      pointer-events: none;
+    }
+    /* the fade starts just before the cta scene, so the scene opens on a readable frame */
+    .sw:not([data-static]) .sw-cta-in { animation: sw-cta 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) 65.6s both; }
+    .sw:not([data-static]) .sw-cta h2 { font-size: clamp(1.75rem, 4.2cqw, 3.25rem); }
+    /* an opaque fill, so that the white text keeps its contrast where the button sits on the sunrise */
+    .sw:not([data-static]) .sw-cta .sw-actions a + a { background-color: #0b1220; }
+    .sw:not([data-static]) .sw-cta .sw-actions a + a:hover { background-color: #1e293b; }
+
+    /* The controls sit at the top, where the crawl has faded, so they never
+       cover the text. In the static version only the button that plays the
+       film shows. */
+    .sw-controls { display: flex; top: 1rem; right: 1.25rem; }
+    .sw[data-static] .sw-controls > :not([data-sw="text"]) { display: none; }
+    .sw:not([data-static]) .sw-progress { display: block; }
+    .sw:not([data-static]) .sw-progress .sw-fill { animation: sw-clock 69s linear 0s both; }
+
+    @media (max-width: 639px) {
+      /* A phone: larger type, and a slower crawl that ends nearer, so each line
+         stays legible for longer. The last line is at scale 0.64 when the
+         camera starts to tilt: (1 / 0.64 - 1) / cos(32deg) = 0.6633 */
+      .sw:not([data-static]) .sw-crawl { --yv: -10cqh; }
+      .sw:not([data-static]) .sw-text {
+        --d-tilt: calc((100cqh - var(--yv)) * 0.6633);
+        font-size: clamp(1.25rem, var(--cw) / 14, 2rem);
+      }
+      .sw:not([data-static]) .sw-logo-h { width: min(80cqw, 92cqh); }
+      /* a narrow stage (a 320px screen at 400% zoom) still fits the stacked call to action */
+      .sw:not([data-static]) { min-height: 21rem; }
+      /* Four buttons fit one row on a 320px screen: no icons, and short labels.
+         The rest of each long label is for screen readers only. */
+      .sw-controls { left: 1rem; right: 1rem; top: 0.875rem; justify-content: center; }
+      .sw-controls .sw-ic, .sw-time { display: none; }
+      .sw-more {
+        position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+        overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap;
+      }
+    }
+    /* A short stage (a small phone, a short laptop): the horizon sits lower,
+       and the call to action is more compact, so that it fits above the planet. */
+    @media (max-height: 700px) {
+      .sw:not([data-static]) { --horizon: 79cqh; }
+      .sw:not([data-static]) .sw-cta { padding-top: 3.5rem; padding-bottom: calc(100cqh - var(--horizon) + 1.5rem); }
+      .sw:not([data-static]) .sw-cta h2 { margin-top: 0.75rem; font-size: clamp(1.5rem, 4.2cqw, 2.5rem); }
+      .sw:not([data-static]) .sw-cta p.sw-lede { margin-top: 0.75rem; font-size: 0.9375rem; line-height: 1.55; }
+      .sw:not([data-static]) .sw-cta .sw-actions { margin-top: 1.25rem; gap: 0.625rem; }
+      .sw:not([data-static]) .sw-cta .sw-actions .btn { padding-top: 0.8125rem; padding-bottom: 0.8125rem; }
+    }
+    /* A very short stage (a phone on its side): no label, and a smaller text */
+    @media (max-height: 480px) {
+      .sw:not([data-static]) { --horizon: 84cqh; }
+      .sw:not([data-static]) .sw-cta { padding-bottom: calc(100cqh - var(--horizon) + 1rem); }
+      .sw:not([data-static]) .sw-cta .eyebrow { display: none; }
+      .sw:not([data-static]) .sw-cta h2 { margin-top: 0; }
+      .sw:not([data-static]) .sw-cta p.sw-lede { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.5; }
+      .sw:not([data-static]) .sw-cta .sw-actions { margin-top: 0.875rem; }
+      .sw:not([data-static]) .sw-cta .sw-actions .btn { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+    }
+
+    @keyframes sw-intro {
+      0% { opacity: 0; } 18% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; }
+    }
+    @keyframes sw-stars { from, to { opacity: 1; } }
+    /* The logo recedes at a falling speed, on one smooth curve: scale 2.1 to
+       0.055. The easing fits ln(scale) = ln(2.1) - 3.64 * p^0.8. */
+    @keyframes sw-logo {
+      0%   { opacity: 1; transform: translateZ(524px); animation-timing-function: cubic-bezier(0.303, 0.064, 0.717, 0.128); }
+      78%  { opacity: 1; }
+      100% { opacity: 0; transform: translateZ(-17182px); }
+    }
+    /* 59.8 s in all; the last line reaches --d-tilt at 52.8 s (62 s on the clock) */
+    @keyframes sw-crawl {
+      from { transform: translateY(0); }
+      to   { transform: translateY(calc((-100% - var(--d-tilt)) * 1.13258)); }
+    }
+    @keyframes sw-fade { to { opacity: 0; } }
+    @keyframes sw-tilt { from { transform: translateY(0); } to { transform: translateY(calc(var(--tilt) * -1)); } }
+    @keyframes sw-sun {
+      from { opacity: 0.2; transform: translate(-50%, -50%) scale(0.6); }
+      to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+    @keyframes sw-cta {
+      from { opacity: 0; transform: translateY(1rem); pointer-events: none; }
+      to   { opacity: 1; transform: none; pointer-events: auto; }
+    }
+    @keyframes sw-clock { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
+</style>
+</head>
+
+<body class="bg-slate-50 text-slate-950">
+
+<!-- ====================== HEADER ====================== -->
+<header class="sticky top-0 z-50 border-b border-white/10 bg-ink">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
+    <a href="/" class="flex items-center gap-2.5" aria-label="Fusion home">
+      <!-- Logo mark: confinement arcs around a fusion core (follows the audience accent) -->
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)" aria-hidden="true">
+        <g transform="rotate(-18 16 16)">
+          <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+        </g>
+        <circle cx="16.4" cy="16" r="4.6" fill="#ffffff"/>
+      </svg>
+      <span class="wordmark text-xl text-white">Fusion</span>
+    </a>
+
+    <nav aria-label="Main" class="site-nav hidden items-center gap-6 xl:gap-7 text-sm font-medium text-slate-300 lg:flex">
+      <a href="/lifecycle/">Lifecycle</a>
+      <a href="/platform/">Platform</a>
+      <a href="/technology/">Technology</a>
+      <a href="/replace-legacy/">Replace Legacy</a>
+      <a href="/escape/">Escape SaaS</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
+    </nav>
+
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="/idea-to-impact/" class="nav-cta btn hidden h-auto border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white hover:border-white/30 hover:bg-white/15 lg:inline-flex plausible-event-name=CTA+Click plausible-event-position=header plausible-event-cta=Idea+to+Impact">Idea to Impact</a>
+      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto border-0 bg-white px-4 py-2.5 text-sm font-medium text-ink hover:bg-slate-100 md:px-5 plausible-event-name=Book+Meeting plausible-event-position=header plausible-event-cta=Book+a+demo">Book a demo</a>
+      <!-- Mobile menu (DaisyUI dropdown); mirrors the nav above -->
+      <div class="dropdown dropdown-end lg:hidden">
+        <div tabindex="0" role="button" aria-label="Open menu" class="btn btn-ghost btn-square btn-sm -mr-2 text-slate-300 hover:bg-white/10 hover:text-white">
+          <i data-lucide="menu" class="h-6 w-6"></i>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu mt-3 w-60 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
+          <li><a href="/idea-to-impact/">Idea to Impact</a></li>
+          <li><a href="/lifecycle/">Lifecycle</a></li>
+          <li><a href="/platform/">Platform</a></li>
+          <li><a href="/technology/">Technology</a></li>
+          <li><a href="/replace-legacy/">Replace Legacy</a></li>
+          <li><a href="/escape/">Escape SaaS</a></li>
+          <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ====================== SAAS WARS ====================== -->
+<section id="saas-wars" class="sw" aria-label="SaaS Wars, a parody opening crawl">
+
+  <!-- The controls come first, so that the pause button is the first stop for the keyboard -->
+  <div class="sw-controls" role="group" aria-label="Animation controls" hidden>
+    <span class="sw-time" aria-hidden="true"><span data-sw="now">0:00</span> / 1:09</span>
+    <button type="button" class="btn sw-btn" data-sw="toggle">
+      <span class="sw-ic sw-ic-pause"><i data-lucide="pause"></i></span>
+      <span class="sw-ic sw-ic-play"><i data-lucide="play"></i></span>
+      <span class="sw-lbl">Pause</span>
+    </button>
+    <button type="button" class="btn sw-btn" data-sw="replay">
+      <span class="sw-ic"><i data-lucide="rotate-ccw"></i></span>
+      <span>Replay</span>
+    </button>
+    <button type="button" class="btn sw-btn" data-sw="skip">
+      <span class="sw-ic"><i data-lucide="skip-forward"></i></span>
+      <span>Skip<span class="sw-more"> to end</span></span>
+    </button>
+    <button type="button" class="btn sw-btn" data-sw="text">
+      <span class="sw-ic sw-ic-text"><i data-lucide="book-open-text"></i></span>
+      <span class="sw-ic sw-ic-film"><i data-lucide="film"></i></span>
+      <span class="sw-lbl-text">Read<span class="sw-more"> the text</span></span>
+      <span class="sw-lbl-film">Play the film</span>
+    </button>
+  </div>
+
+  <div class="sw-world">
+    <canvas class="sw-stars" aria-hidden="true"></canvas>
+
+    <div class="sw-horizon" aria-hidden="true" data-overflow-ok>
+      <div class="sw-sun"></div>
+      <div class="sw-planet"></div>
+    </div>
+
+    <div class="sw-intro">
+      <p>Not that long ago, in a cloud not that<br>far away....</p>
+    </div>
+
+    <div class="sw-logo" data-overflow-ok>
+      <h1 class="sw-logo-h">
+        <span class="sr-only">SaaS Wars</span>
+        <svg viewBox="0 0 1000 640" aria-hidden="true" focusable="false">
+          <text x="515" y="268" text-anchor="middle">SAAS</text>
+          <text x="515" y="600" text-anchor="middle">WARS</text>
+        </svg>
+      </h1>
+    </div>
+
+    <div class="sw-crawl">
+      <div class="sw-plane" data-overflow-ok>
+        <div class="sw-text">
+          <p class="sw-episode">Episode IX</p>
+          <h2 class="sw-title">A NEW OPEN SOURCE HOPE</h2>
+          <p>Turmoil has engulfed the Enterprise and Small to Medium Business Galaxy. The greedy CLOUD EMPIRE has locked business logic and customer records behind an impenetrable paywall, charging subjects a steep ransom just to access their own data.</p>
+          <p>Under the guise of "Digital Labor," the Emperor deploys the dreaded AGENT-FORCE—imposing a $2 toll for every automated conversation, 20 Flex Credits per basic action, and $550 per seat for the Max Edition.</p>
+          <p>Hoping to crush the Data Paywall, a brave alliance of rebels known as the FUSION FRAMEWORK has emerged. Working in secret, they have forged powerful new open-source AI software—giving customers the weapons they need to liberate their systems of record and restore freedom to the galaxy....</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sw-cta">
+    <div class="sw-cta-in">
+      <p class="eyebrow">Escape SaaS</p>
+      <h2>Free your data from the paywall.</h2>
+      <p class="sw-lede">Bring the Salesforce, ServiceNow or Dynamics 365 system that you most want to leave. We rebuild it on Fusion. You own the data, the data model and the business logic.</p>
+      <div class="sw-actions mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn btn-signal h-auto gap-0 px-7 py-4 text-base font-semibold plausible-event-name=Book+Meeting plausible-event-position=hero plausible-event-cta=Book+the+one-hour+session">
+          <span>Book the one-hour session</span>
+          <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+        </a>
+        <a href="/escape/" class="btn h-auto gap-0 border-white/25 bg-white/5 px-7 py-4 text-base font-medium text-white hover:border-white/40 hover:bg-white/10 plausible-event-name=CTA+Click plausible-event-position=hero plausible-event-cta=See+the+Escape+SaaS+offer">
+          <span>See the Escape SaaS offer</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sw-progress" aria-hidden="true"><span class="sw-fill"></span></div>
+</section>
+
+<section class="sw-note" aria-label="About this page">
+  <div class="mx-auto max-w-7xl px-5">
+    <p>SaaS Wars is a parody. The names of products and companies belong to their owners. Fusion has no affiliation with them or with any film studio.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ====================== FOOTER ====================== -->
+<footer class="border-t border-slate-200 bg-white pt-14 pb-8">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-5 sm:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+      <a href="/" class="inline-flex items-center gap-2.5" aria-label="Fusion home">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-600)" aria-hidden="true">
+          <g transform="rotate(-18 16 16)">
+            <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </g>
+          <circle cx="16.4" cy="16" r="4.6" fill="#0B1220"/>
+        </svg>
+        <span class="wordmark text-lg text-ink">Fusion</span>
+      </a>
+      <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Product</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/lifecycle/" class="hover:text-ink">Lifecycle</a></li>
+        <li><a href="/platform/" class="hover:text-ink">Platform</a></li>
+        <li><a href="/technology/" class="hover:text-ink">Technology</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Offers</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/idea-to-impact/" class="hover:text-ink">Idea to Impact</a></li>
+        <li><a href="/pricing/#offers" class="hover:text-ink">Engagement</a></li>
+        <li><a href="/replace-legacy/" class="hover:text-ink">Replace Legacy</a></li>
+        <li><a href="/escape/" class="hover:text-ink">Escape SaaS</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Company</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/pricing/" class="hover:text-ink">Pricing</a></li>
+        <li><a href="/about/" class="hover:text-ink">About</a></li>
+        <li><a href="/privacy/" class="hover:text-ink">Privacy policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500">
+      <p>&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
+      <p>Fusion Framework Limited, New Zealand</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* SaaS Wars — one clock for every sw- animation, the controls, and the stars. */
+(() => {
+  const stage = document.getElementById('saas-wars');
+  if (!stage) return;
+  const DURATION = 69;
+  const CTA_AT = 66.2;     // the cta scene; its fade runs from 65.6 s to 67.2 s
+  const CTA_FULL = 67.2;
+  const SCENES = [
+    { name: 'intro', start: 0 },
+    { name: 'logo', start: 6.6 },
+    { name: 'crawl', start: 9.2 },
+    { name: 'tilt', start: 62 },
+    { name: 'cta', start: CTA_AT },
+  ];
+  // the same media query as the film rules in the <style> block
+  const filmMQ = window.matchMedia('(prefers-reduced-motion: no-preference) and (scripting: enabled)');
+  const controls = stage.querySelector('.sw-controls');
+  const toggleBtn = stage.querySelector('[data-sw="toggle"]');
+  const toggleLbl = toggleBtn.querySelector('.sw-lbl');
+  const nowEl = stage.querySelector('[data-sw="now"]');
+  const cta = stage.querySelector('.sw-cta');
+  const canvas = stage.querySelector('.sw-stars');
+  const progress = stage.querySelector('.sw-progress');
+
+  /* ---------- Stars: drawn once for each size, from a fixed seed ---------- */
+  function drawStars() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
+    // The canvas spans the stage and the tilt, so the backing store stays
+    // near 4 megapixels at most. The stars are dots of about one pixel.
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (w * h * dpr * dpr > 4e6) dpr = Math.max(1, Math.sqrt(4e6 / (w * h)));
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    let seed = 1977;
+    const rnd = () => {
+      seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), seed | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+    const n = Math.round((w * h) / 1500);
+    for (let i = 0; i < n; i++) {
+      const x = rnd() * w, y = rnd() * h, m = rnd();
+      const r = m > 0.992 ? 1.25 + rnd() * 0.6 : m > 0.93 ? 0.8 + rnd() * 0.35 : 0.35 + rnd() * 0.4;
+      const a = m > 0.93 ? 0.75 + rnd() * 0.25 : 0.25 + rnd() * 0.6;
+      const tint = rnd();
+      const rgb = tint < 0.1 ? '196,220,255' : tint < 0.16 ? '255,236,204' : '255,255,255';
+      if (r > 1.2) {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, r * 4);
+        g.addColorStop(0, `rgba(${rgb},${a * 0.35})`);
+        g.addColorStop(1, `rgba(${rgb},0)`);
+        ctx.fillStyle = g;
+        ctx.fillRect(x - r * 4, y - r * 4, r * 8, r * 8);
+      }
+      ctx.fillStyle = `rgba(${rgb},${a})`;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  let starsQueued = 0;
+  const queueStars = () => { if (!starsQueued) starsQueued = requestAnimationFrame(() => { starsQueued = 0; drawStars(); }); };
+  if (window.ResizeObserver) new ResizeObserver(queueStars).observe(canvas);
+  else window.addEventListener('resize', queueStars);
+  drawStars();
+
+  /* a tick on the progress line at the start of each scene */
+  SCENES.slice(1).forEach((s) => {
+    const mark = document.createElement('span');
+    mark.className = 'sw-mark';
+    mark.style.left = ((s.start / DURATION) * 100).toFixed(2) + '%';
+    progress.appendChild(mark);
+  });
+
+  /* ---------- The clock ---------- */
+  let list = [];
+  let playing = false, raf = 0;
+  let held = false;      // paused by the page (hidden tab, stage off screen), not by the viewer
+  let offscreen = false;
+  const isStatic = () => stage.hasAttribute('data-static');
+  const collect = () => {
+    list = filmMQ.matches && !isStatic() ? stage.getAnimations({ subtree: true })
+      .filter((a) => typeof a.animationName === 'string' && a.animationName.indexOf('sw-') === 0) : [];
+  };
+  const clock = () => list.find((a) => a.animationName === 'sw-clock');
+  const time = () => {
+    const c = clock();
+    return c && c.currentTime != null ? Math.min(Math.max(c.currentTime / 1000, 0), DURATION) : 0;
+  };
+  const fmt = (t) => { t = Math.floor(t); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); };
+
+  function ui() {
+    stage.dataset.state = playing ? 'playing' : 'paused';
+    toggleLbl.textContent = playing ? 'Pause' : 'Play';
+    nowEl.textContent = fmt(time());
+  }
+  function tick() {
+    raf = 0;
+    if (!playing) return;
+    if (time() >= DURATION) { playing = false; ui(); return; }
+    nowEl.textContent = fmt(time());
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* Jump to t seconds and hold there. */
+  function seek(t) {
+    t = Math.min(Math.max(+t || 0, 0), DURATION);
+    list.forEach((a) => { a.pause(); a.currentTime = t * 1000; });
+    playing = false;
+    held = false;
+    ui();
+    return Promise.all(list.map((a) => a.ready)).then(() => undefined);
+  }
+  /* Run from the current time. All animations share one start time. */
+  function play() {
+    if (!list.length) return;
+    let t = time();
+    if (t >= DURATION - 0.05) t = 0;
+    const start = document.timeline.currentTime - t * 1000;
+    list.forEach((a) => { a.startTime = start; });
+    playing = true;
+    held = false;
+    ui();
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function pause() {
+    if (!list.length) return;
+    seek(time());
+  }
+
+  /* The film stops while the tab is hidden or the stage is off screen, and goes on when it is back. */
+  function autoPause() {
+    if (document.hidden || offscreen) { if (playing) { pause(); held = true; } }
+    else if (held) play();
+  }
+
+  function init() {
+    cancelAnimationFrame(raf); raf = 0;
+    playing = false; held = false;
+    collect();
+    // in the static version that the viewer chose, the controls keep the button that plays the film
+    controls.hidden = !list.length && !(filmMQ.matches && isStatic());
+    if (!list.length) return;
+    seek(0);
+    if (document.hidden || offscreen) held = true;
+    else play();
+  }
+
+  toggleBtn.addEventListener('click', () => (playing ? pause() : play()));
+  stage.querySelector('[data-sw="replay"]').addEventListener('click', () => { seek(0); play(); });
+  stage.querySelector('[data-sw="skip"]').addEventListener('click', () => { seek(DURATION); });
+  /* "Read the text" stops the film and shows all the text at rest. "Play the film" starts it again from 0:00. */
+  stage.querySelector('[data-sw="text"]').addEventListener('click', () => {
+    if (isStatic()) stage.removeAttribute('data-static');
+    else stage.setAttribute('data-static', '');
+    init();
+  });
+  /* A keyboard user who tabs into the call to action sees it at once */
+  cta.addEventListener('focusin', () => { if (list.length && time() < CTA_FULL) seek(DURATION); });
+
+  document.addEventListener('visibilitychange', autoPause);
+
+  /* The stage fits the screen under the sticky header, which is 75px tall
+     from the lg breakpoint up (the --header-h token is 73px). The off-screen
+     check leaves the header out too, so the film stops when the stage is
+     hidden behind it. */
+  const header = document.querySelector('header');
+  let io = null, headerH = -1;
+  function fitHeader() {
+    const h = header ? header.offsetHeight : 0;
+    if (h === headerH) return;
+    headerH = h;
+    stage.style.setProperty('--header-h', h + 'px');
+    if (!window.IntersectionObserver) return;
+    if (io) io.disconnect();
+    io = new IntersectionObserver((entries) => {
+      offscreen = !entries[entries.length - 1].isIntersecting;
+      autoPause();
+    }, { rootMargin: -h + 'px 0px 0px 0px' });
+    io.observe(stage);
+  }
+  fitHeader();
+  if (header && window.ResizeObserver) new ResizeObserver(fitHeader).observe(header, { box: 'border-box' });
+  const onPref = () => { init(); queueStars(); };
+  if (filmMQ.addEventListener) filmMQ.addEventListener('change', onPref);
+  else if (filmMQ.addListener) filmMQ.addListener(onPref);
+
+  window.promo = {
+    duration: DURATION,
+    scenes: SCENES,
+    seek: (t) => seek(t),
+    play: () => play(),
+    pause: () => pause(),
+  };
+
+  if (document.timeline && document.timeline.currentTime != null) init();
+  else requestAnimationFrame(init);
+})();
+</script>
+<script src="/js/site.js"></script>
+
+</body>
+</html>

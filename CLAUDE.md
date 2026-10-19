@@ -66,7 +66,8 @@ To add a page, copy an existing page. Then do these steps:
   ink on light ones, in `--mono`.
 - Dark surfaces: one rule in `css/input.css` switches the focus ring, the tick
   colour and the label colour (`--eyebrow`) to light values on `.bg-ink`,
-  `.hero-bg`, `.grain`, `.blueprint`, `header`, `.run-total` and `.less-stat`.
+  `.hero-bg`, `.grain`, `.blueprint`, `header`, `.run-total`, `.less-stat` and
+  `.sw` (the SaaS Wars stage).
   If you add a dark panel that has none of these classes, add it to that rule.
   If you do not, its section labels turn dark on dark and its focus ring fails
   contrast.
