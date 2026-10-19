@@ -105,81 +105,21 @@
     .comp { grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 3rem; align-items: center; padding: 3rem; }
   }
 
-  /* What we read — a platform matrix. On a wide screen it is a table with the
-     Fusion column on the right. On a narrow screen each row is a stack: the
-     platform that the reader picks, then Fusion. */
-  .mx-wrap { position: relative; margin-top: 3rem; }
-  .mx-wrap > input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; pointer-events: none; }
-  .mx-pick { display: flex; flex-direction: column; gap: 0.625rem; margin-bottom: 0.5rem; }
-  .mx-pick-label { font-size: 0.875rem; color: #475569; }
-  .mx-seg { display: flex; gap: 3px; padding: 3px; border-radius: var(--r-sm); background: #fff; border: 1px solid var(--hair-strong); }
-  .mx-seg label {
-    flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    min-height: 2.75rem; border-radius: var(--r-xs); cursor: pointer; text-align: center;
-    font-size: 0.875rem; font-weight: 500; color: #475569;
-  }
-  .mx-seg label::before { content: ""; width: 0.375rem; height: 0.375rem; flex: none; border-radius: 9999px; background: var(--led, #cbd5e1); }
-  #mx-sf:checked ~ .mx-pick label[for="mx-sf"],
-  #mx-sn:checked ~ .mx-pick label[for="mx-sn"],
-  #mx-d365:checked ~ .mx-pick label[for="mx-d365"] { background: #0B1220; color: #fff; --led: var(--accent-300); }
-  #mx-sf:focus-visible ~ .mx-pick label[for="mx-sf"],
-  #mx-sn:focus-visible ~ .mx-pick label[for="mx-sn"],
-  #mx-d365:focus-visible ~ .mx-pick label[for="mx-d365"] { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
-  .mx .mx-head { display: none; }
-  .mx-row { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.375rem 0; border-top: 1px solid var(--hair); }
-  .mx-label {
-    padding-bottom: 0.25rem;
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #475569;
-  }
-  .mx-cell { padding: 1rem 1.125rem; border-radius: var(--r-md); border: 1px solid var(--hair); background: #fff; font-size: 0.9375rem; line-height: 1.6; color: #475569; }
-  .mx-cell b { font-weight: 600; color: #0B1220; }
-  .mx-cell::before {
-    content: attr(data-col); display: block; margin-bottom: 0.375rem;
-    font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #475569;
-  }
-  .mx-cell .api {
-    display: block; margin-top: 0.375rem;
-    font-family: var(--mono); font-size: 0.75rem; line-height: 1.5; color: #475569; overflow-wrap: anywhere;
-  }
-  .mx-cell--us { border-color: #0B1220; background: #0B1220; color: #cbd5e1; }
-  .mx-cell--us b { color: #fff; }
-  .mx-cell--us::before { color: var(--accent-200); }
-  .mx-row .alt { display: none; }
-  #mx-sf:checked ~ .mx .alt-sf,
-  #mx-sn:checked ~ .mx .alt-sn,
-  #mx-d365:checked ~ .mx .alt-d365 { display: block; }
-  @media (min-width: 1024px) {
-    .mx-wrap > input { display: none; }
-    .mx-pick { display: none; }
-    .mx-row { display: grid; grid-template-columns: 9rem repeat(4, minmax(0, 1fr)); gap: 0; padding: 0; }
-    .mx .mx-head { display: grid; border-top: 0; }
-    .mx-label {
-      padding: 1.375rem 1.25rem 1.375rem 0;
-      font-family: inherit; font-size: 0.875rem; font-weight: 600; line-height: 1.4; text-transform: none; letter-spacing: 0; color: #0B1220;
-    }
-    .mx-cell { padding: 1.375rem 1.25rem; border: 0; border-radius: 0; background: transparent; transition: background-color 150ms ease; }
-    .mx-cell::before { display: none; }
-    .mx .mx-row .alt { display: block; }
-    /* the row under the pointer reads across, like a crosshair */
-    .mx-row:not(.mx-head):hover > .mx-cell:not(.mx-cell--us) { background: #fff; }
-    .mx-head .mx-cell {
-      padding-bottom: 1rem;
-      font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #475569;
-    }
-    .mx-head .mx-cell .api { text-transform: none; letter-spacing: 0; font-size: 0.6875rem; }
-    /* the Fusion column runs as one continuous panel, lit along its top edge */
-    .mx-cell--us { background: #0B1220; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); }
-    .mx-head .mx-cell--us {
-      display: flex; align-items: flex-start; gap: 0.625rem;
-      padding-top: 1.375rem; border-radius: var(--r-lg) var(--r-lg) 0 0; background: #0B1220; color: var(--accent-200);
-      box-shadow: inset 0 2px 0 var(--signal);
-    }
-    .mx-head .mx-cell--us::before {
-      content: ""; display: block; flex: none; margin: 0.25rem 0 0; width: 0.4375rem; height: 0.4375rem; border-radius: 9999px;
-      background: var(--signal); box-shadow: 0 0 0 3px var(--signal-halo);
-    }
-    .mx-row:last-child .mx-cell--us { border-radius: 0 0 var(--r-lg) var(--r-lg); }
-  }
+  /* What we read — the eight parts, then one card for each platform. Each card
+     opens the page that lists what we read from that platform. */
+  .parts { margin-top: 3rem; padding-top: 1.5rem; --tick: #94a3b8; }
+  .parts-label { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #475569; }
+  .parts-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem 1.5rem; margin-top: 1rem; }
+  .parts-list li { display: flex; align-items: baseline; gap: 0.625rem; font-size: 0.9375rem; font-weight: 500; color: #0B1220; }
+  .parts-list li span { font-family: var(--mono); font-size: 0.75rem; color: #64748b; }
+  @media (min-width: 768px) { .parts-list { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .parts-list { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+  .plat-grid { display: grid; gap: 1.25rem; margin-top: 2.5rem; }
+  @media (min-width: 900px) { .plat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .plat-card { display: flex; flex-direction: column; padding: 1.75rem; border-radius: var(--r-lg); border: 1px solid var(--hair); background: #fff; }
+  .plat-api { margin-top: 0.5rem; font-family: var(--mono); font-size: 0.75rem; line-height: 1.5; letter-spacing: 0.04em; color: #475569; }
+  .plat-text { margin-top: 1rem; line-height: 1.75; color: #475569; }
+  .plat-link { display: inline-flex; align-items: center; gap: 0.375rem; margin-top: auto; padding-top: 1.5rem; font-size: 0.9375rem; font-weight: 600; color: #0B1220; }
 
   /* The method — the Replace Legacy timeline */
   .run-layout { display: grid; gap: 2.5rem; align-items: start; }
@@ -478,88 +418,43 @@
       </p>
     </div>
 
-    <div class="mx-wrap">
-      <input type="radio" name="mx" id="mx-sf" checked>
-      <input type="radio" name="mx" id="mx-sn">
-      <input type="radio" name="mx" id="mx-d365">
-      <div class="mx-pick">
-        <p class="mx-pick-label">Show the platform:</p>
-        <div class="mx-seg">
-          <label for="mx-sf">Salesforce</label>
-          <label for="mx-sn">ServiceNow</label>
-          <label for="mx-d365">Dynamics 365</label>
-        </div>
-      </div>
+    <div class="parts ruler">
+      <p class="parts-label">Eight parts of each system</p>
+      <ol class="parts-list">
+        <li><span>01</span>Data model</li>
+        <li><span>02</span>Business logic</li>
+        <li><span>03</span>Automation</li>
+        <li><span>04</span>Access</li>
+        <li><span>05</span>Screens</li>
+        <li><span>06</span>Reports</li>
+        <li><span>07</span>Integrations</li>
+        <li><span>08</span>Records</li>
+      </ol>
+    </div>
 
-      <div class="mx" role="table" aria-label="What we read from Salesforce, ServiceNow and Dynamics 365, and where each part goes on Fusion">
-        <div class="mx-row mx-head" role="row">
-          <div class="mx-label" role="columnheader"><span class="sr-only">Part of the system</span></div>
-          <div class="mx-cell" role="columnheader">Salesforce<span class="api">Metadata API · Tooling API</span></div>
-          <div class="mx-cell" role="columnheader">ServiceNow<span class="api">Table API</span></div>
-          <div class="mx-cell" role="columnheader">Dynamics 365<span class="api">Dataverse Web API</span></div>
-          <div class="mx-cell mx-cell--us" role="columnheader">On Fusion</div>
-        </div>
-        <div class="mx-row" role="row">
-          <div class="mx-label" role="rowheader">Data model</div>
-          <div class="mx-cell alt alt-sf" role="cell" data-col="Salesforce"><b>Objects, fields and picklists.</b><span class="api">CustomObject, CustomField, GlobalValueSet</span></div>
-          <div class="mx-cell alt alt-sn" role="cell" data-col="ServiceNow"><b>Tables, columns and choices.</b><span class="api">sys_db_object, sys_dictionary, sys_choice</span></div>
-          <div class="mx-cell alt alt-d365" role="cell" data-col="Dynamics 365"><b>Tables, columns and relationships.</b><span class="api">EntityDefinitions, Attributes, RelationshipDefinitions</span></div>
-          <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>A domain model,</b> and a PostgreSQL schema built from it.</div>
-        </div>
-        <div class="mx-row" role="row">
-          <div class="mx-label" role="rowheader">Business logic</div>
-          <div class="mx-cell alt alt-sf" role="cell" data-col="Salesforce"><b>Validation rules, formulas and Apex code.</b><span class="api">ValidationRule, ApexClass, ApexTrigger</span></div>
-          <div class="mx-cell alt alt-sn" role="cell" data-col="ServiceNow"><b>Business rules and script includes.</b><span class="api">sys_script, sys_script_include</span></div>
-          <div class="mx-cell alt alt-d365" role="cell" data-col="Dynamics 365"><b>Business rules and plug-ins.</b><span class="api">workflow, sdkmessageprocessingstep</span></div>
-          <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Rules in code,</b> each with its system tests.</div>
-        </div>
-        <div class="mx-row" role="row">
-          <div class="mx-label" role="rowheader">Automation</div>
-          <div class="mx-cell alt alt-sf" role="cell" data-col="Salesforce"><b>Flows and approval processes.</b><span class="api">Flow, ApprovalProcess</span></div>
-          <div class="mx-cell alt alt-sn" role="cell" data-col="ServiceNow"><b>Flows and workflows.</b><span class="api">sys_hub_flow, wf_workflow</span></div>
-          <div class="mx-cell alt alt-d365" role="cell" data-col="Dynamics 365"><b>Cloud flows in solutions, and classic workflows.</b><span class="api">workflow</span></div>
-          <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Workflows,</b> with schedules and retries in the application.</div>
-        </div>
-        <div class="mx-row" role="row">
-          <div class="mx-label" role="rowheader">Access</div>
-          <div class="mx-cell alt alt-sf" role="cell" data-col="Salesforce"><b>Profiles, permission sets and sharing rules.</b><span class="api">Profile, PermissionSet, SharingRules</span></div>
-          <div class="mx-cell alt alt-sn" role="cell" data-col="ServiceNow"><b>Roles, groups and access control rules.</b><span class="api">sys_user_role, sys_user_group, sys_security_acl</span></div>
-          <div class="mx-cell alt alt-d365" role="cell" data-col="Dynamics 365"><b>Security roles, teams and field security.</b><span class="api">role, team, fieldsecurityprofile</span></div>
-          <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Roles and permissions,</b> checked on each action, with an audit trail.</div>
-        </div>
-        <div class="mx-row" role="row">
-          <div class="mx-label" role="rowheader">Screens</div>
-          <div class="mx-cell alt alt-sf" role="cell" data-col="Salesforce"><b>Page layouts, Lightning pages and list views.</b><span class="api">Layout, FlexiPage, ListView</span></div>
-          <div class="mx-cell alt alt-sn" role="cell" data-col="ServiceNow"><b>Forms, lists and UI actions.</b><span class="api">sys_ui_form, sys_ui_list, sys_ui_action</span></div>
-          <div class="mx-cell alt alt-d365" role="cell" data-col="Dynamics 365"><b>Forms, views and model-driven apps.</b><span class="api">systemform, savedquery, appmodule</span></div>
-          <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Screens from the domain model,</b> and custom screens where they matter.</div>
-        </div>
-        <div class="mx-row" role="row">
-          <div class="mx-label" role="rowheader">Reports</div>
-          <div class="mx-cell alt alt-sf" role="cell" data-col="Salesforce"><b>Reports and dashboards.</b><span class="api">Report, Dashboard</span></div>
-          <div class="mx-cell alt alt-sn" role="cell" data-col="ServiceNow"><b>Reports.</b><span class="api">sys_report</span></div>
-          <div class="mx-cell alt alt-d365" role="cell" data-col="Dynamics 365"><b>Charts and dashboards.</b><span class="api">savedqueryvisualization, systemform</span></div>
-          <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Analytics</b> on your own database.</div>
-        </div>
-        <div class="mx-row" role="row">
-          <div class="mx-label" role="rowheader">Integrations</div>
-          <div class="mx-cell alt alt-sf" role="cell" data-col="Salesforce"><b>Named credentials and connected apps.</b><span class="api">NamedCredential, ConnectedApp</span></div>
-          <div class="mx-cell alt alt-sn" role="cell" data-col="ServiceNow"><b>REST messages and transform maps.</b><span class="api">sys_rest_message, sys_transform_map</span></div>
-          <div class="mx-cell alt alt-d365" role="cell" data-col="Dynamics 365"><b>Service endpoints and connection references.</b><span class="api">serviceendpoint, connectionreference</span></div>
-          <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Integrations in the application,</b> on the database that it already uses.</div>
-        </div>
-        <div class="mx-row" role="row">
-          <div class="mx-label" role="rowheader">Records</div>
-          <div class="mx-cell alt alt-sf" role="cell" data-col="Salesforce"><b>Records and files.</b><span class="api">Bulk API 2.0, ContentVersion</span></div>
-          <div class="mx-cell alt alt-sn" role="cell" data-col="ServiceNow"><b>Records and attachments.</b><span class="api">Table API, sys_attachment</span></div>
-          <div class="mx-cell alt alt-d365" role="cell" data-col="Dynamics 365"><b>Records, notes and files.</b><span class="api">Web API, annotation</span></div>
-          <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Your records,</b> in your own PostgreSQL database.</div>
-        </div>
-      </div>
+    <div class="plat-grid">
+      <a href="/escape/salesforce/" class="plat-card lift plausible-event-name=CTA+Click plausible-event-position=body plausible-event-cta=See+what+we+read+from+Salesforce">
+        <h3 class="font-display text-[1.75rem] font-medium leading-tight text-ink">Salesforce</h3>
+        <p class="plat-api">Metadata API · Tooling API</p>
+        <p class="plat-text">Objects, validation rules, Apex code, flows, permission sets, Lightning pages, reports and records, on the Salesforce core platform.</p>
+        <span class="plat-link">See what we read from Salesforce <i data-lucide="arrow-right" class="h-4 w-4"></i></span>
+      </a>
+      <a href="/escape/servicenow/" class="plat-card lift plausible-event-name=CTA+Click plausible-event-position=body plausible-event-cta=See+what+we+read+from+ServiceNow">
+        <h3 class="font-display text-[1.75rem] font-medium leading-tight text-ink">ServiceNow</h3>
+        <p class="plat-api">Table API</p>
+        <p class="plat-text">Tables, business rules, script includes, flows, access control rules, forms, reports and records, for applications on the Now Platform.</p>
+        <span class="plat-link">See what we read from ServiceNow <i data-lucide="arrow-right" class="h-4 w-4"></i></span>
+      </a>
+      <a href="/escape/dynamics-365/" class="plat-card lift plausible-event-name=CTA+Click plausible-event-position=body plausible-event-cta=See+what+we+read+from+Dynamics+365">
+        <h3 class="font-display text-[1.75rem] font-medium leading-tight text-ink">Dynamics 365</h3>
+        <p class="plat-api">Dataverse Web API</p>
+        <p class="plat-text">Tables, business rules, plug-ins, cloud flows, security roles, model-driven apps, dashboards and records, for applications on Dataverse.</p>
+        <span class="plat-link">See what we read from Dynamics 365 <i data-lucide="arrow-right" class="h-4 w-4"></i></span>
+      </a>
     </div>
 
     <p class="cots-foot">
-      Each name in the table is the name that the vendor documents. The analysis can reach only the parts that your integration user can see. The standard behaviour of each platform is not in the metadata, so the observation sessions show us that behaviour. The scope is the Salesforce core platform, ServiceNow applications on the Now Platform, and Dynamics 365 applications on Dataverse.
+      Each platform page uses the names that the vendor documents. The analysis can reach only the parts that your integration user can see. The standard behaviour of each platform is not in the metadata, so the observation sessions show us that behaviour.
     </p>
   </div>
 </section>
@@ -619,7 +514,7 @@
           <div class="run-head">
             <h3 class="run-title">Metadata analysis</h3>
           </div>
-          <p class="run-text">We read the parts in the table above from the platform's metadata. We compare them with the observation notes, to find the parts that people use and the parts that nobody uses.</p>
+          <p class="run-text">We read the eight parts of the system from the platform's metadata. We compare them with the observation notes, to find the parts that people use and the parts that nobody uses.</p>
           <div class="run-arts">
             <span class="run-art">Current State System Architecture</span>
             <span class="run-art">Current State Workflows</span>

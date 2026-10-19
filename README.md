@@ -14,6 +14,9 @@ technology/index.html ← Integration, less code, technology (technical audience
 pricing/index.html    ← Pricing, offers, lock-in ledger
 replace-legacy/index.html ← Legacy replacement: fixed-scope discovery and design, TCO baseline, quoted build, value-based deal on request
 escape/index.html     ← Escape Salesforce, ServiceNow & Dynamics: metadata read, observation sessions, rebuild on Fusion with the pain points, docs and controls fixed
+  salesforce/index.html   ← Escape Salesforce: what we read from the org (Metadata API, Tooling API) and where each part goes on Fusion
+  servicenow/index.html   ← Escape ServiceNow: what we read from the instance (Table API) and where each part goes on Fusion
+  dynamics-365/index.html ← Escape Dynamics 365: what we read from the environment (Dataverse Web API) and where each part goes on Fusion
 about/index.html      ← About: why we built Fusion, the trace from problem to code, the team
 privacy/index.html    ← Privacy policy (NZ Privacy Act 2020, Plausible analytics)
 css/

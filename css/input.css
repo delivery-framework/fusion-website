@@ -79,6 +79,9 @@
 @source "../pricing/index.html";
 @source "../replace-legacy/index.html";
 @source "../escape/index.html";
+@source "../escape/salesforce/index.html";
+@source "../escape/servicenow/index.html";
+@source "../escape/dynamics-365/index.html";
 @source "../privacy/index.html";
 @source "../about/index.html";
 
@@ -357,28 +360,29 @@ footer p.uppercase {
 }
 .ulink:hover { background-size: 0% 1px; background-position: 100% 100%; }
 
-/* Header nav — plain links at rest. The current page's item (set by site.js
-   via aria-current) lights a signal dot, like a selected channel. The dot sits
-   outside the link box, so the nav does not shift from page to page. */
+/* Header nav — plain links at rest. The current page's item, or the parent
+   page of a sub-page (set by site.js via aria-current), lights a signal dot,
+   like a selected channel. The dot sits outside the link box, so the nav does
+   not shift from page to page. */
 .site-nav a {
   position: relative;
   padding: 0.375rem 0;
   transition: color 180ms ease;
 }
 .site-nav a:hover { color: #fff; }
-.site-nav a[aria-current="page"] { color: #fff; }
-.site-nav a[aria-current="page"]::before {
+.site-nav a[aria-current] { color: #fff; }
+.site-nav a[aria-current]::before {
   content: ""; position: absolute; left: -0.75rem; top: 50%; margin-top: -0.1875rem;
   width: 0.375rem; height: 0.375rem; border-radius: 9999px;
   background: var(--accent-300);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-300) 22%, transparent);
 }
 /* The Idea to Impact button in the header, on the Idea to Impact page itself */
-.nav-cta[aria-current="page"] {
+.nav-cta[aria-current] {
   background-color: rgb(255 255 255 / 0.16);
   border-color: var(--accent-300);
 }
-header .menu a[aria-current="page"] {
+header .menu a[aria-current] {
   background-color: var(--menu-active-bg);
   color: var(--menu-active-fg);
 }

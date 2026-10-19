@@ -273,8 +273,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* Mark the current page in the header nav, the header Idea to Impact button and
      the mobile menu. Hash links are skipped, so a link to a section of the
-     current page is never marked. */
+     current page is never marked. On a sub-page (for example /escape/salesforce/)
+     the link to the parent page is marked as the current section. */
   $$('header nav a, header .nav-cta, header .menu a').forEach((a) => {
-    if (!a.hash && a.pathname === location.pathname) a.setAttribute('aria-current', 'page');
+    if (a.hash) return;
+    if (a.pathname === location.pathname) a.setAttribute('aria-current', 'page');
+    else if (a.pathname !== '/' && location.pathname.startsWith(a.pathname)) a.setAttribute('aria-current', 'true');
   });
 });

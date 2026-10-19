@@ -32,6 +32,12 @@ copied into every page:
   change every page. `git grep` the old markup to find each copy.
 - `challenge/index.html` only forwards the old address to `/idea-to-impact/`. It has
   no header, footer or analytics.
+- `escape/index.html` is the hub for the three platform pages:
+  `escape/salesforce/`, `escape/servicenow/` and `escape/dynamics-365/`. The
+  hub has the results, the method and system sovereignty. Each platform page
+  has the metadata table for its platform. The three platform pages have the
+  same layout and the same `<style>` block, so if you change one, change the
+  other two.
 - The home page has a small inline script that forwards old single-page anchors
   (for example `/#pricing`) to the sub-pages.
 
@@ -95,7 +101,9 @@ One shared script, loaded at the end of each page:
   version, change it on every page.
 - **Current page:** the script sets `aria-current="page"` on header nav links,
   on the header Idea to Impact button (`.nav-cta`) and on mobile menu links that
-  match the current path. It skips links with a hash.
+  match the current path. It skips links with a hash. On a sub-page, the script
+  sets `aria-current="true"` on the link to the parent page (for example the
+  Escape SaaS link on `/escape/salesforce/`). The CSS styles both values.
 
 ### Images
 

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Escape Dynamics 365 — Fusion</title>
+<meta name="description" content="We read your Dynamics 365 environment from its metadata with the Dataverse Web API, then rebuild it on Fusion with the pain points fixed and the controls in place." />
+<link rel="canonical" href="https://fusionframe.work/escape/dynamics-365/" />
+<link rel="icon" type="image/svg+xml" href="/site/images/favicon.svg" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Fusion" />
+<meta property="og:title" content="Escape Dynamics 365 — Fusion" />
+<meta property="og:description" content="We read your Dynamics 365 environment from its metadata with the Dataverse Web API, then rebuild it on Fusion with the pain points fixed and the controls in place." />
+<meta property="og:url" content="https://fusionframe.work/escape/dynamics-365/" />
+<meta property="og:image" content="https://fusionframe.work/site/images/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Escape Dynamics 365 — Fusion" />
+<meta name="twitter:description" content="We read your Dynamics 365 environment from its metadata with the Dataverse Web API, then rebuild it on Fusion with the pain points fixed and the controls in place." />
+<meta name="twitter:image" content="https://fusionframe.work/site/images/og-image.png" />
+
+
+<link rel="stylesheet" href="/css/output.css">
+<script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Wordmark face only — subset to the six logotype glyphs, block display so the brand name never flashes unstyled -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&text=Fusion&display=block" rel="stylesheet">
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-ktZLDqdblhaDYlH3Rd1PY.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+
+<style>
+  /* Hero — a readout strip on a tick ruler, the same as the home page */
+  .proof { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); --tick: rgba(255, 255, 255, 0.24); }
+  .proof-item { padding: 1.5rem 1rem 1.25rem 0; }
+  .proof-item:nth-child(even) { padding-left: 1rem; border-left: 1px solid var(--hair-dark); }
+  .proof-item:nth-child(n+3) { border-top: 1px solid var(--hair-dark); }
+  .proof-num {
+    font-family: var(--mono); font-variant-numeric: tabular-nums;
+    font-size: 2rem; font-weight: 500; line-height: 1; letter-spacing: -0.03em; color: #fff;
+  }
+  .proof-label { margin-top: 0.75rem; max-width: 15rem; font-size: 0.875rem; line-height: 1.5; color: #94a3b8; }
+  @media (min-width: 768px) {
+    .proof { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .proof-item, .proof-item:nth-child(even), .proof-item:nth-child(n+3) {
+      padding: 2rem 1.75rem 0.5rem 0; border-top: 0; border-left: 0;
+    }
+    .proof-item + .proof-item { padding-left: 1.75rem; border-left: 1px solid var(--hair-dark); }
+    .proof-num { font-size: 2.75rem; }
+    .proof-label { font-size: 0.9375rem; }
+  }
+  /* The breadcrumb sits in the section label */
+  .crumb a { transition: color 150ms ease; }
+  .crumb a:hover { color: #fff; }
+
+  /* What we read — this platform beside Fusion. On a wide screen it is a table
+     with the Fusion column on the right. On a narrow screen each row is a
+     stack: the platform, then Fusion. The switch above the table opens the
+     same section on the page for another platform. */
+  .mx-switch { display: flex; flex-direction: column; gap: 0.625rem; margin-top: 3rem; }
+  .mx-switch-label { font-size: 0.875rem; color: #475569; }
+  .mx-seg { display: flex; gap: 3px; padding: 3px; border-radius: var(--r-sm); background: #fff; border: 1px solid var(--hair-strong); }
+  .mx-seg a {
+    flex: 1 1 0; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 2.75rem; padding: 0 0.375rem; border-radius: var(--r-xs); text-align: center;
+    font-size: 0.875rem; font-weight: 500; color: #475569; transition: background-color 150ms ease, color 150ms ease;
+  }
+  .mx-seg a::before { content: ""; width: 0.375rem; height: 0.375rem; flex: none; border-radius: 9999px; background: var(--led, #cbd5e1); }
+  .mx-seg a:hover { background: #f1f5f9; color: #0B1220; }
+  .mx-seg a[aria-current="page"] { background: #0B1220; color: #fff; --led: var(--accent-300); }
+  /* on the narrowest phones the three names fit only without the dots */
+  @media (max-width: 359px) {
+    .mx-seg a { font-size: 0.8125rem; }
+    .mx-seg a::before { display: none; }
+  }
+  @media (min-width: 768px) {
+    .mx-switch { flex-direction: row; align-items: center; gap: 1rem; }
+    .mx-seg { width: 30rem; }
+  }
+  .mx { margin-top: 1.5rem; }
+  .mx .mx-head { display: none; }
+  .mx-row { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.375rem 0; border-top: 1px solid var(--hair); }
+  .mx-label {
+    padding-bottom: 0.25rem;
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #475569;
+  }
+  .mx-cell { padding: 1rem 1.125rem; border-radius: var(--r-md); border: 1px solid var(--hair); background: #fff; font-size: 0.9375rem; line-height: 1.6; color: #475569; }
+  .mx-cell b { font-weight: 600; color: #0B1220; }
+  .mx-cell::before {
+    content: attr(data-col); display: block; margin-bottom: 0.375rem;
+    font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #475569;
+  }
+  .mx-cell .api {
+    display: block; margin-top: 0.375rem;
+    font-family: var(--mono); font-size: 0.75rem; line-height: 1.5; color: #475569; overflow-wrap: anywhere;
+  }
+  .mx-cell--us { border-color: #0B1220; background: #0B1220; color: #cbd5e1; }
+  .mx-cell--us b { color: #fff; }
+  .mx-cell--us::before { color: var(--accent-200); }
+  @media (min-width: 768px) {
+    .mx-row { display: grid; grid-template-columns: 10rem repeat(2, minmax(0, 1fr)); gap: 0; padding: 0; }
+    .mx .mx-head { display: grid; border-top: 0; }
+    .mx-label {
+      padding: 1.375rem 1.25rem 1.375rem 0;
+      font-family: inherit; font-size: 0.875rem; font-weight: 600; line-height: 1.4; text-transform: none; letter-spacing: 0; color: #0B1220;
+    }
+    .mx-cell { padding: 1.375rem 1.25rem; border: 0; border-radius: 0; background: transparent; transition: background-color 150ms ease; }
+    .mx-cell::before { display: none; }
+    /* the row under the pointer reads across, like a crosshair */
+    .mx-row:not(.mx-head):hover > .mx-cell:not(.mx-cell--us) { background: #fff; }
+    .mx-head .mx-cell {
+      padding-bottom: 1rem;
+      font-family: var(--mono); font-size: 0.6875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: #475569;
+    }
+    .mx-head .mx-cell .api { text-transform: none; letter-spacing: 0; font-size: 0.6875rem; }
+    /* the Fusion column runs as one continuous panel, lit along its top edge */
+    .mx-cell--us { background: #0B1220; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+    .mx-head .mx-cell--us {
+      display: flex; align-items: flex-start; gap: 0.625rem;
+      padding-top: 1.375rem; border-radius: var(--r-lg) var(--r-lg) 0 0; background: #0B1220; color: var(--accent-200);
+      box-shadow: inset 0 2px 0 var(--signal);
+    }
+    .mx-head .mx-cell--us::before {
+      content: ""; display: block; flex: none; margin: 0.25rem 0 0; width: 0.4375rem; height: 0.4375rem; border-radius: 9999px;
+      background: var(--signal); box-shadow: 0 0 0 3px var(--signal-halo);
+    }
+    .mx-row:last-child .mx-cell--us { border-radius: 0 0 var(--r-lg) var(--r-lg); }
+  }
+
+  /* The method — the six steps in one strip. A ringed number is a step that
+     needs people from the business. The amber edge marks the step that this
+     page describes. */
+  .steps { display: grid; margin-top: 3rem; --tick: #94a3b8; }
+  .step { display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1.5rem 0 1.25rem; }
+  .step + .step { border-top: 1px solid var(--hair); }
+  .step-n {
+    display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border-radius: 9999px;
+    background: #0B1220; color: #fff; font-family: var(--mono); font-size: 0.8125rem; font-weight: 500; font-variant-numeric: tabular-nums;
+  }
+  .step--biz .step-n { box-shadow: 0 0 0 4px var(--accent-200); }
+  .step-title { font-size: 1.0625rem; font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; }
+  .step-meta { font-family: var(--mono); font-size: 0.75rem; line-height: 1.5; letter-spacing: 0.04em; color: #475569; }
+  .step--here { box-shadow: inset 0 2px 0 var(--signal); }
+  .step--here .step-meta { color: var(--accent-700); }
+  @media (min-width: 768px) {
+    .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 2rem; }
+    .step + .step { border-top: 0; }
+    .step:nth-child(n+4) { border-top: 1px solid var(--hair); }
+  }
+  @media (min-width: 1024px) {
+    .steps { grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: 1.5rem; }
+    .step:nth-child(n+4) { border-top: 0; }
+  }
+  .method-links { display: flex; flex-wrap: wrap; gap: 0 2rem; margin-top: 1rem; }
+  .method-link {
+    margin-top: 1.25rem; display: inline-flex; align-items: center; gap: 0.375rem;
+    font-size: 0.9375rem; font-weight: 600; color: #0B1220;
+  }
+</style>
+</head>
+
+<body class="bg-slate-50 text-slate-950">
+
+<!-- ====================== HEADER ====================== -->
+<header class="sticky top-0 z-50 border-b border-white/10 bg-ink">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
+    <a href="/" class="flex items-center gap-2.5" aria-label="Fusion home">
+      <!-- Logo mark: confinement arcs around a fusion core (follows the audience accent) -->
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)" aria-hidden="true">
+        <g transform="rotate(-18 16 16)">
+          <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+        </g>
+        <circle cx="16.4" cy="16" r="4.6" fill="#ffffff"/>
+      </svg>
+      <span class="wordmark text-xl text-white">Fusion</span>
+    </a>
+
+    <nav aria-label="Main" class="site-nav hidden items-center gap-6 xl:gap-7 text-sm font-medium text-slate-300 lg:flex">
+      <a href="/lifecycle/">Lifecycle</a>
+      <a href="/platform/">Platform</a>
+      <a href="/technology/">Technology</a>
+      <a href="/replace-legacy/">Replace Legacy</a>
+      <a href="/escape/">Escape SaaS</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
+    </nav>
+
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="/idea-to-impact/" class="nav-cta btn hidden h-auto border-white/20 bg-white/5 px-4 py-2.5 text-sm font-medium text-white hover:border-white/30 hover:bg-white/15 lg:inline-flex plausible-event-name=CTA+Click plausible-event-position=header plausible-event-cta=Idea+to+Impact">Idea to Impact</a>
+      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto border-0 bg-white px-4 py-2.5 text-sm font-medium text-ink hover:bg-slate-100 md:px-5 plausible-event-name=Book+Meeting plausible-event-position=header plausible-event-cta=Book+a+demo">Book a demo</a>
+      <!-- Mobile menu (DaisyUI dropdown); mirrors the nav above -->
+      <div class="dropdown dropdown-end lg:hidden">
+        <div tabindex="0" role="button" aria-label="Open menu" class="btn btn-ghost btn-square btn-sm -mr-2 text-slate-300 hover:bg-white/10 hover:text-white">
+          <i data-lucide="menu" class="h-6 w-6"></i>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu mt-3 w-60 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
+          <li><a href="/idea-to-impact/">Idea to Impact</a></li>
+          <li><a href="/lifecycle/">Lifecycle</a></li>
+          <li><a href="/platform/">Platform</a></li>
+          <li><a href="/technology/">Technology</a></li>
+          <li><a href="/replace-legacy/">Replace Legacy</a></li>
+          <li><a href="/escape/">Escape SaaS</a></li>
+          <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ====================== ESCAPE DYNAMICS 365 ====================== -->
+<section id="escape" class="hero-bg grain relative overflow-hidden text-white">
+  <div class="relative mx-auto max-w-7xl px-5 pt-20 pb-12 lg:pt-24">
+    <div class="max-w-4xl reveal reveal-1">
+      <nav aria-label="Breadcrumb">
+        <p class="crumb text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-300);"><a href="/escape/">Escape SaaS</a><span aria-hidden="true">/</span><span aria-current="page">Dynamics 365</span></p>
+      </nav>
+      <h1 class="font-display mt-5 text-4xl font-medium leading-[1.06] tracking-tight md:text-6xl">
+        <span class="block">Escape Dynamics 365.</span>
+        <span class="block text-accent-200">Own your data, your data model and your business logic.</span>
+      </h1>
+      <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
+        We read your Dynamics 365 environment from its own metadata, with the Dataverse Web API, and we watch the people who use it. Then we rebuild the system on Fusion, on the hosting that you choose. In the same work, we fix the pain points, rewrite the documentation and the user guides, and close the compliance gaps.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn btn-signal h-auto gap-0 px-7 py-4 text-base font-semibold plausible-event-name=Book+Meeting plausible-event-position=hero plausible-event-cta=Book+the+one-hour+session">
+          <span>Book the one-hour session</span>
+          <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+        </a>
+        <a href="#metadata" class="btn h-auto gap-0 border-white/25 bg-white/5 px-7 py-4 text-base font-medium text-white hover:border-white/40 hover:bg-white/10 plausible-event-name=CTA+Click plausible-event-position=hero plausible-event-cta=See+what+we+read">
+          <span>See what we read</span>
+        </a>
+      </div>
+    </div>
+
+    <dl class="proof ruler mt-14 md:mt-16 reveal reveal-3">
+      <div class="proof-item">
+        <dt class="sr-only">Parts that we read</dt>
+        <dd class="proof-num">8</dd>
+        <dd class="proof-label">Parts of your environment that we read from the metadata</dd>
+      </div>
+      <div class="proof-item">
+        <dt class="sr-only">Changes to your environment</dt>
+        <dd class="proof-num">0</dd>
+        <dd class="proof-label">Changes that the analysis makes to your environment</dd>
+      </div>
+      <div class="proof-item">
+        <dt class="sr-only">Problem &amp; Opportunity Statement session</dt>
+        <dd class="proof-num">1h</dd>
+        <dd class="proof-label">A Problem &amp; Opportunity Statement session with your sponsor</dd>
+      </div>
+      <div class="proof-item">
+        <dt class="sr-only">Seat licences on the new system</dt>
+        <dd class="proof-num">0</dd>
+        <dd class="proof-label">Seat licences for the people who use the new system</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ====================== WHAT WE READ ====================== -->
+<section id="metadata" class="bg-slate-50 pt-20 pb-24 md:pt-24 md:pb-28">
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-700);">What we read</p>
+      <h2 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">
+        The metadata in your environment describes the current system.
+      </h2>
+      <p class="mt-5 text-lg leading-8 text-slate-600">
+        The metadata describes what your organisation built on Dynamics 365: the tables, the rules, the automation, the access and the screens. We read the metadata with the Dataverse Web API. The analysis does not change your environment.
+      </p>
+    </div>
+
+    <div class="mx-switch">
+      <p class="mx-switch-label" id="mx-switch-label">Show the platform:</p>
+      <nav class="mx-seg" aria-labelledby="mx-switch-label">
+        <a href="/escape/salesforce/#metadata">Salesforce</a>
+        <a href="/escape/servicenow/#metadata">ServiceNow</a>
+        <a href="/escape/dynamics-365/#metadata" aria-current="page">Dynamics 365</a>
+      </nav>
+    </div>
+
+    <div class="mx" role="table" aria-label="What we read from Dynamics 365, and where each part goes on Fusion">
+      <div class="mx-row mx-head" role="row">
+        <div class="mx-label" role="columnheader"><span class="sr-only">Part of the system</span></div>
+        <div class="mx-cell" role="columnheader">Dynamics 365<span class="api">Dataverse Web API</span></div>
+        <div class="mx-cell mx-cell--us" role="columnheader">On Fusion</div>
+      </div>
+      <div class="mx-row" role="row">
+        <div class="mx-label" role="rowheader">Data model</div>
+        <div class="mx-cell" role="cell" data-col="Dynamics 365"><b>Tables, columns and relationships.</b><span class="api">EntityDefinitions, Attributes, RelationshipDefinitions</span></div>
+        <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>A domain model,</b> and a PostgreSQL schema built from it.</div>
+      </div>
+      <div class="mx-row" role="row">
+        <div class="mx-label" role="rowheader">Business logic</div>
+        <div class="mx-cell" role="cell" data-col="Dynamics 365"><b>Business rules and plug-ins.</b><span class="api">workflow, sdkmessageprocessingstep</span></div>
+        <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Rules in code,</b> each with its system tests.</div>
+      </div>
+      <div class="mx-row" role="row">
+        <div class="mx-label" role="rowheader">Automation</div>
+        <div class="mx-cell" role="cell" data-col="Dynamics 365"><b>Cloud flows in solutions, and classic workflows.</b><span class="api">workflow</span></div>
+        <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Workflows,</b> with schedules and retries in the application.</div>
+      </div>
+      <div class="mx-row" role="row">
+        <div class="mx-label" role="rowheader">Access</div>
+        <div class="mx-cell" role="cell" data-col="Dynamics 365"><b>Security roles, teams and field security.</b><span class="api">role, team, fieldsecurityprofile</span></div>
+        <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Roles and permissions,</b> checked on each action, with an audit trail.</div>
+      </div>
+      <div class="mx-row" role="row">
+        <div class="mx-label" role="rowheader">Screens</div>
+        <div class="mx-cell" role="cell" data-col="Dynamics 365"><b>Forms, views and model-driven apps.</b><span class="api">systemform, savedquery, appmodule</span></div>
+        <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Screens from the domain model,</b> and custom screens where they matter.</div>
+      </div>
+      <div class="mx-row" role="row">
+        <div class="mx-label" role="rowheader">Reports</div>
+        <div class="mx-cell" role="cell" data-col="Dynamics 365"><b>Charts and dashboards.</b><span class="api">savedqueryvisualization, systemform</span></div>
+        <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Analytics</b> on your own database.</div>
+      </div>
+      <div class="mx-row" role="row">
+        <div class="mx-label" role="rowheader">Integrations</div>
+        <div class="mx-cell" role="cell" data-col="Dynamics 365"><b>Service endpoints and connection references.</b><span class="api">serviceendpoint, connectionreference</span></div>
+        <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Integrations in the application,</b> on the database that it already uses.</div>
+      </div>
+      <div class="mx-row" role="row">
+        <div class="mx-label" role="rowheader">Records</div>
+        <div class="mx-cell" role="cell" data-col="Dynamics 365"><b>Records, notes and files.</b><span class="api">Web API, annotation</span></div>
+        <div class="mx-cell mx-cell--us" role="cell" data-col="On Fusion"><b>Your records,</b> in your own PostgreSQL database.</div>
+      </div>
+    </div>
+
+    <p class="cots-foot">
+      Each name in the table is the name that Microsoft documents. The analysis can reach only the parts that your integration user can see. The standard behaviour of Dynamics 365 is not in the metadata, so the observation sessions show us that behaviour. The scope is Dynamics 365 applications on Dataverse.
+    </p>
+  </div>
+</section>
+
+<div class="field-seam" aria-hidden="true"></div>
+
+<!-- ====================== THE METHOD ====================== -->
+<section id="method" class="bg-white py-20">
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-700);">The method</p>
+      <h2 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">
+        Hours of your people's time, not weeks of workshops.
+      </h2>
+      <p class="mt-5 text-lg leading-8 text-slate-600">
+        Three of the six steps need people from the business. The metadata analysis is step 03, and it runs without them.
+      </p>
+    </div>
+
+    <ol class="steps ruler">
+      <li class="step step--biz">
+        <span class="step-n">01</span>
+        <h3 class="step-title">Problem &amp; Opportunity Statement session</h3>
+        <p class="step-meta">1 hour · Business time</p>
+      </li>
+      <li class="step step--biz">
+        <span class="step-n">02</span>
+        <h3 class="step-title">Observation sessions</h3>
+        <p class="step-meta">1–2 hours each · Business time</p>
+      </li>
+      <li class="step step--here">
+        <span class="step-n">03</span>
+        <h3 class="step-title">Metadata analysis</h3>
+        <p class="step-meta">Dataverse Web API</p>
+      </li>
+      <li class="step">
+        <span class="step-n">04</span>
+        <h3 class="step-title">Domain model and design</h3>
+      </li>
+      <li class="step step--biz">
+        <span class="step-n">05</span>
+        <h3 class="step-title">Build, test and document</h3>
+        <p class="step-meta">Business time</p>
+      </li>
+      <li class="step">
+        <span class="step-n">06</span>
+        <h3 class="step-title">Data migration and switch-over</h3>
+      </li>
+    </ol>
+
+    <div class="method-links">
+      <a href="/escape/#method" class="method-link ulink plausible-event-name=CTA+Click plausible-event-position=body plausible-event-cta=Read+each+step">Read each step <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
+      <a href="/escape/#results" class="method-link ulink plausible-event-name=CTA+Click plausible-event-position=body plausible-event-cta=See+the+four+results">See the four results <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== FINAL ====================== -->
+<section class="relative overflow-hidden border-t border-accent-200 bg-accent-50 py-20">
+  <div class="mx-auto max-w-7xl px-5 text-center relative">
+    <i data-lucide="door-open" class="mx-auto h-10 w-10" style="color: var(--accent-700);"></i>
+    <h2 class="font-display mx-auto mt-6 max-w-4xl text-4xl font-medium tracking-tight text-ink md:text-5xl">
+      Bring the Dynamics 365 system that you most want to leave.
+    </h2>
+    <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+      One hour with your sponsor starts the work. Bring the problem that your current system does not solve today.
+    </p>
+    <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto gap-0 border-0 bg-ink px-7 py-4 text-base font-medium text-white hover:bg-slate-800 plausible-event-name=Book+Meeting plausible-event-position=final plausible-event-cta=Book+the+one-hour+session">
+        <span>Book the one-hour session</span>
+        <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+      </a>
+      <a href="/idea-to-impact/" class="btn h-auto gap-0 border-slate-300 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=CTA+Click plausible-event-position=final plausible-event-cta=Start+with+Idea+to+Impact">
+        <span>Start with Idea to Impact</span>
+      </a>
+    </div>
+    <p class="mx-auto mt-12 max-w-2xl text-xs leading-5 text-slate-600">
+      Microsoft Dynamics 365 is a trademark of its owner. Fusion has no affiliation with Microsoft.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- ====================== FOOTER ====================== -->
+<footer class="border-t border-slate-200 bg-white pt-14 pb-8">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-5 sm:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+      <a href="/" class="inline-flex items-center gap-2.5" aria-label="Fusion home">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-600)" aria-hidden="true">
+          <g transform="rotate(-18 16 16)">
+            <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </g>
+          <circle cx="16.4" cy="16" r="4.6" fill="#0B1220"/>
+        </svg>
+        <span class="wordmark text-lg text-ink">Fusion</span>
+      </a>
+      <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Product</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/lifecycle/" class="hover:text-ink">Lifecycle</a></li>
+        <li><a href="/platform/" class="hover:text-ink">Platform</a></li>
+        <li><a href="/technology/" class="hover:text-ink">Technology</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Offers</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/idea-to-impact/" class="hover:text-ink">Idea to Impact</a></li>
+        <li><a href="/pricing/#offers" class="hover:text-ink">Engagement</a></li>
+        <li><a href="/replace-legacy/" class="hover:text-ink">Replace Legacy</a></li>
+        <li><a href="/escape/" class="hover:text-ink">Escape SaaS</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Company</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/pricing/" class="hover:text-ink">Pricing</a></li>
+        <li><a href="/about/" class="hover:text-ink">About</a></li>
+        <li><a href="/privacy/" class="hover:text-ink">Privacy policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500">
+      <p>&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
+      <p>Fusion Framework Limited, New Zealand</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/site.js"></script>
+
+</body>
+</html>
