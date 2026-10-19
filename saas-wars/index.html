@@ -81,7 +81,8 @@
 
   /* ---- Crawl text ---- */
   .sw-text { color: var(--sw-gold); font-weight: 600; letter-spacing: 0.01em; }
-  .sw-text p { margin: 0 0 1.32em; text-align: justify; -webkit-hyphens: auto; hyphens: auto; }
+  /* no hyphens: a word never breaks across two lines */
+  .sw-text p { margin: 0 0 1.32em; text-align: justify; }
   .sw-text p:last-child { margin-bottom: 0; }
   .sw-text .sw-episode {
     margin: 0 0 0.35em; text-align: center; text-transform: uppercase; letter-spacing: 0.08em;
@@ -470,8 +471,8 @@
           <p class="sw-episode">Episode IX</p>
           <h2 class="sw-title">A NEW OPEN SOURCE HOPE</h2>
           <p>Turmoil has engulfed the Enterprise and Small to Medium Business segments. The greedy CLOUD EMPIRE has locked business logic and customer records behind an impenetrable paywall, charging subjects a steep ransom just to access their own data.</p>
-          <p>Under the guise of "Digital Labor," the Emperor deploys the dreaded AGENT-FORCE—imposing a US$2 toll for every automated conversation, 20 Flex Credits per basic action, and US$550 per seat for the Max Edition.</p>
-          <p>Hoping to crush the Data Paywall, a brave alliance of rebels known as the FUSION FRAMEWORK has emerged. Working in secret, they have forged powerful new open-source AI software—giving customers the weapons they need to liberate their systems of record and restore freedom to the galaxy....</p>
+          <p>Under the guise of "Digital Labor," the Emperor deploys the dreaded <span class="whitespace-nowrap">AGENT-FORCE—</span>imposing a US$2 toll for every automated conversation, 20 Flex Credits per basic action, and US$550 per seat for the Max Edition.</p>
+          <p>Hoping to crush the Data Paywall, a brave alliance of rebels known as the FUSION FRAMEWORK has emerged. Working in secret, they have forged powerful new <span class="whitespace-nowrap">open-source</span> AI <span class="whitespace-nowrap">software—</span>giving customers the weapons they need to liberate their systems of record and restore balance to the Force....</p>
         </div>
       </div>
     </div>
