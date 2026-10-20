@@ -4,9 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repository is
 
-The static marketing site for fusionframe.work. The site has no framework, no
+The static marketing site for fusionframework.ai. The site has no framework, no
 bundler, no tests and no linter. GitHub Pages serves the repository root, and a
 push to `main` deploys the site. Commits go directly to `main`.
+
+The old domain, fusionframe.work, is a Cloudflare redirect (301) to
+fusionframework.ai that keeps the path and the query string. Both zones are in
+the same Cloudflare account. Mail stays on the old domain, so keep
+`hello@fusionframe.work` and do not change the MX, SPF or DKIM records there.
 
 ## Commands
 

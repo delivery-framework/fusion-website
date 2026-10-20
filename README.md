@@ -1,6 +1,6 @@
-# fusionframe.work
+# fusionframework.ai
 
-Marketing site for fusionframe.work. GitHub Pages serves the repository root.
+Marketing site for fusionframework.ai. GitHub Pages serves the repository root.
 
 ## Structure
 
