@@ -44,7 +44,8 @@ copied into every page:
 To add a page, copy an existing page. Then do these steps:
 
 1. Add an `@source` line for the page in `css/input.css`, or its classes do not compile.
-2. Add the page to `sitemap.xml`.
+2. Add the page to `sitemap.xml`. Do not add a page that has
+   `<meta name="robots" content="noindex" />` (now only `saas-wars/`).
 3. Add the page to the structure list in `README.md`.
 
 ### CSS
