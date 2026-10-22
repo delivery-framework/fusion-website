@@ -35,8 +35,11 @@ copied into every page:
 
 - If you change the nav, the footer, the booking link or the analytics snippet,
   change every page. `git grep` the old markup to find each copy.
-- `challenge/index.html` only forwards the old address to `/idea-to-impact/`. It has
-  no header, footer or analytics.
+- `idea-to-impact/index.html` and `challenge/index.html` only forward old links
+  to `/pricing/#offers`. They have no header, footer or analytics. Idea to Impact
+  is no longer an offer, so do not link to it or promote it. The sixteen-hour
+  speed claim (the home page delivery clock and the "How fast is Fusion?"
+  sections) stays, without the offer name.
 - `escape/index.html` is the hub for the three platform pages:
   `escape/salesforce/`, `escape/servicenow/` and `escape/dynamics-365/`. The
   hub has the results, the method and system sovereignty. Each platform page
@@ -106,9 +109,8 @@ One shared script, loaded at the end of each page:
 - **Footer year** and **Lucide icons** (`data-lucide` attributes, loaded from unpkg).
   Every page pins the same Lucide version (`lucide@1.48.0`). If you change the
   version, change it on every page.
-- **Current page:** the script sets `aria-current="page"` on header nav links,
-  on the header Idea to Impact button (`.nav-cta`) and on mobile menu links that
-  match the current path. It skips links with a hash. On a sub-page, the script
+- **Current page:** the script sets `aria-current="page"` on header nav links
+  and on mobile menu links that match the current path. It skips links with a hash. On a sub-page, the script
   sets `aria-current="true"` on the link to the parent page (for example the
   Escape SaaS link on `/escape/salesforce/`). The CSS styles both values.
 

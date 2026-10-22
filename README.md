@@ -6,8 +6,8 @@ Marketing site for fusionframework.ai. GitHub Pages serves the repository root.
 
 ```
 index.html            ← Home page (enterprise audience)
-idea-to-impact/index.html ← Idea to Impact: one workflow from the sponsor session to user sign-off in sixteen working hours
-challenge/index.html  ← Redirect from the old address to /idea-to-impact/
+idea-to-impact/index.html ← Forwards the old Idea to Impact address to /pricing/#offers (no longer an offer)
+challenge/index.html  ← Forwards the older Idea to Impact address to /pricing/#offers
 platform/index.html   ← Platform, analytics, custom UI (business audience)
 lifecycle/index.html  ← The built-in development lifecycle, AI-native change flow
 technology/index.html ← Integration, less code, technology (technical audience)
