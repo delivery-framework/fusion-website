@@ -4,21 +4,21 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Technology — Fusion</title>
-<meta name="description" content="How Fusion delivers software: proven open-source stacks in Rails or Elixir, standard integration, and much less code for you to own." />
+<meta name="description" content="How Fusion delivers software: a proven open-source stack on Ruby on Rails, standard integration, and much less code for you to own." />
 <link rel="canonical" href="https://fusionframework.ai/technology/" />
 <link rel="icon" type="image/svg+xml" href="/site/images/favicon.svg" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Fusion" />
 <meta property="og:title" content="Technology — Fusion" />
-<meta property="og:description" content="How Fusion delivers software: proven open-source stacks in Rails or Elixir, standard integration, and much less code for you to own." />
+<meta property="og:description" content="How Fusion delivers software: a proven open-source stack on Ruby on Rails, standard integration, and much less code for you to own." />
 <meta property="og:url" content="https://fusionframework.ai/technology/" />
 <meta property="og:image" content="https://fusionframework.ai/site/images/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Technology — Fusion" />
-<meta name="twitter:description" content="How Fusion delivers software: proven open-source stacks in Rails or Elixir, standard integration, and much less code for you to own." />
+<meta name="twitter:description" content="How Fusion delivers software: a proven open-source stack on Ruby on Rails, standard integration, and much less code for you to own." />
 <meta name="twitter:image" content="https://fusionframework.ai/site/images/og-image.png" />
 
 
@@ -237,18 +237,26 @@
           <p class="mt-3 leading-7 text-slate-300">Ruby on Rails with Hotwire renders the screens on the server. The screens feel like a single-page app, without the front-end build machinery. Rails has twenty years of conventions, an active security team, and a talent pool the size of the industry. Any Rails developer can read the code on their first day.</p>
         </div>
         <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div class="flex items-center gap-4">
-            <img src="https://cdn.simpleicons.org/elixir/9B6EB7" class="h-8 w-8" alt="Elixir" loading="lazy">
-            <img src="https://cdn.simpleicons.org/phoenixframework/FD4F00" class="h-8 w-8" alt="Phoenix" loading="lazy">
-            <img src="/site/images/ash_logo.svg" class="h-8 w-8" alt="Ash Framework" loading="lazy">
-          </div>
-          <h3 class="font-display mt-5 text-xl font-medium">The Elixir stack</h3>
-          <p class="mt-3 leading-7 text-slate-300">Phoenix and the Ash framework run on the BEAM, the runtime built for systems that stay up. Declarative resources describe the domain once. Ash derives authentication, authorisation, APIs and audit trails from those resources, so nobody hand-codes them for each feature. LiveView keeps interactive screens on the server.</p>
+          <h3 class="font-display text-xl font-medium">The same Rails runs GitHub and Shopify</h3>
+          <p class="mt-3 leading-7 text-slate-300">GitHub.com has been a Rails application since its first day. Rails also powers much of the Shopify platform.</p>
+          <dl class="mt-6 grid gap-6 sm:grid-cols-2">
+            <div>
+              <dt class="sr-only">Developers on GitHub</dt>
+              <dd class="text-3xl font-medium text-white" style="font-family: var(--mono);">225M+</dd>
+              <dd class="mt-2 text-sm leading-6 text-slate-300">developers build software on GitHub, and 90% of the Fortune 100 use it.</dd>
+            </div>
+            <div>
+              <dt class="sr-only">Shopify share of US e-commerce</dt>
+              <dd class="text-3xl font-medium text-white" style="font-family: var(--mono);">14%+</dd>
+              <dd class="mt-2 text-sm leading-6 text-slate-300">of US e-commerce sales in 2025 went through Shopify merchants. Worldwide, they sold US$378 billion.</dd>
+            </div>
+          </dl>
+          <p class="mt-6 text-xs leading-5 text-slate-400">Sources: github.com/about, the GitHub engineering blog, and Shopify’s 2025 annual report. The US share is Shopify’s own estimate. GitHub and Shopify are trademarks of their owners. Fusion has no affiliation with them.</p>
         </div>
       </div>
       <div class="mt-5 rounded-2xl border border-white/10 bg-white/5 p-6">
         <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
-          <span class="text-sm font-medium text-slate-300">Both stacks stand on the same foundations:</span>
+          <span class="text-sm font-medium text-slate-300">The stack stands on these foundations:</span>
           <span class="inline-flex items-center gap-2 text-sm text-slate-300"><img src="https://cdn.simpleicons.org/postgresql/5A93C9" class="h-6 w-6" alt="PostgreSQL" loading="lazy">PostgreSQL</span>
           <span class="inline-flex items-center gap-2 text-sm text-slate-300"><img src="https://cdn.simpleicons.org/tailwindcss/06B6D4" class="h-6 w-6" alt="Tailwind CSS" loading="lazy">Tailwind CSS</span>
           <span class="inline-flex items-center gap-2 text-sm text-slate-300"><img src="https://cdn.simpleicons.org/daisyui/7C3AED" class="h-6 w-6" alt="daisyUI" loading="lazy">daisyUI</span>
@@ -309,7 +317,7 @@ end</code></pre></div>
       </div>
       <div>
         <p class="less-stat-body">
-          For the same application, AI writes about 90% less code on Fusion than it does from scratch. The result is a massive increase in reviewability, maintainability and security.
+          For the same application, AI writes about 90% less code on Fusion than it does from scratch. A person reviews and approves all of it, and the result is a massive increase in reviewability, maintainability and security.
         </p>
       </div>
     </div>
@@ -333,7 +341,7 @@ end</code></pre></div>
         <div class="less-point-icon"><i data-lucide="shield-check" class="h-5 w-5"></i></div>
         <div>
           <h3 class="less-point-title">A much smaller surface for AI to touch</h3>
-          <p class="less-point-text">When AI works on a Fusion application, it works on the business rules. The business rules are where your domain lives, and a person can read and review them in one sitting. The AI does not produce a thousand lines of near-identical plumbing that nobody will check properly.</p>
+          <p class="less-point-text">When AI works on a Fusion application, it works on the business rules. The business rules are where your domain lives, and a person reads, reviews and approves them in one sitting. The AI does not produce a thousand lines of near-identical plumbing that nobody will check properly.</p>
         </div>
       </div>
     </div>
@@ -359,7 +367,7 @@ end</code></pre></div>
         <li>show me what happened</li>
       </ul>
       <p class="mt-5 text-lg leading-8 text-slate-600">
-        In Fusion, those four things are properties of the application, not a product you license and run beside it. In both the Rails stack and the Elixir stack, the work queue lives in the database that the application already has. So there is no broker, no second service and nothing new to keep in operation.
+        In Fusion, those four things are properties of the application, not a product you license and run beside it. The work queue lives in the database that the application already has. So there is no broker, no second service and nothing new to keep in operation.
       </p>
     </div>
 
@@ -401,7 +409,7 @@ end</code></pre></div>
       Not fashionable technology. Proven, stable technology and high-quality engineering.
     </h2>
     <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
-      We chose the stacks for their proven history, not for their news cycle. Our engineering still works well in year three. Bring your hardest workflow and see it reach production.
+      We chose the stack for its proven history, not for its news cycle. Our engineering still works well in year three. Bring your hardest workflow and see it reach production.
     </p>
     <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
       <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto gap-0 border-0 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=Book+Meeting plausible-event-position=final plausible-event-cta=Book+a+session">
@@ -457,7 +465,7 @@ end</code></pre></div>
   </div>
   <div class="mx-auto max-w-7xl px-5">
     <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500">
-      <p>&copy; <span id="year"></span> Fusion. AI-assisted delivery that ships.</p>
+      <p>&copy; <span id="year"></span> Fusion. AI-assisted, human-approved delivery that ships.</p>
       <p>Fusion Framework Limited, New Zealand</p>
     </div>
   </div>
