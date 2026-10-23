@@ -1,0 +1,16 @@
+# Files in the repository that are not part of the site. Cloudflare does not
+# upload them. The syntax is the same as .gitignore.
+.git
+.github
+.claude
+.wrangler
+node_modules
+.gitignore
+_config.yml
+CLAUDE.md
+CNAME
+README.md
+package.json
+package-lock.json
+wrangler.jsonc
+css/input.css

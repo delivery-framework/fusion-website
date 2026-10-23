@@ -1,0 +1,8 @@
+# Redirects for Cloudflare Workers static assets. Each line is:
+# source path, destination, status code.
+
+# Idea to Impact is no longer an offer. The old addresses go to the current offers.
+/idea-to-impact /pricing/#offers 301
+/idea-to-impact/* /pricing/#offers 301
+/challenge /pricing/#offers 301
+/challenge/* /pricing/#offers 301

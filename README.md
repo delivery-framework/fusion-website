@@ -1,13 +1,13 @@
 # fusionframework.ai
 
-Marketing site for fusionframework.ai. GitHub Pages serves the repository root.
+Marketing site for fusionframework.ai. Cloudflare Workers (static assets) serves the
+repository root. Workers Builds deploys each push to `main`, and gives each other
+branch a preview URL.
 
 ## Structure
 
 ```
 index.html            ← Home page (enterprise audience)
-idea-to-impact/index.html ← Forwards the old Idea to Impact address to /pricing/#offers (no longer an offer)
-challenge/index.html  ← Forwards the older Idea to Impact address to /pricing/#offers
 platform/index.html   ← Platform, analytics, custom UI (business audience)
 lifecycle/index.html  ← The built-in development lifecycle, AI-native change flow
 technology/index.html ← Integration, less code, technology (technical audience)
@@ -20,6 +20,7 @@ escape/index.html     ← Escape Salesforce, ServiceNow & Dynamics: metadata rea
 about/index.html      ← About: why we built Fusion, the trace from problem to code, the team
 privacy/index.html    ← Privacy policy (NZ Privacy Act 2020, Plausible analytics)
 saas-wars/index.html  ← SaaS Wars: a parody opening crawl about the Data Paywall, with pause, replay and skip controls and a static version for reduced motion
+404.html              ← The page for an unknown address (noindex)
 css/
   input.css           ← Tailwind source (edit this; also holds the shared base styles)
   output.css          ← Compiled Tailwind (generated)
@@ -29,7 +30,10 @@ site/
   images/             ← Screenshots, favicon, Open Graph image
 sitemap.xml
 robots.txt
-CNAME
+wrangler.jsonc        ← Cloudflare Worker: name, custom domains, HTML handling
+.assetsignore         ← Files that Cloudflare does not upload (docs, package files, css/input.css)
+_redirects            ← Redirects (301), for example the old Idea to Impact addresses
+_headers              ← Security headers and cache rules
 ```
 
 The shared base styles (palette tokens, hero, reveal, links) live in

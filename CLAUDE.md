@@ -5,8 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this repository is
 
 The static marketing site for fusionframework.ai. The site has no framework, no
-bundler, no tests and no linter. GitHub Pages serves the repository root, and a
-push to `main` deploys the site. Commits go directly to `main`.
+bundler, no tests and no linter. Cloudflare Workers (static assets) serves the
+repository root. Workers Builds deploys each push to `main`, and gives each
+other branch a preview URL. Commits go directly to `main`.
 
 The old domain, fusionframe.work, is a Cloudflare redirect (301) to
 fusionframework.ai that keeps the path and the query string. Both zones are in
@@ -18,14 +19,18 @@ the same Cloudflare account. Mail stays on the old domain, so keep
 ```sh
 npm install                      # Tailwind CLI and DaisyUI
 python3 -m http.server 8080      # serve the site at http://localhost:8080
+wrangler dev                     # serve it as Cloudflare does, at http://localhost:8787
 npm run dev:css                  # rebuild css/output.css on each change
 npm run build:css                # minified build; run before you commit
 ```
 
-`css/output.css` is generated, but it is committed, because GitHub Pages does not
-build. If you change classes in any HTML file or in `css/input.css`, run
-`npm run build:css` and commit `css/output.css` with the change. Browsers cache
-`js/site.js` and `css/output.css`, so use a force refresh when you check a change.
+`css/output.css` is generated, but it is committed, because the deploy has no
+build step. If you change classes in any HTML file or in `css/input.css`, run
+`npm run build:css` and commit `css/output.css` with the change. On the live
+site, `_headers` makes browsers check `js/site.js` and `css/output.css` on each
+page load. The Python server does not send those headers, so use a force
+refresh there. Use `wrangler dev` to test the redirects, the headers and the
+404 page.
 
 ## Architecture
 
@@ -35,9 +40,9 @@ copied into every page:
 
 - If you change the nav, the footer, the booking link or the analytics snippet,
   change every page. `git grep` the old markup to find each copy.
-- `idea-to-impact/index.html` and `challenge/index.html` only forward old links
-  to `/pricing/#offers`. They have no header, footer or analytics. Idea to Impact
-  is no longer an offer, so do not link to it or promote it. The sixteen-hour
+- `_redirects` sends `/idea-to-impact/` and `/challenge/` to `/pricing/#offers`
+  with a 301. Idea to Impact is no longer an offer, so do not link to it or
+  promote it. The sixteen-hour
   speed claim (the home page delivery clock and the "How fast is Fusion?"
   sections) stays, without the offer name.
 - `escape/index.html` is the hub for the three platform pages:
@@ -53,8 +58,23 @@ To add a page, copy an existing page. Then do these steps:
 
 1. Add an `@source` line for the page in `css/input.css`, or its classes do not compile.
 2. Add the page to `sitemap.xml`. Do not add a page that has
-   `<meta name="robots" content="noindex" />` (now only `saas-wars/`).
+   `<meta name="robots" content="noindex" />` (now `saas-wars/` and `404.html`).
 3. Add the page to the structure list in `README.md`.
+
+### Hosting files
+
+- `wrangler.jsonc` sets the Worker name, the custom domains (`fusionframework.ai`
+  and `www.fusionframework.ai`) and how Cloudflare serves HTML: `/pricing`
+  redirects to `/pricing/`, and an unknown path gets `404.html` with a 404 status.
+- `.assetsignore` lists the files that Cloudflare does not upload, for example
+  `README.md`, `CLAUDE.md`, `package.json` and `css/input.css`. If you add a file
+  at the root that is not part of the site, add it to `.assetsignore`.
+- `_redirects` holds the redirects, and `_headers` holds the security headers
+  and the cache rules. Cloudflare does not serve these two files.
+- A zone redirect rule (not a file) sends `www.fusionframework.ai` to the apex
+  domain with a 301.
+- `404.html` is a full page with the header and the footer, so change it with
+  the other pages.
 
 ### CSS
 
@@ -142,6 +162,6 @@ class="btn … plausible-event-name=Book+Meeting plausible-event-position=hero p
 ## Privacy policy
 
 `privacy/index.html` follows the New Zealand Privacy Act 2020. It names Fusion
-Framework Limited and each third party that the site loads: Plausible, Google
-Calendar booking, Google Fonts, unpkg and Simple Icons. If you add or remove a third-party service, update the policy and
+Framework Limited, the host (Cloudflare) and each third party that the site
+loads: Plausible, Google Calendar booking, Google Fonts, unpkg and Simple Icons. If you add or remove a third-party service, update the policy and
 its "Last updated" date.
