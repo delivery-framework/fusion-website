@@ -18,6 +18,7 @@ escape/index.html     ← Escape Salesforce, ServiceNow & Dynamics: metadata rea
   servicenow/index.html   ← Escape ServiceNow: what we read from the instance (Table API) and where each part goes on Fusion
   dynamics-365/index.html ← Escape Dynamics 365: what we read from the environment (Dataverse Web API) and where each part goes on Fusion
 about/index.html      ← About: why we built Fusion, the trace from problem to code, the team
+explainer/index.html  ← The explainer film (Mux player, chapters), linked from the home hero
 privacy/index.html    ← Privacy policy (NZ Privacy Act 2020, Plausible analytics)
 saas-wars/index.html  ← SaaS Wars: a parody opening crawl about the Data Paywall, with pause, replay and skip controls and a static version for reduced motion
 404.html              ← The page for an unknown address (noindex)

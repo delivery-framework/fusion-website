@@ -93,6 +93,40 @@
     .proof-num { font-size: 2.75rem; }
     .proof-label { font-size: 0.9375rem; }
   }
+  /* The explainer card: a still from the film that links to /explainer/. On a wide
+     screen it sits at the torus centre, so the field lines circle it. */
+  .film-card {
+    display: block; overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16); border-radius: var(--r-lg);
+    background: #0B1220;
+    box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.85);
+    transition: transform 250ms cubic-bezier(.2,.7,.2,1), border-color 250ms ease;
+  }
+  .film-frame { position: relative; display: block; }
+  .film-frame img { display: block; width: 100%; height: auto; opacity: 0.8; transition: opacity 250ms ease; }
+  .film-play {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    display: flex; align-items: center; justify-content: center;
+    width: 4rem; height: 4rem; border-radius: 9999px;
+    background: var(--signal); color: #0B1220;
+    box-shadow: 0 0 0 8px var(--signal-halo);
+    transition: background-color 250ms ease, box-shadow 250ms ease;
+  }
+  .film-play svg { width: 1.5rem; height: 1.5rem; margin-left: 0.125rem; fill: currentColor; }
+  .film-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.75rem 1rem; border-top: 1px solid var(--hair-dark);
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; color: #cbd5e1;
+  }
+  .film-time { color: #fff; font-variant-numeric: tabular-nums; }
+  .film-card:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.3); }
+  .film-card:hover img { opacity: 1; }
+  .film-card:hover .film-play { background: var(--accent-300); box-shadow: 0 0 0 12px var(--signal-halo); }
+  @media (prefers-reduced-motion: reduce) {
+    .film-card, .film-frame img, .film-play { transition: none; }
+    .film-card:hover { transform: none; }
+  }
 
   /* What Fusion is — CSS-only tabs, the same radio pattern as the screenshot galleries.
      The tabs read as channels: a mono index, a hairline, and a signal bar on the live one. */
@@ -419,22 +453,34 @@
   <div class="hero-fade" aria-hidden="true"></div>
 
   <div class="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-5 pt-14 pb-6 md:pt-16">
-    <div class="flex flex-1 flex-col justify-center reveal reveal-2">
-      <h1 class="font-display max-w-4xl text-balance text-5xl font-medium text-white md:text-7xl leading-[0.98]">
-        Business software done right.
-      </h1>
-      <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-        Fusion gives you a disciplined delivery pipeline, human-approved AI across the full lifecycle, quality design and agile execution. No per-seat licensing. No hosting lock-in.
-      </p>
-      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-        <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn btn-signal h-auto gap-0 px-7 py-4 text-base font-semibold plausible-event-name=Book+Meeting plausible-event-position=hero plausible-event-cta=Start+with+a+one-hour+session">
-          <span>Start with a one-hour session</span>
-          <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
-        </a>
-        <a href="/platform/" class="btn h-auto gap-0 border-white/25 bg-white/5 px-7 py-4 text-base font-medium text-white hover:border-white/40 hover:bg-white/10 plausible-event-name=CTA+Click plausible-event-position=hero plausible-event-cta=Explore+the+platform">
-          <span>Explore the platform</span>
-        </a>
+    <div class="flex flex-1 flex-col justify-center gap-12 reveal reveal-2 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-center xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)]">
+      <div>
+        <h1 class="font-display max-w-4xl text-balance text-5xl font-medium text-white md:text-7xl lg:text-6xl xl:text-7xl leading-[0.98]">
+          Business software done right.
+        </h1>
+        <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
+          Fusion gives you a disciplined delivery pipeline, human-approved AI across the full lifecycle, quality design and agile execution. No per-seat licensing. No hosting lock-in.
+        </p>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn btn-signal h-auto gap-0 px-7 py-4 text-base font-semibold plausible-event-name=Book+Meeting plausible-event-position=hero plausible-event-cta=Start+with+a+one-hour+session">
+            <span>Start with a one-hour session</span>
+            <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+          </a>
+          <a href="/platform/" class="btn h-auto gap-0 border-white/25 bg-white/5 px-7 py-4 text-base font-medium text-white hover:border-white/40 hover:bg-white/10 plausible-event-name=CTA+Click plausible-event-position=hero plausible-event-cta=Explore+the+platform">
+            <span>Explore the platform</span>
+          </a>
+        </div>
       </div>
+      <a href="/explainer/" class="film-card w-full max-w-xl lg:max-w-none plausible-event-name=CTA+Click plausible-event-position=hero plausible-event-cta=Watch+the+explainer">
+        <span class="film-frame">
+          <picture>
+            <source srcset="/site/images/explainer-poster.avif" type="image/avif">
+            <img src="/site/images/explainer-poster.webp" width="960" height="540" alt="" decoding="async">
+          </picture>
+          <span class="film-play" aria-hidden="true"><i data-lucide="play"></i></span>
+        </span>
+        <span class="film-bar"><span>Watch the explainer</span><span class="film-time">5:33</span></span>
+      </a>
     </div>
 
     <dl class="proof ruler mt-14 md:mt-16 reveal reveal-3">

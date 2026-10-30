@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Explainer — Fusion</title>
+<meta name="description" content="Fusion in five and a half minutes: the two problems with business software, the Fusion Platform, our AI-driven delivery lifecycle, and the results from a university build." />
+<link rel="canonical" href="https://fusionframework.ai/explainer/" />
+<link rel="icon" type="image/svg+xml" href="/site/images/favicon.svg" />
+
+<meta property="og:type" content="video.other" />
+<meta property="og:site_name" content="Fusion" />
+<meta property="og:title" content="Fusion in five and a half minutes" />
+<meta property="og:description" content="Fusion in five and a half minutes: the two problems with business software, the Fusion Platform, our AI-driven delivery lifecycle, and the results from a university build." />
+<meta property="og:url" content="https://fusionframework.ai/explainer/" />
+<meta property="og:image" content="https://fusionframework.ai/site/images/explainer-og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Fusion: Business software done right. AI does the building. Your people stay in control." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Fusion in five and a half minutes" />
+<meta name="twitter:description" content="Fusion in five and a half minutes: the two problems with business software, the Fusion Platform, our AI-driven delivery lifecycle, and the results from a university build." />
+<meta name="twitter:image" content="https://fusionframework.ai/site/images/explainer-og.jpg" />
+
+
+<link rel="stylesheet" href="/css/output.css">
+<script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Wordmark face only — subset to the six logotype glyphs, block display so the brand name never flashes unstyled -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&text=Fusion&display=block" rel="stylesheet">
+<!-- The video player. The film streams from Mux, with Mux Data turned off (disable-tracking) -->
+<script src="https://cdn.jsdelivr.net/npm/@mux/mux-player@3.14.0" defer></script>
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-ktZLDqdblhaDYlH3Rd1PY.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+<style>
+  /* The film: a 16:9 frame that holds its size before the player script loads */
+  .film {
+    position: relative; overflow: hidden;
+    border: 1px solid var(--hair-dark); border-radius: var(--r-lg);
+    background: #000;
+    box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.8);
+  }
+  .film mux-player {
+    display: block; width: 100%; aspect-ratio: 16 / 9;
+    --media-object-fit: contain;
+  }
+  .film-note { font-family: var(--mono); font-size: 0.8125rem; color: #94a3b8; }
+
+  /* Chapters: four parts of the film, each a button that plays from its start */
+  .chapters { display: grid; gap: 0; margin-top: 3rem; border-top: 1px solid var(--hair); }
+  .chapter { padding: 1.75rem 0; border-bottom: 1px solid var(--hair); }
+  .chapter-time {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.25rem 0.625rem 0.25rem 0.5rem;
+    border: 1px solid var(--hair-strong); border-radius: var(--r-xs);
+    background: #fff; cursor: pointer;
+    font-family: var(--mono); font-size: 0.8125rem; font-weight: 500; color: #0B1220;
+    transition: border-color 150ms ease, background-color 150ms ease;
+  }
+  .chapter-time:hover { border-color: var(--accent-500); background: color-mix(in srgb, var(--accent-500) 8%, #fff); }
+  .chapter-time svg { width: 0.875rem; height: 0.875rem; color: var(--accent-700); }
+  .chapter-title {
+    margin-top: 1rem;
+    font-family: 'Fraunces', serif; font-feature-settings: 'ss01' on;
+    font-size: 1.375rem; font-weight: 500; line-height: 1.25; letter-spacing: -0.01em; color: #0B1220;
+  }
+  .chapter-text { margin-top: 0.5rem; font-size: 0.9375rem; line-height: 1.7; color: #475569; }
+  @media (min-width: 768px) {
+    .chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .chapters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .chapter { padding-right: 2rem; border-bottom: 0; }
+    .chapter + .chapter { padding-left: 2rem; border-left: 1px solid var(--hair); }
+    .chapters { column-gap: 0; }
+  }
+</style>
+</head>
+
+<body class="bg-slate-50 text-slate-950">
+
+<!-- ====================== HEADER ====================== -->
+<header class="sticky top-0 z-50 border-b border-white/10 bg-ink">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
+    <a href="/" class="flex items-center gap-2.5" aria-label="Fusion home">
+      <!-- Logo mark: confinement arcs around a fusion core (follows the audience accent) -->
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-300)" aria-hidden="true">
+        <g transform="rotate(-18 16 16)">
+          <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+        </g>
+        <circle cx="16.4" cy="16" r="4.6" fill="#ffffff"/>
+      </svg>
+      <span class="wordmark text-xl text-white">Fusion</span>
+    </a>
+
+    <nav aria-label="Main" class="site-nav hidden items-center gap-6 xl:gap-7 text-sm font-medium text-slate-300 lg:flex">
+      <a href="/lifecycle/">Lifecycle</a>
+      <a href="/platform/">Platform</a>
+      <a href="/technology/">Technology</a>
+      <a href="/replace-legacy/">Replace Legacy</a>
+      <a href="/escape/">Escape SaaS</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
+    </nav>
+
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto border-0 bg-white px-4 py-2.5 text-sm font-medium text-ink hover:bg-slate-100 md:px-5 plausible-event-name=Book+Meeting plausible-event-position=header plausible-event-cta=Book+a+demo">Book a demo</a>
+      <!-- Mobile menu (DaisyUI dropdown); mirrors the nav above -->
+      <div class="dropdown dropdown-end lg:hidden">
+        <div tabindex="0" role="button" aria-label="Open menu" class="btn btn-ghost btn-square btn-sm -mr-2 text-slate-300 hover:bg-white/10 hover:text-white">
+          <i data-lucide="menu" class="h-6 w-6"></i>
+        </div>
+        <ul tabindex="0" class="dropdown-content menu mt-3 w-60 rounded-box border border-base-300 bg-base-100 p-2 text-base-content shadow-lg">
+          <li><a href="/lifecycle/">Lifecycle</a></li>
+          <li><a href="/platform/">Platform</a></li>
+          <li><a href="/technology/">Technology</a></li>
+          <li><a href="/replace-legacy/">Replace Legacy</a></li>
+          <li><a href="/escape/">Escape SaaS</a></li>
+          <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/about/">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ====================== EXPLAINER ====================== -->
+<section id="explainer" class="bg-ink pt-20 pb-20 text-white relative overflow-hidden grain">
+  <div class="absolute -left-32 -top-32 h-96 w-96 rounded-full blur-3xl opacity-15" style="background: var(--accent-500);"></div>
+  <div class="mx-auto max-w-7xl px-5 relative">
+    <div class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-200);">The explainer</p>
+      <h1 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">
+        Fusion in five and a half minutes.
+      </h1>
+      <p class="mt-5 text-lg leading-8 text-slate-300">
+        The two problems with business software today, how Fusion solves each one, and the results from a build for a large Australian university.
+      </p>
+    </div>
+    <div class="film mt-12 max-w-5xl">
+      <mux-player id="film" playback-id="YOC4oR2kY697iFQk00z7sf01w7ZEXeHhZB2sw35DkOWfE" thumbnail-time="6.52" accent-color="#F59E0B" default-hidden-captions disable-tracking metadata-video-title="Fusion explainer" title="Fusion explainer video"></mux-player>
+    </div>
+    <p class="film-note mt-4 max-w-5xl">5:33 · English captions: select CC.</p>
+  </div>
+</section>
+
+<!-- ====================== CHAPTERS ====================== -->
+<section id="chapters" class="bg-slate-50 py-20">
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.25em]" style="color: var(--accent-700);">What the film covers</p>
+      <h2 class="font-display mt-4 text-4xl font-medium tracking-tight md:text-5xl">
+        Two problems, two solutions, and the proof.
+      </h2>
+    </div>
+    <ol class="chapters">
+      <li class="chapter">
+        <button type="button" class="chapter-time" data-t="9" aria-label="Play from 0:09: The two problems"><i data-lucide="play"></i>0:09</button>
+        <h3 class="chapter-title">The two problems</h3>
+        <p class="chapter-text">Delivery is slow. And you must choose between SaaS rent and custom code that is hard to maintain.</p>
+      </li>
+      <li class="chapter">
+        <button type="button" class="chapter-time" data-t="58" aria-label="Play from 0:58: The Fusion Platform"><i data-lucide="play"></i>0:58</button>
+        <h3 class="chapter-title">The Fusion Platform</h3>
+        <p class="chapter-text">One business layer, AI agents, integration, reporting and hosting.</p>
+      </li>
+      <li class="chapter">
+        <button type="button" class="chapter-time" data-t="183" aria-label="Play from 3:03: The delivery lifecycle"><i data-lucide="play"></i>3:03</button>
+        <h3 class="chapter-title">The delivery lifecycle</h3>
+        <p class="chapter-text">Discovery, design, risk and compliance, release and user testing, in one loop inside your app.</p>
+      </li>
+      <li class="chapter">
+        <button type="button" class="chapter-time" data-t="295" aria-label="Play from 4:55: The proof"><i data-lucide="play"></i>4:55</button>
+        <h3 class="chapter-title">The proof</h3>
+        <p class="chapter-text">The university build, by the numbers: releases, workflows, tests and compliance evidence.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ====================== FINAL ====================== -->
+<section class="bg-ink py-20 text-white relative overflow-hidden grain">
+  <div class="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full blur-3xl opacity-30" style="background: var(--accent-500);"></div>
+  <div class="mx-auto max-w-7xl px-5 text-center relative">
+    <h2 class="font-display mx-auto max-w-4xl text-4xl font-medium tracking-tight md:text-5xl">
+      Bring us a problem.
+    </h2>
+    <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+      Start with a one-hour session with the owner of the problem. We write the problem and opportunity statement, and you decide what comes next.
+    </p>
+    <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <a href="https://calendar.app.google/vyiAmnbNBDbvg6dC7" target="_blank" rel="noopener" class="btn h-auto gap-0 border-0 bg-white px-7 py-4 text-base font-medium text-ink hover:bg-slate-100 plausible-event-name=Book+Meeting plausible-event-position=final plausible-event-cta=Start+with+a+one-hour+session">
+        <span>Start with a one-hour session</span>
+        <i data-lucide="arrow-right" class="ml-2 h-5 w-5"></i>
+      </a>
+      <a href="/platform/" class="btn h-auto gap-0 border-white/25 bg-white/5 px-7 py-4 text-base font-medium text-white hover:border-white/40 hover:bg-white/10 plausible-event-name=CTA+Click plausible-event-position=final plausible-event-cta=Explore+the+platform">
+        <span>Explore the platform</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ====================== FOOTER ====================== -->
+<footer class="border-t border-slate-200 bg-white pt-14 pb-8">
+  <div class="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-5 sm:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+    <div class="col-span-2 sm:col-span-3 lg:col-span-1">
+      <a href="/" class="inline-flex items-center gap-2.5" aria-label="Fusion home">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: var(--accent-600)" aria-hidden="true">
+          <g transform="rotate(-18 16 16)">
+            <path d="M 13.15 26.63 A 11 11 0 0 1 13.15 5.37" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            <path d="M 23.43 7.89 A 11 11 0 0 1 23.43 24.11" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          </g>
+          <circle cx="16.4" cy="16" r="4.6" fill="#0B1220"/>
+        </svg>
+        <span class="wordmark text-lg text-ink">Fusion</span>
+      </a>
+      <p class="mt-3 max-w-sm text-sm leading-6 text-slate-600">From a one-hour sponsor session to software in production. Hosted wherever you choose, including your own servers.</p>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Product</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/lifecycle/" class="hover:text-ink">Lifecycle</a></li>
+        <li><a href="/platform/" class="hover:text-ink">Platform</a></li>
+        <li><a href="/technology/" class="hover:text-ink">Technology</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Offers</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/pricing/#offers" class="hover:text-ink">Engagement</a></li>
+        <li><a href="/replace-legacy/" class="hover:text-ink">Replace Legacy</a></li>
+        <li><a href="/escape/" class="hover:text-ink">Escape SaaS</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink">Company</p>
+      <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+        <li><a href="/pricing/" class="hover:text-ink">Pricing</a></li>
+        <li><a href="/about/" class="hover:text-ink">About</a></li>
+        <li><a href="/privacy/" class="hover:text-ink">Privacy policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6 text-xs text-slate-500">
+      <p>&copy; <span id="year"></span> Fusion. AI-assisted, human-approved delivery that ships.</p>
+      <p>Fusion Framework Limited, New Zealand</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/site.js"></script>
+<script>
+  // Each chapter button plays the film from the start of its chapter.
+  // The first play sends one Plausible event (the goal "Play Explainer").
+  (() => {
+    const film = document.getElementById('film');
+    if (!film) return;
+    film.addEventListener('play', () => { if (window.plausible) window.plausible('Play Explainer'); }, { once: true });
+    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('.chapter-time').forEach((button) => {
+      button.addEventListener('click', () => {
+        film.currentTime = Number(button.dataset.t);
+        Promise.resolve(film.play()).catch(() => {});
+        film.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

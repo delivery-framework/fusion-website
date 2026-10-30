@@ -53,6 +53,13 @@ copied into every page:
   other two.
 - The home page has a small inline script that forwards old single-page anchors
   (for example `/#pricing`) to the sub-pages.
+- `explainer/index.html` plays the explainer film, ungated, in a Mux Player
+  (playback ID `YOC4oR2kY697iFQk00z7sf01w7ZEXeHhZB2sw35DkOWfE`, with
+  `disable-tracking`, so the page sets no cookie). The poster card in the home
+  hero links to it. The gated `/baap-video` page is a separate Worker in the
+  marketing repo (`video/2026-10-23-fusion-explainer/worker/`) on the route
+  `fusionframework.ai/baap-video*`, and plays the same playback ID. If you
+  upload a new cut, change the ID in both places.
 
 To add a page, copy an existing page. Then do these steps:
 
@@ -163,5 +170,5 @@ class="btn … plausible-event-name=Book+Meeting plausible-event-position=hero p
 
 `privacy/index.html` follows the New Zealand Privacy Act 2020. It names Fusion
 Framework Limited, the host (Cloudflare) and each third party that the site
-loads: Plausible, Google Calendar booking, Google Fonts, unpkg and Simple Icons. If you add or remove a third-party service, update the policy and
+loads: Plausible, Google Calendar booking, Google Fonts, unpkg, Simple Icons, jsDelivr and Mux (the explainer page). If you add or remove a third-party service, update the policy and
 its "Last updated" date.
