@@ -69,30 +69,6 @@
 </script>
 
 <style>
-  /* Hero — a readout strip at the foot, on a tick ruler. The fade keeps the
-     readouts legible over the bottom of the torus. */
-  .hero-fade {
-    position: absolute; inset: auto 0 0 0; height: 16rem; pointer-events: none;
-    background: linear-gradient(to bottom, rgba(11, 18, 32, 0), rgba(11, 18, 32, 0.88));
-  }
-  .proof { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); --tick: rgba(255, 255, 255, 0.24); }
-  .proof-item { padding: 1.5rem 1rem 1.25rem 0; }
-  .proof-item:nth-child(even) { padding-left: 1rem; border-left: 1px solid var(--hair-dark); }
-  .proof-item:nth-child(n+3) { border-top: 1px solid var(--hair-dark); }
-  .proof-num {
-    font-family: var(--mono); font-variant-numeric: tabular-nums;
-    font-size: 2rem; font-weight: 500; line-height: 1; letter-spacing: -0.03em; color: #fff;
-  }
-  .proof-label { margin-top: 0.75rem; max-width: 15rem; font-size: 0.875rem; line-height: 1.5; color: #94a3b8; }
-  @media (min-width: 768px) {
-    .proof { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .proof-item, .proof-item:nth-child(even), .proof-item:nth-child(n+3) {
-      padding: 2rem 1.75rem 0.5rem 0; border-top: 0; border-left: 0;
-    }
-    .proof-item + .proof-item { padding-left: 1.75rem; border-left: 1px solid var(--hair-dark); }
-    .proof-num { font-size: 2.75rem; }
-    .proof-label { font-size: 0.9375rem; }
-  }
   /* The explainer card: a still from the film that links to /explainer/. On a wide
      screen it sits at the torus centre, so the field lines circle it. */
   .film-card {
@@ -450,9 +426,8 @@
 <!-- ====================== HERO ====================== -->
 <section class="hero-bg hero-fill grain relative flex flex-col overflow-hidden">
   <canvas id="heroCanvas" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; -webkit-mask-image:linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0.8) 45%, #000 65%); mask-image:linear-gradient(90deg, rgba(0,0,0,0.5), rgba(0,0,0,0.8) 45%, #000 65%);"></canvas>
-  <div class="hero-fade" aria-hidden="true"></div>
 
-  <div class="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-5 pt-14 pb-6 md:pt-16">
+  <div class="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col px-5 py-14 md:py-16">
     <div class="flex flex-1 flex-col justify-center gap-12 reveal reveal-2 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-center xl:grid-cols-[minmax(0,1fr)_minmax(0,30rem)]">
       <div>
         <h1 class="font-display max-w-4xl text-balance text-5xl font-medium text-white md:text-7xl lg:text-6xl xl:text-7xl leading-[0.98]">
@@ -482,29 +457,6 @@
         <span class="film-bar"><span>Watch the explainer</span><span class="film-time">5:33</span></span>
       </a>
     </div>
-
-    <dl class="proof ruler mt-14 md:mt-16 reveal reveal-3">
-      <div class="proof-item">
-        <dt class="sr-only">Problem &amp; Opportunity Statement session</dt>
-        <dd class="proof-num">1h</dd>
-        <dd class="proof-label">A Problem &amp; Opportunity Statement session with the owner</dd>
-      </div>
-      <div class="proof-item">
-        <dt class="sr-only">Observation session</dt>
-        <dd class="proof-num">1–2h</dd>
-        <dd class="proof-label">For each observation session with your stakeholders</dd>
-      </div>
-      <div class="proof-item">
-        <dt class="sr-only">Change request to production</dt>
-        <dd class="proof-num">4–8h</dd>
-        <dd class="proof-label">From a change request to the change in production</dd>
-      </div>
-      <div class="proof-item">
-        <dt class="sr-only">Licence cost per application user</dt>
-        <dd class="proof-num">$0</dd>
-        <dd class="proof-label">Per application user, at any number of users</dd>
-      </div>
-    </dl>
   </div>
 </section>
 
